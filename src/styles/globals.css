@@ -11,5 +11,5 @@ a {
 }
 
 .markdown h2 {
-  @apply sm:text-2xl font-bold mb-4;
+  @apply text-2xl font-bold mb-4;
 }
