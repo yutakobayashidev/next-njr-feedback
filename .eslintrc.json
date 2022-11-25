@@ -1,0 +1,27 @@
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": [
+    "sort-keys-custom-order",
+    "simple-import-sort",
+    "unused-imports",
+    "tailwindcss",
+    "import"
+  ],
+  "rules": {
+    "sort-keys-custom-order/object-keys": ["error", { "orderedKeys": ["id", "name", "title"] }],
+    // For TS types sorting
+    "sort-keys-custom-order/type-keys": ["error", { "orderedKeys": ["id", "name", "title"] }],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "unused-imports/no-unused-imports": "error"
+  },
+  "settings": {
+    "tailwindcss": {
+      "groupByResponsive": true,
+      "whitelist": []
+    }
+  }
+}
