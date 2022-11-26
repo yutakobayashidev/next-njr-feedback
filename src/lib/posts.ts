@@ -1,10 +1,10 @@
-import fs from 'fs'
-import matter from 'gray-matter'
-import { join } from 'path'
-import { remark } from 'remark'
-import html from 'remark-html'
+import fs from "fs"
+import matter from "gray-matter"
+import { join } from "path"
+import { remark } from "remark"
+import html from "remark-html"
 
-const postsDirectory = join(process.cwd(), 'content')
+const postsDirectory = join(process.cwd(), "content")
 
 export function getAllPostIds() {
   const fileNames = fs.readdirSync(postsDirectory)
@@ -12,7 +12,7 @@ export function getAllPostIds() {
   return fileNames.map((fileName) => {
     return {
       params: {
-        id: fileName.replace(/\.md$/, ''),
+        id: fileName.replace(/\.md$/, ""),
       },
     }
   })
@@ -20,7 +20,7 @@ export function getAllPostIds() {
 
 export async function getPostData(id: string) {
   const fullPath = join(postsDirectory, `${id}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const fileContents = fs.readFileSync(fullPath, "utf8")
 
   // 投稿のメタデータ部分を解析するために gray-matter を使う
   const matterResult = matter(fileContents)

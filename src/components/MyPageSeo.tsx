@@ -1,5 +1,5 @@
-import { config } from '@site.config'
-import NextHeadSeo from 'next-head-seo'
+import { config } from "@site.config"
+import NextHeadSeo from "next-head-seo"
 
 // types
 export type MyPageSeoProps = {
@@ -17,7 +17,7 @@ export const MyPageSeo: React.FC<MyPageSeoProps> = (props) => {
     description = config.siteMeta.description,
     noindex,
     noTitleTemplate,
-    ogImagePath = '/default-og.png',
+    ogImagePath = "/default-og.png",
     path,
   } = props
 
@@ -36,17 +36,17 @@ export const MyPageSeo: React.FC<MyPageSeoProps> = (props) => {
       title={noTitleTemplate ? title : `${title} - Next NJR Feedback`}
       canonical={pageUrl}
       description={description}
-      robots={noindex ? 'noindex, nofollow' : undefined}
+      robots={noindex ? "noindex, nofollow" : undefined}
       og={{
         title,
         description,
         image: ogImageUrl,
         siteName: config.siteMeta.title,
-        type: 'article',
+        type: "article",
         url: pageUrl,
       }}
       twitter={{
-        card: 'summary_large_image',
+        card: "summary_large_image",
       }}
     />
   )
