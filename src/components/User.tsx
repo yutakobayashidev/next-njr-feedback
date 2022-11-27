@@ -37,7 +37,7 @@ export const User: React.FC = () => {
                     N中等部 {/* TODO: メールアドレスから判定 */}
                   </span>
                   <span className="mr-1 flex items-center font-medium">
-                    <FaCode size={20} className="m-2" />
+                    <FaCode size={20} color="#61bd8d" className="m-2" />
                     コントリビューター
                   </span>
                 </div>
