@@ -39,7 +39,7 @@ const Page: NextPage = () => {
           </p>
           <button
             onClick={() => signIn("slack")}
-            className="inline-block items-center justify-center rounded-xl bg-slack px-12 py-2 text-center text-xl font-bold text-white shadow"
+            className="inline-block items-center justify-center rounded-xl bg-slack px-12 py-3 text-center text-xl font-bold text-white shadow"
           >
             <span className="mr-2 inline-flex items-center">
               <img src="/slack.png" alt="Slack" width="18 " height="18"></img>
