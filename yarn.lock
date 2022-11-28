@@ -923,10 +923,10 @@ eslint-plugin-simple-import-sort@^8.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-8.0.0.tgz#9d9a2372b0606e999ea841b10458a370a6ccc160"
   integrity sha512-bXgJQ+lqhtQBCuWY/FUWdB27j4+lqcvXv5rUARkzbeWLwea+S5eBZEQrhnO+WgX3ZoJHVj0cn943iyXwByHHQw==
 
-eslint-plugin-sort-keys-custom-order@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-keys-custom-order/-/eslint-plugin-sort-keys-custom-order-1.0.3.tgz#3858afd98ea118c225ac4ad0acb8081c18ad6e12"
-  integrity sha512-UOGjbyQOmQ9etHycZIoYspY0RR+NrKdZhP9HBIN5t0ALR5WdNIQbpp28VY2TlMiEoxe0BFVHrMgy/aUjJnJx0g==
+eslint-plugin-sort-keys-custom-order@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-keys-custom-order/-/eslint-plugin-sort-keys-custom-order-1.0.5.tgz#f4b2d87e8798c887ac8fbe4a6636962bf23ff83f"
+  integrity sha512-WdZjCY/nyOjr4GnMvQTiH225sQ0+LvmoZBB7cPkSvhbx7FxKCk3pwn8UTKquSdSRsvPiM2qoUvIOPDAEdOJdkA==
 
 eslint-plugin-tailwindcss@^3.7.0:
   version "3.7.0"
