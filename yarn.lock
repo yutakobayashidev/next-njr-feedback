@@ -928,10 +928,10 @@ eslint-plugin-sort-keys-custom-order@^1.0.3:
   resolved "https://registry.yarnpkg.com/eslint-plugin-sort-keys-custom-order/-/eslint-plugin-sort-keys-custom-order-1.0.3.tgz#3858afd98ea118c225ac4ad0acb8081c18ad6e12"
   integrity sha512-UOGjbyQOmQ9etHycZIoYspY0RR+NrKdZhP9HBIN5t0ALR5WdNIQbpp28VY2TlMiEoxe0BFVHrMgy/aUjJnJx0g==
 
-eslint-plugin-tailwindcss@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-3.7.0.tgz#09f39b18d73141a18e7cb2431bcab89f68010b31"
-  integrity sha512-e/Pe2jr0vbvNnDXylHoubDGwSh4Z5a4ZhZrkUKHU4MYdSUpjFSofGoMwBSU3d1TybTbo89ENCEWnl1BVAM1iuQ==
+eslint-plugin-tailwindcss@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-3.8.0.tgz#e768055d285b79cb39d6adc781592bc5f3f57f42"
+  integrity sha512-Lsyncgp/eXZriAEUK9zfGHOH+9iQplygHiOuGY8SFFHKIeT0BYjyST/ownHF8UPa1TEh+jJPkdE2vlV3778C3w==
   dependencies:
     fast-glob "^3.2.5"
     postcss "^8.4.4"
