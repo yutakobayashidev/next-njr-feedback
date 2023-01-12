@@ -25,7 +25,7 @@ export const SiteHeader: React.FC = () => {
             </button>
           ) : (
             <button
-              onClick={() => signIn("slack")}
+              onClick={() => signIn("google")}
               className="rounded-md bg-n px-4 py-2 font-bold text-white shadow-sm hover:opacity-90 "
             >
               サインイン

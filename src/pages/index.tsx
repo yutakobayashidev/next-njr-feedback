@@ -1,6 +1,7 @@
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { User } from "@src/components/User"
 import { NextPage } from "next"
+import Link from "next/link"
 import { signIn, useSession } from "next-auth/react"
 
 const Page: NextPage = () => {
@@ -33,21 +34,24 @@ const Page: NextPage = () => {
             width="450"
           ></img>
           <p className="mb-6 text-xl text-maintext">
-            <span className="font-medium">Next NJR Feedback (仮)</span>
-            はN中等部のSlackに参加している生徒またはスタッフが <br />
-            使用できる議論&ナレッジ共有プラットフォームです。
+            <span className="font-medium">Next NJR Feedback</span>
+            はN中等部の<span className="font-medium">生徒またはメンター・TA</span>
+            などが使用できる議論&ナレッジ共有プラットフォームです。
           </p>
           <button
-            onClick={() => signIn("slack")}
-            className="inline-block items-center justify-center rounded-xl bg-slack px-12 py-3 text-center text-xl font-bold text-white shadow"
+            onClick={() => signIn("google")}
+            className="inline-block items-center justify-center rounded-lg bg-white px-12 py-3 text-center text-xl font-bold text-gray-700 shadow"
           >
             <span className="mr-2 inline-flex items-center">
-              <img src="/slack.png" alt="Slack" width="18 " height="18"></img>
+              <img src="/google.png" alt="Slack" width="18" height="18"></img>
             </span>
-            Slackでサインイン
+            Sign in With Google
           </button>
-          <p className="mt-4 text-lg text-gray-500">
-            ( N中等部のSlackアカウントでサインインしてください )
+          <p className="mt-4 text-base text-gray-500">
+            ( <Link href="/guideline">ガイドライン</Link>
+            に同意の上、<span className="font-medium">@n-jr.jp</span>
+            または<span className="font-medium">@nnn.ac.jp</span>
+            から始まるGoogleアカウントでサインインしてください )
           </p>
         </div>
       </section>

@@ -1,11 +1,26 @@
 import NextAuth from "next-auth"
-import SlackProvider from "next-auth/providers/slack"
+import GoogleProvider from "next-auth/providers/google"
 
 export default NextAuth({
+  callbacks: {
+    signIn: async ({ account, profile }) => {
+      if (
+        account &&
+        account.provider === "google" &&
+        profile &&
+        profile.email &&
+        (profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp"))
+      ) {
+        return Promise.resolve(true)
+      } else {
+        return Promise.resolve(false)
+      }
+    },
+  },
   providers: [
-    SlackProvider({
-      clientId: process.env.SLACK_CLIENT_ID as string,
-      clientSecret: process.env.SLACK_CLIENT_SECRET as string,
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   secret: process.env.JWT_SECRET,
