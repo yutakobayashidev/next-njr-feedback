@@ -3,18 +3,11 @@ import GoogleProvider from "next-auth/providers/google"
 
 export default NextAuth({
   callbacks: {
-    signIn: async ({ account, profile }) => {
-      if (
-        account &&
-        account.provider === "google" &&
-        profile &&
-        profile.email &&
-        (profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp"))
-      ) {
-        return Promise.resolve(true)
-      } else {
-        return Promise.resolve(false)
+    async signIn({ account, profile }) {
+      if (account && account.provider === "google" && profile && profile.email) {
+        return profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp")
       }
+      return true // Do different verification for other providers that don't have email_verified
     },
   },
   providers: [
@@ -24,4 +17,7 @@ export default NextAuth({
     }),
   ],
   secret: process.env.JWT_SECRET,
+  theme: {
+    colorScheme: "auto",
+  },
 })
