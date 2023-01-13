@@ -17,9 +17,6 @@ export default NextAuth({
       }
     },
   },
-  pages: {
-    signIn: "/",
-  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
