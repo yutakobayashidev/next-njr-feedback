@@ -51,7 +51,7 @@ const Page: NextPage = () => {
             ( <Link href="/guideline">ガイドライン</Link>
             に同意の上、<span className="font-medium">@n-jr.jp</span>
             または<span className="font-medium">@nnn.ac.jp</span>
-            から始まるGoogleアカウントでサインインしてください )
+            を含むGoogleアカウントでサインインしてください )
           </p>
         </div>
       </section>
