@@ -13,6 +13,13 @@ export default NextAuth({
   debug: process.env.VERCEL_ENV ? false : true,
   providers: [
     GoogleProvider({
+      authorization: {
+        params: {
+          access_type: "offline",
+          prompt: "consent",
+          response_type: "code",
+        },
+      },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
