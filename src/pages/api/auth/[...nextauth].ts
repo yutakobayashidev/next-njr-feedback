@@ -15,9 +15,7 @@ export default NextAuth({
     GoogleProvider({
       authorization: {
         params: {
-          access_type: "offline",
-          prompt: "consent",
-          response_type: "code",
+          prompt: "select_account",
         },
       },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
