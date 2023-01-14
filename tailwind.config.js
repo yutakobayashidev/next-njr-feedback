@@ -10,8 +10,10 @@ module.exports = {
     extend: {
       colors: {
         guideline: "#f1f5f9a",
+        maintext: "#333",
         n: "#0099D9",
         "n-50": "#E5F2FF",
+        slack: "#4A154B",
       },
     },
   },

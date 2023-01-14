@@ -25,7 +25,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# MKCERT
+localhost-key.pem
+localhost.pem
+
 # local env files
+.env
 .env*.local
 
 # vercel
