@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "prettier"],
+  "extends": ["next/core-web-vitals", "prettier", "plugin:tailwindcss/recommended"],
   "plugins": [
     "sort-keys-custom-order",
     "simple-import-sort",
@@ -8,6 +8,7 @@
     "import"
   ],
   "rules": {
+    "@next/next/no-img-element": "off",
     "sort-keys-custom-order/object-keys": ["error", { "orderedKeys": ["id", "name", "title"] }],
     // For TS types sorting
     "sort-keys-custom-order/type-keys": ["error", { "orderedKeys": ["id", "name", "title"] }],

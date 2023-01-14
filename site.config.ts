@@ -2,7 +2,8 @@ export const config = {
   siteMeta: {
     title: "Next NJR Feedback",
     description:
-      "Next NJR Feedback (仮)はN中等部のSlackワークスペースに参加している生徒が利用できる議論&ナレッジ共有プラットフォームです。",
+      "Next NJR Feedback (仮)はN中等部のSlackワークスペースに参加している生徒またはスタッフが使用できる議論&ナレッジ共有プラットフォームです。",
+    repository: "https://github.com/yutakobayashidev/next-njr-feedback",
   },
   siteRoot:
     process.env.NODE_ENV === "production"
