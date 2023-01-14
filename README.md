@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# next-njr-feedback
 
-## Getting Started
+![Next NJR Feedback](https://user-images.githubusercontent.com/91340399/212465713-bf074f3e-b4f7-4baa-a35d-97bf5f4340e8.png)
 
-First, run the development server:
+Next NJR FeedbackはN中等部の生徒またはメンター・TAなどが使用できる議論&ナレッジ共有プラットフォームです。
+
+https://njr-feedback.vercel.app
+
+## Contribution
+
+コントリビュートを歓迎します🎉 コミットメッセージにはできるだけgitmojiを使用してください。
+
+https://gitmoji.dev
+
+1. Fork it!
+2. Create a feature branch from the develop branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am '✨ Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request to the develop branch :D
+
+### Development
 
 ```bash
-npm run dev
-# or
-yarn dev
+$ yarn install
+$ yarn build
+$ yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Deployment
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Vercelなどにデプロイできます。
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## LICENCE
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+MIT
