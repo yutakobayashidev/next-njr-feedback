@@ -1,13 +1,16 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import prisma from "@src/server/db/client"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 
 export default NextAuth({
+  adapter: PrismaAdapter(prisma),
   callbacks: {
     async signIn({ account, profile }) {
       if (account && account.provider === "google" && profile && profile.email) {
         return profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp")
       }
-      return true // Do different verification for other providers that don't have email_verified
+      return true
     },
   },
   debug: process.env.VERCEL_ENV ? false : true,
