@@ -46,9 +46,23 @@ model Session {
 model Discussion {
   id            Int      @id @default(autoincrement())
   title         String
+  course        Int
   body          String   @db.Text
   totalComments Int      @default(0)
   vote          Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Knowledge {
+  id            Int      @id @default(autoincrement())
+  title         String
+  course        Int
+  body          String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        String
@@ -72,6 +86,7 @@ model User {
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
   discussion    Discussion[]
+  knowledge    Knowledge[]
 }
 
 model VerificationToken {
