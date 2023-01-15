@@ -61,11 +61,27 @@ export const SiteHeader: React.FC = () => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
+                        <Link
+                          href="/settings"
+                          className={classNames(
+                            active ? "bg-gray-100" : "",
+                            "flex items-center px-4 py-2 text-base text-gray-700",
+                          )}
+                        >
+                          <span className="mr-1">
+                            <FiSettings color="#93a5b1" />
+                          </span>
+                          アカウント設定
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
                         <a
                           href="https://n-jr.slack.com/archives/C04BQAHNVMM"
                           className={classNames(
                             active ? "bg-gray-100" : "",
-                            "flex border-t-2 border-gray-100 items-center px-4 py-2 text-base text-gray-700",
+                            "flex items-center px-4 py-2 text-base text-gray-700",
                           )}
                         >
                           <span className="mr-1">
@@ -93,22 +109,6 @@ export const SiteHeader: React.FC = () => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <Link
-                          href="/"
-                          className={classNames(
-                            active ? "bg-gray-100" : "",
-                            "flex items-center px-4 py-2 text-base text-gray-700",
-                          )}
-                        >
-                          <span className="mr-1">
-                            <FiSettings color="#93a5b1" />
-                          </span>
-                          アカウント設定
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
                         <button
                           onClick={() => signOut()}
                           className={classNames(
@@ -130,7 +130,7 @@ export const SiteHeader: React.FC = () => {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="rounded-md bg-n px-4 py-2 font-bold text-white shadow-sm hover:opacity-90 "
+              className="rounded-md bg-n px-4 py-2 font-bold text-white shadow-sm hover:opacity-90"
             >
               サインイン
             </button>

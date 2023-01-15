@@ -6,6 +6,13 @@ import GoogleProvider from "next-auth/providers/google"
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
+    session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+      },
+    }),
     async signIn({ account, profile }) {
       if (account && account.provider === "google" && profile && profile.email) {
         return profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp")
@@ -14,6 +21,9 @@ export default NextAuth({
     },
   },
   debug: process.env.VERCEL_ENV ? false : true,
+  pages: {
+    error: "/",
+  },
   providers: [
     GoogleProvider({
       authorization: {

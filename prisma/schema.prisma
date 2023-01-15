@@ -74,7 +74,8 @@ model Knowledge {
 model User {
   id            String    @id @default(cuid())
   bio           String?   @db.VarChar(191)
-  name          String? 
+  name          String?
+  displayname   String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
