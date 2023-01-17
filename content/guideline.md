@@ -44,11 +44,11 @@ MacBookでIllustratorを使って図形ツールを使った時に、急にソ�
 
 ### 開発者
 
-Yuta Kobayashi
-・[GitHub](https://github.com/yutakobayashidev/)
-Taku Mabuchi
-・[GitHub](https://github.com/tak0m0)
-Katsunori Kuroda
+Yuta Kobayashi<br>
+・[GitHub](https://github.com/yutakobayashidev/)<br>
+Taku Mabuchi<br>
+・[GitHub](https://github.com/tak0m0)<br>
+Katsunori Kuroda<br>
 ・[GitHub](https://github.com/nekodayo2222)
 
 ### ライブラリ
