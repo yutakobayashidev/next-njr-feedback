@@ -124,7 +124,7 @@ export const SiteHeader: React.FC = () => {
                             <span className="mr-1">
                               <MdOutlineLogout color="#93a5b1" />
                             </span>
-                            Log in
+                            ログアウト
                           </button>
                         )}
                       </Menu.Item>
@@ -144,9 +144,9 @@ export const SiteHeader: React.FC = () => {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="rounded-md bg-n px-4 py-2 font-bold text-white shadow-sm hover:opacity-90"
+              className="rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
             >
-              サインイン
+              Log in
             </button>
           )}
         </div>
