@@ -21,7 +21,6 @@ const Page: NextPage = () => {
         path="/"
         title={"NJR Feedback | 議論&ナレッジ共有プラットフォーム"}
         noTitleTemplate={true}
-        noindex={true}
       />
       <section className="mx-auto bg-n-50 py-12 text-center">
         <div className="mx-auto max-w-screen-md px-4 md:px-8">

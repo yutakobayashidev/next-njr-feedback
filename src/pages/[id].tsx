@@ -1,5 +1,5 @@
 import { MyPageSeo } from "@src/components/MyPageSeo"
-import { getAllPostIds, getPostData } from "@src/lib/posts"
+import { getAllPostIds, getPostData } from "@src/lib/docs"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 export default function Post({
@@ -17,7 +17,10 @@ export default function Post({
       <div className="bg-slate-50 py-6 sm:py-8 lg:py-12">
         <article className="mx-auto max-w-screen-md rounded-xl bg-white px-4 py-12 md:px-8">
           <h1 className="pb-12 text-center text-3xl font-bold">{postData.title}</h1>
-          <div className="markdown" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+          <div
+            className="prose max-w-none prose-a:font-medium prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
+            dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
+          />
         </article>
       </div>
     </>

@@ -1,15 +1,6 @@
 import { config } from "@site.config"
+import { MyPageSeoProps } from "@src/types"
 import NextHeadSeo from "next-head-seo"
-
-// types
-export type MyPageSeoProps = {
-  title?: string
-  description?: string
-  noindex?: boolean
-  noTitleTemplate?: boolean
-  ogImagePath?: string
-  path: string
-}
 
 export const MyPageSeo: React.FC<MyPageSeoProps> = (props) => {
   const {
