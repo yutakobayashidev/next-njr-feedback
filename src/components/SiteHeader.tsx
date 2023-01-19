@@ -124,7 +124,7 @@ export const SiteHeader: React.FC = () => {
                             <span className="mr-1">
                               <MdOutlineLogout color="#93a5b1" />
                             </span>
-                            ログアウト
+                            Log in
                           </button>
                         )}
                       </Menu.Item>
