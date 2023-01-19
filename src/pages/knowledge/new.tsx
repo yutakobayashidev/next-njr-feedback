@@ -45,7 +45,7 @@ const Page: NextPage = () => {
     <>
       <MyPageSeo path="/" title={"ナレッジを作成"} />
       <ContentWrapper>
-        <h1 className="my-8 text-center text-4xl font-bold">ナレッジを作成</h1>
+        <h1 className="my-10 text-center text-4xl font-bold">ナレッジを作成</h1>
         <p className="mb-6 text-center text-base text-gray-500">
           ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
           <br />

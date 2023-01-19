@@ -16,7 +16,10 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
           {post.emoji}
         </Link>
         <div>
-          <Link href={getKnowledgePath(post.id)} className="text-xl font-bold text-gray-800">
+          <Link
+            href={getKnowledgePath(post.id)}
+            className="text-xl font-bold text-gray-800 line-clamp-1"
+          >
             {post.title}
           </Link>
           <div className="mt-2 items-center">

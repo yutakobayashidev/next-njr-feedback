@@ -332,7 +332,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                     </div>
                     <div className="ml-5">
                       <div>
-                        <h2 className="text-xl font-bold text-gray-800">
+                        <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
                           {contributor.name}
                           {contributor.email === session?.user?.email && " (あなた)"}
                         </h2>

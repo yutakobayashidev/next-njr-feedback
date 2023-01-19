@@ -17,6 +17,9 @@ module.exports = {
         "n-50": "#E5F2FF",
         slack: "#4A154B",
       },
+      fontFamily: {
+        inter: ["var(--font-inter)"],
+      },
     },
   },
 }

@@ -19,7 +19,7 @@ export const SiteHeader: React.FC = () => {
     <header className="border-b border-gray-200 bg-white">
       <ContentWrapper>
         <div className="flex h-14 items-center justify-between">
-          <Link href="/" className="font-bold text-n">
+          <Link href="/" className="font-inter font-bold text-n">
             {config.siteMeta.title}
           </Link>
           {session && session.user && session.user.name && session.user.image ? (
@@ -134,9 +134,9 @@ export const SiteHeader: React.FC = () => {
                 <div>
                   <Link
                     href="/knowledge/new"
-                    className="ml-4 rounded-md bg-n px-4 py-2 font-bold text-white shadow-sm hover:opacity-90"
+                    className="ml-4 rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
                   >
-                    + 投稿
+                    + New
                   </Link>
                 </div>
               </div>

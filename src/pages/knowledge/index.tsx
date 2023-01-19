@@ -5,7 +5,7 @@ import Knowledge from "@src/components/Knowledge"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
 import { KnowledgeProps } from "@src/types"
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
@@ -49,7 +49,7 @@ type Props = {
   knowledge: KnowledgeProps[]
 }
 
-const Drafts: React.FC<Props> = (props) => {
+const Page: NextPage<Props> = (props) => {
   const { data: session } = useSession()
 
   const router = useRouter()
@@ -71,18 +71,24 @@ const Drafts: React.FC<Props> = (props) => {
         title="ナレッジ"
         description="ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。"
       />
-      <section className="my-8">
+      <section className="my-10">
         <ContentWrapper>
-          <h1 className="mb-5 text-4xl font-bold">ナレッジ</h1>
+          <h1 className="mb-5 font-inter text-4xl font-bold">Knowledge</h1>
           <p className="mb-5 text-lg text-gray-500">
             ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
             <Link href="/guideline">ナレッジについて詳しく →</Link>
           </p>
           {props.knowledge.length > 0 ? (
-            <div className="rounded-2xl border">
-              {props.knowledge.map((post) => (
-                <Knowledge post={post} key={post.id} />
-              ))}
+            <div className="overflow-hidden rounded-2xl border">
+              <div className="flex bg-gray-100 p-3 font-bold">
+                <span className="mr-1 ">✨</span>
+                <span>最近更新されたナレッジ</span>
+              </div>
+              <div className="border-t">
+                {props.knowledge.map((post) => (
+                  <Knowledge post={post} key={post.id} />
+                ))}
+              </div>
             </div>
           ) : (
             <div className="text-center">
@@ -106,4 +112,4 @@ const Drafts: React.FC<Props> = (props) => {
   )
 }
 
-export default Drafts
+export default Page
