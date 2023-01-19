@@ -14,6 +14,12 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
+    async signIn({ account, profile }) {
+      if (account && account.provider === "google" && profile && profile.email) {
+        return profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp")
+      }
+      return true
+    },
   },
   debug: process.env.VERCEL_ENV ? false : true,
   pages: {
