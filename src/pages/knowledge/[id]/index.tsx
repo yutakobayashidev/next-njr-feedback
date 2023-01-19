@@ -101,15 +101,12 @@ const Page: NextPage<KnowledgeProps> = (props) => {
     archive,
     content,
     contributors,
-    createdAt,
     creator,
     emoji,
     published,
+    publishedAt,
     updatedAt,
   } = props
-
-  const created = dayjs(createdAt)
-  const updated = dayjs(updatedAt)
 
   const { data: session } = useSession()
 
@@ -211,7 +208,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
           💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう
         </Alert>
       )}
-      {published && !archive && dayjs(updated).diff(dayjs(), "month") < -6 && (
+      {published && !archive && dayjs(updatedAt).diff(dayjs(), "month") < -6 && (
         <>
           <Alert id={id} edit={true}>
             このナレッジは最終更新から半年以上が経過しています
@@ -245,7 +242,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
               <div className="flex items-center justify-center pt-5">
                 <div className="flex items-center">
                   <span className="flex items-center">
-                    {created.isSame(updated, "day") ? (
+                    {publishedAt ? (
                       <>
                         <img
                           src={creator.image}
@@ -255,10 +252,12 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                           alt={creator.name}
                         ></img>
                         <time
-                          dateTime={created.toISOString()}
+                          dateTime={dayjs(publishedAt).toISOString()}
                           className="mr-3 text-sm text-gray-700  lg:text-lg"
                         >
-                          {published ? `${created.format("YYYY/MM/DD")}に公開` : "非公開"}
+                          {dayjs(publishedAt).isSame(dayjs(updatedAt), "day")
+                            ? `${dayjs(publishedAt).format("YYYY/MM/DD")}に公開 `
+                            : `${dayjs(updatedAt).fromNow()}に更新`}
                         </time>
                       </>
                     ) : (
@@ -270,12 +269,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                           className="mr-2 rounded-full"
                           alt={creator.name}
                         ></img>
-                        <time
-                          dateTime={updated.toISOString()}
-                          className="mr-3 text-lg text-gray-700"
-                        >
-                          {dayjs(updated).fromNow()}に更新
-                        </time>
+                        <span className="mr-3 text-sm text-gray-700  lg:text-lg">非公開</span>
                       </>
                     )}
                   </span>

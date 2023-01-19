@@ -73,9 +73,11 @@ export async function updatePost(
   }
 
   try {
-    const post = await await prisma.knowledge.update({
-      data: { published: true },
-      where: { id: id },
+    const data = await prisma.knowledge.findUnique({ where: { id } })
+    const publishedAt = data?.publishedAt ? null : new Date()
+    const post = await prisma.knowledge.update({
+      data: { published: true, publishedAt },
+      where: { id },
     })
     return res.status(200).json(post)
   } catch (error) {

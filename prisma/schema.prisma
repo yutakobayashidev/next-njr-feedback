@@ -66,6 +66,7 @@ model Knowledge {
   content       String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  publishedAt   DateTime?
   published     Boolean @default(false)
   archive       Boolean @default(false)
   contributors  User[] @relation(name: "Usercontributors")
