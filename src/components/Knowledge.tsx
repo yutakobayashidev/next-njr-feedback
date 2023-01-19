@@ -27,7 +27,7 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
           </div>
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="hidden items-center md:flex">
         {post.contributors &&
           post.contributors.slice(0, 3).map((contributor, index) => (
             <span
