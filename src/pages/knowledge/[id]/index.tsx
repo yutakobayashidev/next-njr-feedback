@@ -274,10 +274,10 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                     )}
                   </span>
                   <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold text-course lg:px-4 lg:text-lg">
-                    通学コース
+                    通学
                   </span>
                   <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold  text-course lg:px-4 lg:text-lg">
-                    ネットコース
+                    ネット
                   </span>
                 </div>
               </div>
