@@ -4,6 +4,7 @@ export type KnowledgeProps = {
   archive: boolean
   content: string
   contributors: Contributor[]
+  course: Course[]
   createdAt: string
   creator: {
     id: string
@@ -15,6 +16,11 @@ export type KnowledgeProps = {
   published: boolean
   publishedAt: string
   updatedAt: string
+}
+
+interface Course {
+  id: number
+  name: string
 }
 
 interface Contributor {

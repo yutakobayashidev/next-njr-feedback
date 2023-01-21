@@ -26,6 +26,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           image: true,
         },
       },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
     orderBy: [
       {
@@ -86,7 +92,7 @@ const Page: NextPage<Props> = (props) => {
                 <span>最近更新されたナレッジ</span>
               </div>
               <div className="border-t">
-                {props.knowledge.map((post, index) => (
+                {props.knowledge.map((post) => (
                   <Knowledge post={post} key={post.id} />
                 ))}
               </div>

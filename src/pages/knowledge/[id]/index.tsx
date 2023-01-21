@@ -43,6 +43,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           image: true,
         },
       },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       creator: {
         select: {
           id: true,
@@ -104,6 +110,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
     archive,
     content,
     contributors,
+    course,
     creator,
     emoji,
     published,
@@ -208,12 +215,13 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                       </>
                     )}
                   </span>
-                  <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold text-course lg:px-4 lg:text-lg">
-                    通学
-                  </span>
-                  <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold  text-course lg:px-4 lg:text-lg">
-                    ネット
-                  </span>
+                  {course.map((post) => (
+                    <>
+                      <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold text-course lg:px-4 lg:text-lg">
+                        {post.name}
+                      </span>
+                    </>
+                  ))}
                 </div>
               </div>
             </div>

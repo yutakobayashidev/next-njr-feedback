@@ -26,12 +26,13 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
             {post.title}
           </Link>
           <div className="mt-2 items-center">
-            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-              ネット
-            </span>
-            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-              通学
-            </span>
+            {post?.course.map((post) => (
+              <>
+                <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                  {post.name}
+                </span>
+              </>
+            ))}
             <span className="text-gray-500">{dayjs(post.updatedAt).fromNow()}に更新</span>
           </div>
         </div>

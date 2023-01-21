@@ -41,7 +41,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           title: title,
           content: content,
           contributors: { connect: { id: session.user.id } },
-          course: 1,
+          course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },
           emoji: pickRandomEmoji(),
         },
