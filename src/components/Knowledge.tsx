@@ -12,8 +12,11 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
   return (
     <div key={post.id} className="flex items-center p-3 [&:not(:first-child)]:border-t">
       <div className="flex flex-1 items-start">
-        <Link href={getKnowledgePath(post.id)} className="mr-2 text-5xl">
-          {post.emoji}
+        <Link
+          href={getKnowledgePath(post.id)}
+          className="mr-4 flex h-16 w-16 items-center justify-center rounded-lg bg-gray-100 text-4xl"
+        >
+          <span> {post.emoji}</span>
         </Link>
         <div>
           <Link
