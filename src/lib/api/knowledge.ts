@@ -16,7 +16,12 @@ export async function getKnowledge(
   const { id } = req.query
 
   if (!id || typeof id !== "string" || !session?.user?.id) {
-    return res.status(400).json({ error: "ナレッジIDまたはセッションが見つかりませんでした" })
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+      },
+    })
   }
 
   try {
@@ -40,15 +45,17 @@ export async function getKnowledge(
         id: id,
       },
     })
-    if (post?.published == true || post?.creator.id == session.user.id) {
-      return res.json(post)
-    } else {
+
+    if (session.user.id !== post?.creatorId && post?.published == false) {
       return res.status(500).json({
         error: {
+          code: 500,
           messsage: `この操作は許可されていません`,
         },
       })
     }
+
+    return res.status(200).json(post)
   } catch (error) {
     console.error(error)
     return res.status(500).end(error)
@@ -67,16 +74,41 @@ export async function updatePost(
   session: Session,
 ): Promise<void | NextApiResponse> {
   const { id } = req.query
+  const { title, archive, content, emoji, published } = req.body
 
   if (!id || typeof id !== "string" || !session?.user?.id) {
-    return res.status(400).json({ error: "ナレッジIDまたはセッションが見つかりませんでした" })
+    return res.status(400).json({
+      error: {
+        code: 500,
+        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+      },
+    })
   }
 
   try {
     const data = await prisma.knowledge.findUnique({ where: { id } })
-    const publishedAt = data?.publishedAt ? null : new Date()
+
+    if (session.user.id !== data?.creatorId && data?.published == false) {
+      return res.status(500).json({
+        error: {
+          code: 500,
+          messsage: `この操作は許可されていません`,
+        },
+      })
+    }
+
+    let publishedAt = new Date()
+
     const post = await prisma.knowledge.update({
-      data: { published: true, publishedAt },
+      data: {
+        title,
+        archive,
+        content,
+        contributors: { connect: { id: session.user.id } },
+        emoji,
+        published,
+        ...(published && !data?.publishedAt && { publishedAt }),
+      },
       where: { id },
     })
     return res.status(200).json(post)
@@ -100,7 +132,23 @@ export async function deletePost(
   const { id } = req.query
 
   if (!id || typeof id !== "string" || !session?.user?.id) {
-    return res.status(400).json({ error: "ナレッジIDまたはセッションが見つかりませんでした" })
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+      },
+    })
+  }
+
+  const data = await prisma.knowledge.findUnique({ where: { id } })
+
+  if (session.user.id !== data?.creatorId && data?.published == false) {
+    return res.status(500).json({
+      error: {
+        code: 500,
+        messsage: `この操作は許可されていません`,
+      },
+    })
   }
 
   try {

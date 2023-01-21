@@ -32,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         updatedAt: "desc",
       },
     ],
+    take: 10,
     where: {
       archive: false,
       published: true,
@@ -85,7 +86,7 @@ const Page: NextPage<Props> = (props) => {
                 <span>最近更新されたナレッジ</span>
               </div>
               <div className="border-t">
-                {props.knowledge.map((post) => (
+                {props.knowledge.map((post, index) => (
                   <Knowledge post={post} key={post.id} />
                 ))}
               </div>

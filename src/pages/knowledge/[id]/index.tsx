@@ -1,11 +1,10 @@
 import "dayjs/locale/ja"
 
-import { Dialog, Transition } from "@headlessui/react"
 import { Alert } from "@src/components/Alert"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
-import { KnowledgeProps } from "@src/types"
+import { HttpMethod, KnowledgeProps } from "@src/types"
 import { getKnowledgeEditPath, getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -13,19 +12,18 @@ import { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
-import { Fragment, useEffect, useRef, useState } from "react"
-import { BiWorld } from "react-icons/bi"
+import { useEffect, useRef, useState } from "react"
 import { remark } from "remark"
 import html from "remark-html"
+
+dayjs.extend(relativeTime)
+dayjs.locale("ja")
 
 /*
 import data from "@emoji-mart/data"
 import i18n from "@emoji-mart/data/i18n/ja.json"
 import Picker from "@emoji-mart/react"
 */
-
-dayjs.extend(relativeTime)
-dayjs.locale("ja")
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getSession({ req })
@@ -73,23 +71,28 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 }
 
-async function deletePost(id: string): Promise<void> {
-  await fetch(`/api/knowledge/${id}`, {
-    method: "DELETE",
-  })
-  Router.push("/")
-}
-
 async function publishPost(id: string): Promise<void> {
   await fetch(`/api/knowledge/${id}`, {
-    method: "PUT",
+    body: JSON.stringify({
+      published: true,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: HttpMethod.PUT,
   })
   await Router.reload()
 }
 
-async function archivePost(id: string): Promise<void> {
-  await fetch(`/api/archive/${id}`, {
-    method: "PUT",
+async function restorearchivePost(id: string): Promise<void> {
+  await fetch(`/api/knowledge/${id}`, {
+    body: JSON.stringify({
+      archive: false,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: HttpMethod.PUT,
   })
   await Router.reload()
 }
@@ -130,80 +133,8 @@ const Page: NextPage<KnowledgeProps> = (props) => {
 
   return (
     <>
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              >
-                <Dialog.Panel className="relative overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div className="sm:flex sm:items-start">
-                      <div className="mx-auto flex h-12 w-12 shrink-0 items-center justify-center sm:mx-0 sm:h-10 sm:w-10">
-                        <BiWorld size={35} color="#0099d9" />
-                      </div>
-                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900"
-                        >
-                          ナレッジの公開
-                        </Dialog.Title>
-                        <div className="mt-2">
-                          <p className="text-sm text-gray-500">
-                            本当にナレッジを公開しますか？ナレッジを一度公開すると削除はできなくなりますが、アーカイブは可能です。本文も後から編集可能です。
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button
-                      type="button"
-                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-n px-4 py-2 text-base font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={() => {
-                        publishPost(id)
-                        setOpen(false)
-                      }}
-                    >
-                      公開
-                    </button>
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={() => setOpen(false)}
-                      ref={cancelButtonRef}
-                    >
-                      キャンセル
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition.Root>
       <MyPageSeo path={getKnowledgePath(id)} title={title} />
-      {published === false && (
+      {!published && (
         <Alert id={id} edit={true}>
           💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう
         </Alert>
@@ -211,19 +142,23 @@ const Page: NextPage<KnowledgeProps> = (props) => {
       {published && !archive && dayjs(updatedAt).diff(dayjs(), "month") < -6 && (
         <>
           <Alert id={id} edit={true}>
-            このナレッジは最終更新から半年以上が経過しています
+            💡
+            更新から半年以上が経過しています。情報が古い場合更新するか、不要な情報はアーカイブしましょう
           </Alert>
         </>
       )}
       {archive === true && (
         <div className="bg-gray-400">
           <ContentWrapper>
-            <div className="py-5 text-center text-white">
+            <div className="py-4 text-center text-white">
               <span className="mr-3">🗑 このナレッジはアーカイブされています</span>
               <span>
-                <Link href="\" className="my-3 rounded-md border-2 px-3 text-white">
+                <button
+                  onClick={() => restorearchivePost(id)}
+                  className="rounded-md border-2 px-3 text-white"
+                >
                   アーカイブを取り消す
-                </Link>
+                </button>
               </span>
             </div>
           </ContentWrapper>
@@ -246,8 +181,8 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                       <>
                         <img
                           src={creator.image}
-                          height={35}
-                          width={35}
+                          height={45}
+                          width={45}
                           className="mr-2 rounded-full"
                           alt={creator.name}
                         ></img>
@@ -264,8 +199,8 @@ const Page: NextPage<KnowledgeProps> = (props) => {
                       <>
                         <img
                           src={creator.image}
-                          height={35}
-                          width={35}
+                          height={45}
+                          width={45}
                           className="mr-2 rounded-full"
                           alt={creator.name}
                         ></img>
@@ -296,15 +231,6 @@ const Page: NextPage<KnowledgeProps> = (props) => {
             onEmojiSelect={console.log}
           />
           */}
-          {!published && userHasValidSession && (
-            <button onClick={() => deletePost(id)}>Delete</button>
-          )}
-          {!published && userHasValidSession && creator?.id == session.user?.id && (
-            <button onClick={() => setOpen(true)}>Publish</button>
-          )}
-          {!archive && published && userHasValidSession && (
-            <button onClick={() => archivePost(id)}>アーカイブ</button>
-          )}
           <aside className="mt-5 border-t-2 pt-5">
             <h2 className="mb-5 text-2xl font-bold">
               🎉 このナレッジの貢献者 ({contributors.length}人)
