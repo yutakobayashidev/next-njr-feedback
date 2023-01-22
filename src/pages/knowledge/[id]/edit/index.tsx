@@ -27,14 +27,14 @@ export default function Post() {
   const [changed, setChanged] = useState(false)
 
   const pageChangeHandler = () => {
-    const answer = window.confirm("行った変更は保存されません。保存せずに終了しますか？")
+    const answer = window.confirm("行った変更は保存されていません。保存せずに終了しますか？")
     if (!answer) {
       throw "Abort route"
     }
   }
 
   const beforeUnloadhandler = (event: BeforeUnloadEvent) => {
-    event.returnValue = "行った変更は保存されません。保存せずに終了しますか？"
+    event.returnValue = "行った変更は保存されていません。保存せずに終了しますか？"
   }
 
   useEffect(() => {
@@ -109,6 +109,7 @@ export default function Post() {
       })
 
       if (response.ok) {
+        setChanged(false)
         toast.success(`変更を保存しました`)
       }
     } catch (error) {
@@ -158,7 +159,6 @@ export default function Post() {
                 disabled={disabled}
                 onClick={async () => {
                   await publish()
-                  setChanged(false)
                 }}
                 className={`${
                   disabled
