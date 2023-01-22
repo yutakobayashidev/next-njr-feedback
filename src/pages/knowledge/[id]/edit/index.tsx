@@ -24,6 +24,30 @@ type Knowledge = {
 export default function Post() {
   const { data: session } = useSession()
 
+  const [changed, setChanged] = useState(false)
+
+  const pageChangeHandler = () => {
+    const answer = window.confirm("行った変更は保存されません。保存せずに終了しますか？")
+    if (!answer) {
+      throw "Abort route"
+    }
+  }
+
+  const beforeUnloadhandler = (event: BeforeUnloadEvent) => {
+    event.returnValue = "行った変更は保存されません。保存せずに終了しますか？"
+  }
+
+  useEffect(() => {
+    if (changed) {
+      router.events.on("routeChangeStart", pageChangeHandler)
+      window.addEventListener("beforeunload", beforeUnloadhandler)
+      return () => {
+        router.events.off("routeChangeStart", pageChangeHandler)
+        window.removeEventListener("beforeunload", beforeUnloadhandler)
+      }
+    }
+  }, [changed])
+
   useEffect(() => {
     if (!session && typeof session != "undefined") {
       router.push(`/`)
@@ -119,7 +143,7 @@ export default function Post() {
       />
       <MyPageSeo
         path={"/knowledge/" + data.id + "/edit"}
-        title={data.title ? "「" + data.title + "」" + "を編集中..." : "「無題の投稿」を編集中..."}
+        title={data.title ? data.title + "を編集中..." : "無題のナレッジを編集中..."}
       />
       <div className="border-b">
         <ContentWrapper>
@@ -134,6 +158,7 @@ export default function Post() {
                 disabled={disabled}
                 onClick={async () => {
                   await publish()
+                  setChanged(false)
                 }}
                 className={`${
                   disabled
@@ -167,12 +192,18 @@ export default function Post() {
                 title: (e.target as HTMLTextAreaElement).value,
               })
             }
+            onChange={(e) => {
+              setChanged(true)
+            }}
             className="font-cal mt-6 w-full resize-none border-none px-2 py-4 text-5xl font-bold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
             placeholder="タイトル"
             value={data.title}
           />
           <TextareaAutosize
             name="content"
+            onChange={(e) => {
+              setChanged(true)
+            }}
             onInput={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setData({
                 ...data,
