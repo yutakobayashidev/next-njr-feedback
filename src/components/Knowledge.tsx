@@ -10,7 +10,10 @@ dayjs.locale("ja")
 
 const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
   return (
-    <div key={post.id} className="flex items-center p-3 [&:not(:first-child)]:border-t">
+    <div
+      key={post.id}
+      className="flex items-center justify-between p-3 [&:not(:first-child)]:border-t"
+    >
       <div className="flex flex-1 items-start">
         <Link
           href={getKnowledgePath(post.id)}
@@ -18,10 +21,10 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
         >
           <span>{post.emoji}</span>
         </Link>
-        <div>
+        <div className="w-[calc(100%-100px)]">
           <Link
             href={getKnowledgePath(post.id)}
-            className="text-xl font-bold text-gray-800 line-clamp-1"
+            className="text-xl font-bold text-gray-800 line-clamp-2"
           >
             {post.title}
           </Link>
