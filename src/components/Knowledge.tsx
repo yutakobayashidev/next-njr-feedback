@@ -4,6 +4,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Link from "next/link"
 import React from "react"
+import { TfiReload } from "react-icons/tfi"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -28,7 +29,7 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
           >
             {post.title}
           </Link>
-          <div className="mt-2 items-center">
+          <div className="mt-2 flex items-center">
             {post?.course.map((post) => (
               <>
                 <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
@@ -36,7 +37,10 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
                 </span>
               </>
             ))}
-            <span className="text-gray-500">{dayjs(post.updatedAt).fromNow()}に更新</span>
+            <span className="flex items-center text-gray-500">
+              <TfiReload className="mr-1" />
+              {dayjs(post.updatedAt).fromNow()}
+            </span>
           </div>
         </div>
       </div>
