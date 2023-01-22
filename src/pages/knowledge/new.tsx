@@ -10,7 +10,16 @@ import TextareaAutosize from "react-textarea-autosize"
 const Page: NextPage = () => {
   const { data: session } = useSession()
 
+  const [title, setTitle] = useState("")
+  const [disabled, setDisabled] = useState(true)
+  const [publishing, setPublishing] = useState(false)
+
   const router = useRouter()
+
+  useEffect(() => {
+    if (title && !publishing) setDisabled(false)
+    else setDisabled(true)
+  }, [title, publishing])
 
   useEffect(() => {
     if (!session && typeof session != "undefined") {
@@ -18,25 +27,27 @@ const Page: NextPage = () => {
     }
   })
 
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-
   if (!session) {
     return <></>
   }
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    setPublishing(true)
     try {
-      const body = { title, content }
-      const post = await fetch("/api/knowledge", {
+      const body = { title }
+      const response = await fetch("/api/knowledge", {
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
         method: "POST",
       })
 
-      const json = await post.json()
-      await router.push(getKnowledgeEditPath(json.id))
+      if (response.ok) {
+        setPublishing(false)
+        const json = await response.json()
+        await router.push(getKnowledgeEditPath(json.id))
+      }
     } catch (error) {
       console.error(error)
     }
@@ -62,7 +73,7 @@ const Page: NextPage = () => {
           />
           <div className="mt-4 text-center">
             <button
-              disabled={!title}
+              disabled={disabled}
               type="submit"
               className="h-12 w-36 rounded bg-n font-bold text-white hover:enabled:hover:bg-blue-500 disabled:opacity-90"
             >
