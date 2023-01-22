@@ -25,7 +25,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     })
 
   if (req.method === HttpMethod.POST) {
-    const { title, content } = req.body
+    const { title } = req.body
 
     const emojiRegex = initEmojiRegex()
     const matches = pickRandomEmoji().match(emojiRegex)
@@ -39,7 +39,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       const result = await prisma.knowledge.create({
         data: {
           title: title,
-          content: content,
           contributors: { connect: { id: session.user.id } },
           course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },

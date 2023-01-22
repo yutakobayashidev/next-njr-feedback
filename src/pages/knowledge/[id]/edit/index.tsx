@@ -120,7 +120,7 @@ export default function Post() {
   }
 
   useEffect(() => {
-    if (data.title && data.emoji && data.content && !publishing) setDisabled(false)
+    if (data.title && data.emoji && !publishing) setDisabled(false)
     else setDisabled(true)
   }, [publishing, data])
 
@@ -149,7 +149,7 @@ export default function Post() {
       <div className="border-b">
         <ContentWrapper>
           <div className="flex items-center justify-between py-2">
-            <Link href={getKnowledgePath(data.id)}>← ナレッジに戻る</Link>
+            <Link href={getKnowledgePath(data.id)}>← 編集を終了</Link>
             <div className="flex items-center justify-between space-x-10 md:space-x-16">
               <Link href={getKnowledgeEditPath(data.id)}>エディター</Link>
               <Link href={"/knowledge/" + data.id + "/edit/settings"}>設定</Link>
@@ -211,7 +211,7 @@ export default function Post() {
               })
             }
             className="w-full resize-none border-none px-2 py-3 text-lg text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-            placeholder={"Markdownで入力..."}
+            placeholder="Markdownで入力..."
             value={data.content}
           />
           <div className="flex items-center text-lg text-gray-500">
@@ -219,7 +219,7 @@ export default function Post() {
             <Link href="/guideline" className="text-gray-500 underline">
               ガイドライン
             </Link>
-            を意識した投稿を心がけましょう
+            を遵守した投稿を心がけてください。
           </div>
         </div>
       </div>

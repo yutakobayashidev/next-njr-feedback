@@ -62,7 +62,7 @@ model Knowledge {
   id            String     @id @default(cuid())
   title         String
   emoji         String
-  content       String   @db.Text
+  content       String?   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   publishedAt   DateTime?
