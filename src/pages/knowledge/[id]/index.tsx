@@ -13,6 +13,7 @@ import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from "react"
+import { BsPencilFill } from "react-icons/bs"
 import { remark } from "remark"
 import html from "remark-html"
 
@@ -226,11 +227,23 @@ const Page: NextPage<KnowledgeProps> = (props) => {
               </div>
             </div>
           </header>
-          <div
-            className="prose max-w-none prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-          {/*
+          <div>
+            {content ? (
+              <div
+                className="prose max-w-none prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
+                dangerouslySetInnerHTML={{
+                  __html: content,
+                }}
+              />
+            ) : (
+              <div className="text-center text-gray-600">
+                <p>
+                  コンテンツがありません。
+                  <Link href={getKnowledgeEditPath(id)}>ナレッジを編集</Link>してみませんか？
+                </p>
+              </div>
+            )}
+            {/*
           <Picker
             i18n={i18n}
             locale={"ja"}
@@ -239,53 +252,66 @@ const Page: NextPage<KnowledgeProps> = (props) => {
             onEmojiSelect={console.log}
           />
           */}
-          <aside className="mt-5 border-t-2 pt-5">
-            <h2 className="mb-5 text-2xl font-bold">
-              🎉 このナレッジの貢献者 ({contributors.length}人)
-            </h2>
-            <p className="mb-4 text-base text-gray-600">
-              ✨ 情報が古い場合や問題点を見つけた場合は
-              <Link href={getKnowledgeEditPath(id)}>編集</Link>
-              してみましょう。より良いナレッジを作成するための助けになります。
-            </p>
-            <div className="rounded-2xl border">
-              {contributors &&
-                contributors.map((contributor) => (
-                  <div
-                    key={contributor?.id}
-                    className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
-                  >
-                    <div>
-                      <img
-                        className="rounded-full border"
-                        src={contributor.image}
-                        height={"65"}
-                        width={"65"}
-                        alt={contributor.name}
-                      ></img>
-                    </div>
-                    <div className="ml-5">
-                      <div>
-                        <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
-                          {contributor.name}
-                          {contributor.email === session?.user?.email && " (あなた)"}
-                        </h2>
-                      </div>
-                      <div className="mt-2">
-                        <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                          {contributor.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
-                        </span>
-                        {contributor.id === creator?.id && (
-                          <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                            ページ作成者
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            <div className="mt-10 flex items-center justify-between">
+              <div className="flex">
+                <button aria-label="ブックマーク">111</button>
+              </div>
+              <Link
+                href={getKnowledgeEditPath(id)}
+                className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
+              >
+                <BsPencilFill className="mr-2" />
+                ナレッジを編集
+              </Link>
             </div>
-          </aside>
+            <aside className="mt-5 border-t-2 pt-5">
+              <h2 className="mb-5 text-2xl font-bold">
+                🎉 このナレッジの貢献者 ({contributors.length}人)
+              </h2>
+              <p className="mb-4 text-base text-gray-600">
+                ✨ 情報が古い場合や問題点を見つけた場合は
+                <Link href={getKnowledgeEditPath(id)}>編集</Link>
+                してみましょう。より良いナレッジを作成するための助けになります。
+              </p>
+              <div className="rounded-2xl border">
+                {contributors &&
+                  contributors.map((contributor) => (
+                    <div
+                      key={contributor?.id}
+                      className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
+                    >
+                      <div>
+                        <img
+                          className="rounded-full border"
+                          src={contributor.image}
+                          height={"65"}
+                          width={"65"}
+                          alt={contributor.name}
+                        ></img>
+                      </div>
+                      <div className="ml-5">
+                        <div>
+                          <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
+                            {contributor.name}
+                            {contributor.email === session?.user?.email && " (あなた)"}
+                          </h2>
+                        </div>
+                        <div className="mt-2">
+                          <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                            {contributor.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
+                          </span>
+                          {contributor.id === creator?.id && (
+                            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                              ページ作成者
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </aside>
+          </div>
         </article>
       </div>
     </>
