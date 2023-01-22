@@ -8,17 +8,19 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   const session = await unstable_getServerSession(req, res, authOptions)
   if (!session) return res.status(400).json({ error: { messsage: "ログインしてください" } })
 
-  if (req.method === HttpMethod.DELETE) {
-    return deletePost(req, res, session)
-  } else if (req.method === HttpMethod.GET) {
-    return getKnowledge(req, res, session)
-  } else if (req.method === HttpMethod.PUT) {
-    return updatePost(req, res, session)
-  } else {
-    return res.status(404).json({
-      error: {
-        messsage: `${req.method}メソッドはサポートされていません。`,
-      },
-    })
+  switch (req.method) {
+    case HttpMethod.GET:
+      return getKnowledge(req, res, session)
+    case HttpMethod.DELETE:
+      return deletePost(req, res, session)
+    case HttpMethod.PUT:
+      return updatePost(req, res, session)
+    default:
+      res.setHeader("Allow", [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT])
+      return res.status(404).json({
+        error: {
+          messsage: `${req.method}メソッドはサポートされていません。`,
+        },
+      })
   }
 }
