@@ -60,7 +60,7 @@ model Discussion {
 
 model Knowledge {
   id            String     @id @default(cuid())
-  title         String
+  title         String?
   emoji         String
   content       String?   @db.Text
   createdAt     DateTime @default(now())

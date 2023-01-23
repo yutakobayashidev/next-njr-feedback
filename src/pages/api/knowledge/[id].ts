@@ -1,4 +1,4 @@
-import { deletePost, getKnowledge, updatePost } from "@src/lib/api/knowledge"
+import { deletePost, getKnowledge, updatePost } from "@src/lib/api"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"

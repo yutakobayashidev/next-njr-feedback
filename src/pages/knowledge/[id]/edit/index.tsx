@@ -9,6 +9,7 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { ChangeEvent, useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
+import { AiOutlineCheck } from "react-icons/ai"
 import { MdOutlineInfo } from "react-icons/md"
 import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
@@ -120,9 +121,9 @@ export default function Post() {
   }
 
   useEffect(() => {
-    if (data.title && data.emoji && !publishing) setDisabled(false)
+    if (data.emoji && !publishing && changed) setDisabled(false)
     else setDisabled(true)
-  }, [publishing, data])
+  }, [publishing, data, changed])
 
   if (isValidating || !session)
     return (
@@ -162,11 +163,26 @@ export default function Post() {
                 }}
                 className={`${
                   disabled
-                    ? "cursor-not-allowed rounded-md border-gray-300 bg-gray-300 px-4 py-2 font-bold"
-                    : "rounded-md bg-n px-4 py-2 font-bold hover:opacity-90"
-                } text-white transition-all duration-150 ease-in-out focus:outline-none`}
+                    ? "flex items-center rounded-md px-4 py-2 font-bold opacity-70"
+                    : "rounded-md px-4 py-2 font-bold hover:opacity-90"
+                } bg-n text-white transition-all duration-150 ease-in-out focus:outline-none`}
               >
-                {data.published ? "変更を保存" : "下書き保存"}
+                {publishing ? (
+                  <>保存中...</>
+                ) : changed ? (
+                  data.published ? (
+                    "内容を更新"
+                  ) : (
+                    "下書き保存"
+                  )
+                ) : (
+                  <>
+                    <span className="mr-1">
+                      <AiOutlineCheck />
+                    </span>
+                    保存済み
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -211,10 +227,10 @@ export default function Post() {
               })
             }
             className="w-full resize-none border-none px-2 py-3 text-lg text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-            placeholder="Markdownで入力..."
+            placeholder="Markdown..."
             value={data.content}
           />
-          <div className="flex items-center text-lg text-gray-500">
+          <div className="flex items-center text-base text-gray-500 md:text-lg">
             <MdOutlineInfo className="mr-1" />
             <Link href="/guideline" className="text-gray-500 underline">
               ガイドライン

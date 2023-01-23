@@ -16,7 +16,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      message: "ログインしてください",
+      error: { code: 401, messsage: "ログインしてください" },
     })
 
   if (!session.user.id)
@@ -25,8 +25,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     })
 
   if (req.method === HttpMethod.POST) {
-    const { title } = req.body
-
     const emojiRegex = initEmojiRegex()
     const matches = pickRandomEmoji().match(emojiRegex)
 
@@ -38,7 +36,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     try {
       const result = await prisma.knowledge.create({
         data: {
-          title: title,
           contributors: { connect: { id: session.user.id } },
           course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },

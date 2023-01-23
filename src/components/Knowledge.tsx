@@ -27,7 +27,7 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
             href={getKnowledgePath(post.id)}
             className="text-xl font-bold text-gray-800 line-clamp-2"
           >
-            {post.title}
+            {post.title ? post.title : "無題のナレッジ"}
           </Link>
           <div className="mt-2 flex items-center">
             {post?.course.map((post) => (

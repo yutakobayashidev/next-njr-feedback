@@ -1,6 +1,6 @@
 export type KnowledgeProps = {
   id: string
-  title: string
+  title?: string
   archive: boolean
   content?: string
   contributors: Contributor[]

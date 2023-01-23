@@ -12,7 +12,7 @@ import { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 import { BsPencilFill } from "react-icons/bs"
 import { remark } from "remark"
 import html from "remark-html"
@@ -120,13 +120,6 @@ const Page: NextPage<KnowledgeProps> = (props) => {
   } = props
 
   const { data: session } = useSession()
-
-  const userHasValidSession = Boolean(session)
-
-  const [open, setOpen] = useState(false)
-
-  const cancelButtonRef = useRef(null)
-
   const router = useRouter()
 
   useEffect(() => {
@@ -141,7 +134,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
 
   return (
     <>
-      <MyPageSeo path={getKnowledgePath(id)} title={title} />
+      <MyPageSeo path={getKnowledgePath(id)} title={title ? title : "無題のナレッジ"} />
       {!published && (
         <Alert id={id} edit={true}>
           💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう
@@ -172,78 +165,79 @@ const Page: NextPage<KnowledgeProps> = (props) => {
           </ContentWrapper>
         </div>
       )}
-      <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-        <article className="py-16">
-          <header className="mb-8">
-            <div>
-              <div className="flex justify-center text-8xl">
-                <span>{emoji}</span>
-              </div>
-              <h1 className="mt-10 text-center text-3xl font-bold lg:text-5xl lg:leading-normal">
-                <span>{title}</span>
-              </h1>
-              <div className="flex items-center justify-center pt-5">
-                <div className="flex items-center">
-                  <span className="flex items-center">
-                    {publishedAt ? (
+      <div>
+        <div className="mx-auto max-w-screen-lg px-4 md:px-8">
+          <article className="py-16">
+            <header className="mb-8">
+              <div>
+                <div className="flex justify-center text-8xl">
+                  <span>{emoji}</span>
+                </div>
+                <h1 className="mt-10 text-center text-3xl font-bold lg:text-5xl lg:leading-normal">
+                  <span>{title ? title : "無題のナレッジ"}</span>
+                </h1>
+                <div className="flex items-center justify-center pt-5">
+                  <div className="flex items-center">
+                    <span className="flex items-center">
+                      {publishedAt ? (
+                        <>
+                          <img
+                            src={creator.image}
+                            height={45}
+                            width={45}
+                            className="mr-2 rounded-full"
+                            alt={creator.name}
+                          ></img>
+                          <time
+                            dateTime={dayjs(publishedAt).toISOString()}
+                            className="mr-3 text-sm text-gray-700  lg:text-lg"
+                          >
+                            {dayjs(publishedAt).isSame(dayjs(updatedAt), "day")
+                              ? `${dayjs(publishedAt).format("YYYY/MM/DD")}に公開 `
+                              : `${dayjs(updatedAt).fromNow()}に更新`}
+                          </time>
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src={creator.image}
+                            height={45}
+                            width={45}
+                            className="mr-2 rounded-full"
+                            alt={creator.name}
+                          ></img>
+                          <span className="mr-3 text-sm text-gray-700  lg:text-lg">非公開</span>
+                        </>
+                      )}
+                    </span>
+                    {course.map((post) => (
                       <>
-                        <img
-                          src={creator.image}
-                          height={45}
-                          width={45}
-                          className="mr-2 rounded-full"
-                          alt={creator.name}
-                        ></img>
-                        <time
-                          dateTime={dayjs(publishedAt).toISOString()}
-                          className="mr-3 text-sm text-gray-700  lg:text-lg"
-                        >
-                          {dayjs(publishedAt).isSame(dayjs(updatedAt), "day")
-                            ? `${dayjs(publishedAt).format("YYYY/MM/DD")}に公開 `
-                            : `${dayjs(updatedAt).fromNow()}に更新`}
-                        </time>
+                        <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold text-course lg:px-4 lg:text-lg">
+                          {post.name}
+                        </span>
                       </>
-                    ) : (
-                      <>
-                        <img
-                          src={creator.image}
-                          height={45}
-                          width={45}
-                          className="mr-2 rounded-full"
-                          alt={creator.name}
-                        ></img>
-                        <span className="mr-3 text-sm text-gray-700  lg:text-lg">非公開</span>
-                      </>
-                    )}
-                  </span>
-                  {course.map((post) => (
-                    <>
-                      <span className="mr-3 rounded-2xl bg-coursebg py-1 px-2 text-sm font-bold text-course lg:px-4 lg:text-lg">
-                        {post.name}
-                      </span>
-                    </>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </header>
-          <div>
-            {content ? (
-              <div
-                className="prose max-w-none prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
-                dangerouslySetInnerHTML={{
-                  __html: content,
-                }}
-              />
-            ) : (
-              <div className="text-center text-gray-600">
-                <p>
-                  コンテンツがありません。
-                  <Link href={getKnowledgeEditPath(id)}>ナレッジを編集</Link>してみませんか？
-                </p>
-              </div>
-            )}
-            {/*
+            </header>
+            <div>
+              {content ? (
+                <div
+                  className="prose max-w-none break-words prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
+                  dangerouslySetInnerHTML={{
+                    __html: content,
+                  }}
+                />
+              ) : (
+                <div className="text-center text-gray-600">
+                  <p>
+                    コンテンツがありません。
+                    <Link href={getKnowledgeEditPath(id)}>ナレッジを編集</Link>してみませんか？
+                  </p>
+                </div>
+              )}
+              {/*
           <Picker
             i18n={i18n}
             locale={"ja"}
@@ -252,67 +246,68 @@ const Page: NextPage<KnowledgeProps> = (props) => {
             onEmojiSelect={console.log}
           />
           */}
-            <div className="mt-10 flex items-center justify-between">
-              <div className="flex">
-                <button aria-label="ブックマーク">111</button>
+              <div className="mt-10 flex items-center justify-between">
+                <div className="flex">
+                  <button aria-label="ブックマーク">111</button>
+                </div>
+                <Link
+                  href={getKnowledgeEditPath(id)}
+                  className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
+                >
+                  <BsPencilFill className="mr-2" />
+                  ナレッジを編集
+                </Link>
               </div>
-              <Link
-                href={getKnowledgeEditPath(id)}
-                className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
-              >
-                <BsPencilFill className="mr-2" />
-                ナレッジを編集
-              </Link>
-            </div>
-            <aside className="mt-5 border-t-2 pt-5">
-              <h2 className="mb-5 text-2xl font-bold">
-                🎉 このナレッジの貢献者 ({contributors.length}人)
-              </h2>
-              <p className="mb-4 text-base text-gray-600">
-                ✨ 情報が古い場合や問題点を見つけた場合は
-                <Link href={getKnowledgeEditPath(id)}>編集</Link>
-                してみましょう。より良いナレッジを作成するための助けになります。
-              </p>
-              <div className="rounded-2xl border">
-                {contributors &&
-                  contributors.map((contributor) => (
-                    <div
-                      key={contributor?.id}
-                      className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
-                    >
-                      <div>
-                        <img
-                          className="rounded-full border"
-                          src={contributor.image}
-                          height={"65"}
-                          width={"65"}
-                          alt={contributor.name}
-                        ></img>
-                      </div>
-                      <div className="ml-5">
+              <div className="my-5 border-t pt-5">
+                <h2 className="mb-5 text-2xl font-bold">
+                  🎉 このナレッジの貢献者 ({contributors.length}人)
+                </h2>
+                <p className="mb-4 text-base text-gray-600">
+                  ✨ 情報が古い場合や問題点を見つけた場合は
+                  <Link href={getKnowledgeEditPath(id)}>編集</Link>
+                  してみましょう。より良いナレッジを作成するための助けになります。
+                </p>
+                <div className="rounded-2xl border">
+                  {contributors &&
+                    contributors.map((contributor) => (
+                      <div
+                        key={contributor?.id}
+                        className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
+                      >
                         <div>
-                          <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
-                            {contributor.name}
-                            {contributor.email === session?.user?.email && " (あなた)"}
-                          </h2>
+                          <img
+                            className="rounded-full border"
+                            src={contributor.image}
+                            height={"65"}
+                            width={"65"}
+                            alt={contributor.name}
+                          ></img>
                         </div>
-                        <div className="mt-2">
-                          <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                            {contributor.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
-                          </span>
-                          {contributor.id === creator?.id && (
+                        <div className="ml-5">
+                          <div>
+                            <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
+                              {contributor.name}
+                              {contributor.email === session?.user?.email && " (あなた)"}
+                            </h2>
+                          </div>
+                          <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                              ページ作成者
+                              {contributor.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
                             </span>
-                          )}
+                            {contributor.id === creator?.id && (
+                              <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                                ページ作成者
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </aside>
-          </div>
-        </article>
+            </div>
+          </article>
+        </div>
       </div>
     </>
   )
