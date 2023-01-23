@@ -305,7 +305,7 @@ export default function KnowledgeSettings() {
             */}
             {!knowledge?.archive && knowledge?.published && (
               <>
-                <h2 className="mt-2 text-2xl font-bold">アーカイブとしてマーク</h2>
+                <h2 className="mt-2 text-2xl font-bold">アーカイブ</h2>
                 <p className="mt-2 text-gray-500">
                   不要となった情報などはアーカイブとしてマークしましょう。ナレッジの一覧などからは表示されなくなりますが、ナレッジのURLに直接アクセスすれば引き続き参照可能です。
                 </p>
