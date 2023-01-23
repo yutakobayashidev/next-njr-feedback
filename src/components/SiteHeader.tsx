@@ -4,7 +4,7 @@ import { ContentWrapper } from "@src/components/ContentWrapper"
 import { getKnowledgeEditPath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { Fragment, useState } from "react"
 import { FaGithub, FaSlackHash } from "react-icons/fa"
 import { FiSettings } from "react-icons/fi"
@@ -21,10 +21,6 @@ export const SiteHeader: React.FC = () => {
 
   const router = useRouter()
   const [disabled, setDisabled] = useState(false)
-
-  function handleDeactivate() {
-    // ...
-  }
 
   async function createKnowledge() {
     setDisabled(true)
@@ -46,71 +42,6 @@ export const SiteHeader: React.FC = () => {
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
-          onClose={() => setIsOpen(false)}
-        >
-          <div className="min-h-screen px-4">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-            </Transition.Child>
-
-            <span className="inline-block h-screen align-middle" aria-hidden="true">
-              &#8203;
-            </span>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <div className="relative my-8 inline-block w-full max-w-md overflow-hidden rounded-xl bg-white p-6 align-middle shadow-xl transition-all">
-                <header>
-                  <h3 className="mb-6 text-center text-2xl font-bold text-n">Next NJR Feedback</h3>
-                  <div className="mx-auto">
-                    <p className="mb-3 text-gray-600">
-                      <span className="text-lg font-bold">Next NJR Feedback</span>
-                      はN中等部の生徒またはメンター・TAなどが使用できる議論&ナレッジ共有プラットフォームです。
-                    </p>
-                  </div>
-                </header>
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => signIn("google")}
-                    className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-base font-bold text-gray-700 shadow-md shadow-gray-300"
-                  >
-                    <span className="mr-2 inline-flex items-center">
-                      <img src="/google.svg" alt="Slack" width="18" height="18" />
-                    </span>
-                    Login With Google
-                  </button>
-                </div>
-                <div className="mx-auto mb-4">
-                  <p className="mt-4 text-base text-gray-500">
-                    <Link href="/guideline">ガイドライン</Link>
-                    に同意の上、<span className="font-medium">@n-jr.jp</span>
-                    または<span className="font-medium">@nnn.ac.jp</span>
-                    を含むGoogleアカウントでログインしてください
-                  </p>
-                </div>
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
       <header className="border-b border-gray-200 bg-white">
         <ContentWrapper>
           <div className="flex h-14 items-center justify-between">
@@ -239,13 +170,82 @@ export const SiteHeader: React.FC = () => {
                 </div>
               </>
             ) : (
-              <button
-                onClick={() => setIsOpen(true)}
-                disabled={disabled}
-                className="rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
-              >
-                Log in
-              </button>
+              <>
+                <button
+                  onClick={() => setIsOpen(true)}
+                  disabled={disabled}
+                  className="rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
+                >
+                  Log in
+                </button>
+                <Transition appear show={isOpen} as={Fragment}>
+                  <Dialog
+                    as="div"
+                    className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+                    onClose={() => setIsOpen(false)}
+                  >
+                    <div className="min-h-screen px-4">
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
+                      </Transition.Child>
+
+                      <span className="inline-block h-screen align-middle" aria-hidden="true">
+                        &#8203;
+                      </span>
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0 scale-95"
+                        enterTo="opacity-100 scale-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100 scale-100"
+                        leaveTo="opacity-0 scale-95"
+                      >
+                        <div className="relative my-8 inline-block w-full max-w-md overflow-hidden rounded-xl bg-white p-6 align-middle shadow-xl transition-all">
+                          <header>
+                            <h3 className="mb-6 text-center text-2xl font-bold text-n">
+                              Next NJR Feedback
+                            </h3>
+                            <div className="mx-auto">
+                              <p className="mb-3 text-gray-600">
+                                <span className="text-lg font-bold">Next NJR Feedback</span>
+                                はN中等部の生徒またはメンター・TAなどが使用できる議論&ナレッジ共有プラットフォームです。
+                              </p>
+                            </div>
+                          </header>
+                          <div className="flex justify-center">
+                            <button
+                              onClick={() => signIn("google")}
+                              className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-base font-bold text-gray-700 shadow-md shadow-gray-300"
+                            >
+                              <span className="mr-2 inline-flex items-center">
+                                <img src="/google.svg" alt="Slack" width="18" height="18" />
+                              </span>
+                              Login With Google
+                            </button>
+                          </div>
+                          <div className="mx-auto mb-4">
+                            <p className="mt-4 text-base text-gray-500">
+                              <Link href="/guideline">ガイドライン</Link>
+                              に同意の上、<span className="font-medium">@n-jr.jp</span>
+                              または<span className="font-medium">@nnn.ac.jp</span>
+                              を含むGoogleアカウントでログインしてください
+                            </p>
+                          </div>
+                        </div>
+                      </Transition.Child>
+                    </div>
+                  </Dialog>
+                </Transition>
+              </>
             )}
           </div>
         </ContentWrapper>
