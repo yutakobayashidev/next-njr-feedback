@@ -212,7 +212,7 @@ export const SiteHeader: React.FC = () => {
                         <div className="relative my-8 inline-block w-full max-w-md overflow-hidden rounded-xl bg-white p-6 align-middle shadow-xl transition-all">
                           <header>
                             <h3 className="mb-6 text-center text-2xl font-bold text-n">
-                              Next NJR Feedback
+                              {config.siteMeta.title}
                             </h3>
                             <div className="mx-auto">
                               <p className="mb-3 text-gray-600">
