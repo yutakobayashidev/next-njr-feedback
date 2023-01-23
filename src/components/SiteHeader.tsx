@@ -17,13 +17,13 @@ function classNames(...classes: string[]) {
 export const SiteHeader: React.FC = () => {
   const { data: session } = useSession()
 
-  let [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [knowledge, setcreateKnowledge] = useState(false)
 
   const router = useRouter()
-  const [disabled, setDisabled] = useState(false)
 
   async function createKnowledge() {
-    setDisabled(true)
+    setcreateKnowledge(true)
     try {
       const response = await fetch("/api/knowledge", {
         headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ export const SiteHeader: React.FC = () => {
       })
 
       if (response.ok) {
-        setDisabled(false)
+        setcreateKnowledge(false)
         const json = await response.json()
         await router.push(getKnowledgeEditPath(json.id))
       }
@@ -162,9 +162,10 @@ export const SiteHeader: React.FC = () => {
                       onClick={async () => {
                         await createKnowledge()
                       }}
+                      disabled={knowledge}
                       className="ml-4 rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
                     >
-                      + New
+                      {knowledge ? "作成中..." : "+ New"}
                     </button>
                   </div>
                 </div>
@@ -173,7 +174,6 @@ export const SiteHeader: React.FC = () => {
               <>
                 <button
                   onClick={() => setIsOpen(true)}
-                  disabled={disabled}
                   className="rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
                 >
                   Log in
