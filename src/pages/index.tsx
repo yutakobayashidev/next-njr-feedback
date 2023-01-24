@@ -1,10 +1,11 @@
+import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { User } from "@src/components/User"
-import { NextPage } from "next"
+import type { NextPageWithLayout } from "@src/pages/_app"
 import Link from "next/link"
 import { signIn, useSession } from "next-auth/react"
 
-const Page: NextPage = () => {
+const Page: NextPageWithLayout = () => {
   const { data: session } = useSession()
 
   if (session && session.user) {
@@ -53,5 +54,7 @@ const Page: NextPage = () => {
     </>
   )
 }
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page

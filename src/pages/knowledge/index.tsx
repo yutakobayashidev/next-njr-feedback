@@ -2,10 +2,12 @@ import "dayjs/locale/ja"
 
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import Knowledge from "@src/components/Knowledge"
+import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
+import type { NextPageWithLayout } from "@src/pages/_app"
 import { KnowledgeProps } from "@src/types"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
@@ -56,7 +58,7 @@ type Props = {
   knowledge: KnowledgeProps[]
 }
 
-const Page: NextPage<Props> = (props) => {
+const Page: NextPageWithLayout<Props> = (props) => {
   const { data: session } = useSession()
 
   const router = useRouter()
@@ -118,5 +120,7 @@ const Page: NextPage<Props> = (props) => {
     </>
   )
 }
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page

@@ -2,13 +2,15 @@ import "dayjs/locale/ja"
 
 import { Alert } from "@src/components/Alert"
 import { ContentWrapper } from "@src/components/ContentWrapper"
+import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
+import { NextPageWithLayout } from "@src/pages/_app"
 import { HttpMethod, KnowledgeProps } from "@src/types"
 import { getKnowledgeEditPath, getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getSession, useSession } from "next-auth/react"
@@ -78,19 +80,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 }
 
-async function publishPost(id: string): Promise<void> {
-  await fetch(`/api/knowledge/${id}`, {
-    body: JSON.stringify({
-      published: true,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: HttpMethod.PUT,
-  })
-  await Router.reload()
-}
-
 async function restorearchivePost(id: string): Promise<void> {
   await fetch(`/api/knowledge/${id}`, {
     body: JSON.stringify({
@@ -104,7 +93,7 @@ async function restorearchivePost(id: string): Promise<void> {
   await Router.reload()
 }
 
-const Page: NextPage<KnowledgeProps> = (props) => {
+const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const {
     id,
     title,
@@ -312,5 +301,7 @@ const Page: NextPage<KnowledgeProps> = (props) => {
     </>
   )
 }
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page

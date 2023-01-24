@@ -1,16 +1,18 @@
+import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { getAllPostIds, getPostData } from "@src/lib/docs"
+import type { NextPageWithLayout } from "@src/pages/_app"
 import { GetStaticPaths, GetStaticProps } from "next"
 
-export default function Post({
-  postData,
-}: {
+type Props = {
   postData: {
     id: string
     title: string
     contentHtml: string
   }
-}) {
+}
+
+const Page: NextPageWithLayout<Props> = ({ postData }) => {
   return (
     <>
       <MyPageSeo path={"/" + postData.id} title={postData.title} />
@@ -44,3 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths,
   }
 }
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
+
+export default Page
