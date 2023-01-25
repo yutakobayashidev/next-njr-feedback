@@ -79,8 +79,17 @@ export async function updatePost(
   if (!id || typeof id !== "string" || !session?.user?.id) {
     return res.status(400).json({
       error: {
-        code: 500,
+        code: 400,
         messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+      },
+    })
+  }
+
+  if (published && (!title || !content)) {
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: `公開するにはタイトルと本文が必要です。`,
       },
     })
   }
