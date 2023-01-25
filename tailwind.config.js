@@ -9,11 +9,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        course: "#66b8ff",
+        coursebg: "#ddefff",
         guideline: "#f1f5f9a",
         maintext: "#333",
         n: "#0099D9",
         "n-50": "#E5F2FF",
         slack: "#4A154B",
+      },
+      fontFamily: {
+        inter: ["var(--font-inter)"],
       },
     },
   },
