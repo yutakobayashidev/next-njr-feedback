@@ -1,6 +1,14 @@
 {
-    "filters": {},
+    "filters": {
+        "comments": true
+    },
     "rules": {
+        "ja-technical-writing/ja-no-mixed-period": {
+            "allowPeriodMarks": [
+                "🎉"
+            ]
+        },
+        "ja-technical-writing/sentence-length": false,
         "preset-ja-spacing": {
             "ja-space-between-half-and-full-width": {
                 "space": "always"
