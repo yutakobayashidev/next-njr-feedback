@@ -4,23 +4,38 @@ declare module "next-auth" {
   interface Session {
     user: {
       /**
-       * The user's email address
+       * The user's unique id number
        */
       id?: string | null
 
       /**
-       * The user's unique id number
+       * The user's full name
        */
       name?: string | null
 
       /**
-       * The users preferred avatar.
-       * Usually provided by the user's OAuth provider of choice
+       * The user's bio
+       */
+      bio?: string | null
+
+      /**
+       * The user's display name
+       */
+      displayname?: string | null
+
+      /**
+       * The user's email address
        */
       email?: string | null
 
       /**
-       * The user's full name
+       * The user's student id
+       */
+      handle?: string | null
+
+      /**
+       * The users preferred avatar.
+       * Usually provided by the user's OAuth provider of choice
        */
       image?: string | null
     }
@@ -28,14 +43,29 @@ declare module "next-auth" {
 
   interface User {
     /**
-     * The user's email address
+     * The user's unique id number
      */
     id: string
 
     /**
-     * The user's unique id number
+     * The user's full name
      */
     name?: string | null
+
+    /**
+     * The user's bio
+     */
+    bio?: string | null
+
+    /**
+     * The user's display name
+     */
+    displayname?: string | null
+
+    /**
+     * The user's email address
+     */
+    email?: string | null
 
     /**
      * The users preferred avatar.
@@ -44,7 +74,13 @@ declare module "next-auth" {
     email?: string | null
 
     /**
-     * The user's full name
+     * The user's student id
+     */
+    handle?: string | null
+
+    /**
+     * The users preferred avatar.
+     * Usually provided by the user's OAuth provider of choice
      */
     image?: string | null
   }

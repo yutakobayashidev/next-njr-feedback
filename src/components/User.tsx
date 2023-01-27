@@ -1,6 +1,6 @@
+import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { FaCode } from "react-icons/fa"
-import { MdEmail } from "react-icons/md"
 
 export const User: React.FC = () => {
   const { data: session } = useSession()
@@ -24,31 +24,34 @@ export const User: React.FC = () => {
               </div>
               <div className="mt-7 ml-0 md:mt-0 md:ml-7">
                 <div>
-                  <h1 className="text-2xl font-bold">{session.user.name}</h1>
+                  <h1 className="text-2xl font-bold">{session.user.displayname}</h1>
                 </div>
-                <div className="my-2 flex">
-                  {session.user.email && (
-                    <span className="mr-1 flex items-center font-medium">
-                      <img
-                        src="/n-school.png"
-                        alt="N中等部"
-                        width="20"
-                        height="20"
-                        className="mr-1"
-                      ></img>
-                      {session.user.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
-                    </span>
+                <div className="my-2">
+                  {session.user.bio ? (
+                    session.user.bio
+                  ) : (
+                    <p>
+                      自己紹介がありません。<Link href="/settings">アカウント設定</Link>
+                      ページで追加してみましょう。
+                    </p>
                   )}
-                  {session.user.email && (
+                  <div className="flex">
+                    {session.user.email && (
+                      <span className="mr-1 flex items-center font-medium">
+                        <img
+                          src="/n-school.png"
+                          alt="N中等部"
+                          width="20"
+                          height="20"
+                          className="mr-1"
+                        ></img>
+                        {session.user.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
+                      </span>
+                    )}
                     <span className="mr-1 flex items-center font-medium">
-                      <MdEmail size={20} color="#797979" className="m-2" />
-                      <a href={`mailto:${session.user.email}`}>{session.user.email}</a>
+                      <FaCode size={20} color="#61bd8d" className="m-2" />
                     </span>
-                  )}
-                  <span className="mr-1 flex items-center font-medium">
-                    <FaCode size={20} color="#61bd8d" className="m-2" />
-                    コントリビューター
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
