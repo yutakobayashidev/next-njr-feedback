@@ -11,7 +11,7 @@
     "format": "prettier --write --ignore-path .gitignore \"./**/*.{js,jsx,ts,tsx,json,css}\""
   },
   "dependencies": {
-    "@emoji-mart/data": "^1.1.1",
+    "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@headlessui/react": "^1.7.7",
     "@next-auth/prisma-adapter": "^1.0.5",
