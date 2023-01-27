@@ -99,7 +99,7 @@ const Page: NextPage = () => {
               ) || "生徒番号"
             }
             className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-            value={data?.handle || "生徒番号"}
+            value={data?.handle || ""}
             onInput={(e) =>
               setData({
                 ...data,
