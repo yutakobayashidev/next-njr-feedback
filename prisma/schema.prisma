@@ -85,14 +85,12 @@ model Course {
 model User {
   id            String    @id @default(cuid())
   bio           String?   @db.VarChar(191)
-  name          String?
-  displayname   String?
+  name          String? 
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  handle        String @unique
   knowledge     Knowledge[] @relation(name: "Usercontributors")
   admin         Boolean @default(false)
   leave         Boolean @default(false)
