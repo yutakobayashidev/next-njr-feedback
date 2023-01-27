@@ -15,6 +15,7 @@ module.exports = {
         maintext: "#333",
         n: "#0099D9",
         "n-50": "#E5F2FF",
+        primary: "#0099D9",
         slack: "#4A154B",
       },
       fontFamily: {
