@@ -1,13 +1,14 @@
+import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
+import type { NextPageWithLayout } from "@src/pages/_app"
 import { HttpMethod, UserSettings } from "@src/types"
-import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
-const Page: NextPage = () => {
+const Page: NextPageWithLayout = () => {
   const { data: session } = useSession()
 
   const [disabled, setDisabled] = useState(true)
@@ -139,5 +140,7 @@ const Page: NextPage = () => {
     </>
   )
 }
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page
