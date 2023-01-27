@@ -1,18 +1,40 @@
-import "@src/styles/globals.css"
+import "@src/styles/globals.css" // Tailwind CSS
 
-import { SiteHeader } from "@src/components/SiteHeader"
+import { Inter } from "@next/font/google"
+import { NextPage } from "next"
 import type { AppProps } from "next/app"
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
-import NextNProgress from "nextjs-progressbar"
+import { ReactElement, ReactNode } from "react"
 
-export default function App({ Component, pageProps }: AppProps<{ session: Session }>) {
+const inter = Inter({ subsets: ["latin"] })
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout<P> = AppProps<P> & {
+  Component: NextPageWithLayout<P>
+}
+
+export default function App({ Component, pageProps }: AppPropsWithLayout<{ session: Session }>) {
+  const getLayout = Component.getLayout || ((page: any) => page)
+
   return (
     <>
-      <NextNProgress height={2} color="#0099D9" options={{ showSpinner: false }} />
       <SessionProvider session={pageProps.session}>
-        <SiteHeader />
-        <Component {...pageProps} />
+        {getLayout(
+          <>
+            <Component {...pageProps} />
+            <style jsx global>
+              {`
+                :root {
+                  --font-inter: ${inter.style.fontFamily};
+                }
+              `}
+            </style>
+          </>,
+        )}
       </SessionProvider>
     </>
   )
