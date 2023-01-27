@@ -11,7 +11,6 @@ const Page: NextPage = () => {
   const { data: session } = useSession()
 
   const [disabled, setDisabled] = useState(true)
-
   const [data, setData] = useState<UserSettings | null>(null)
 
   const router = useRouter()
@@ -97,10 +96,10 @@ const Page: NextPage = () => {
               session?.user?.email?.substring(
                 session?.user?.email?.indexOf("_") + 1,
                 session?.user?.email?.indexOf("@"),
-              ) || "生徒番号が見つかりませんでした"
+              ) || "生徒番号"
             }
             className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-            value={data?.handle || ""}
+            value={data?.handle || "生徒番号"}
             onInput={(e) =>
               setData({
                 ...data,

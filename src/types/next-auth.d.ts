@@ -22,7 +22,7 @@ declare module "next-auth" {
        * Usually provided by the user's OAuth provider of choice
        */
       email?: string | null
-
+      handle?: string | null
       /**
        * The user's full name
        */

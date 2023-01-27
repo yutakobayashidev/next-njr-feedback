@@ -53,12 +53,14 @@ export const SiteHeader: React.FC = () => {
                             "block px-4 py-2 text-gray-700",
                           )}
                         >
-                          {session && session.user && session.user.name && (
-                            <div className="text-base font-medium">
-                              {session.user.displayname + "さん"}
-                            </div>
+                          {session && session.user && session.user.name && session.user.handle && (
+                            <>
+                              <div className="text-base font-medium">
+                                {session.user.displayname + "さん"}
+                              </div>
+                              <div className="text-sm text-gray-400">@{session.user.handle}</div>
+                            </>
                           )}
-                          <div className="text-sm text-gray-400">@{session.user.handle}</div>
                         </Link>
                       )}
                     </Menu.Item>
