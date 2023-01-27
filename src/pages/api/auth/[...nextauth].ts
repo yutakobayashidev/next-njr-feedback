@@ -11,6 +11,9 @@ export default NextAuth({
       user: {
         ...session.user,
         id: user.id,
+        bio: user.bio,
+        displayname: user.displayname,
+        handle: user.handle,
       },
     }),
     async signIn({ account, profile }) {
@@ -33,6 +36,19 @@ export default NextAuth({
       },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      profile: (profile) => {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          displayname: profile.name,
+          email: profile.email,
+          handle:
+            profile.hd == "n-jr.jp"
+              ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
+              : profile.sub,
+          image: profile.picture,
+        }
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,

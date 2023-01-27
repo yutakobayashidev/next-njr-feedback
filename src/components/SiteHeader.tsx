@@ -26,7 +26,7 @@ export const SiteHeader: React.FC = () => {
             <>
               <Menu as="div" className="relative">
                 <div>
-                  <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <img
                       className="h-10 w-10 rounded-full"
                       src={session.user.image}
@@ -50,12 +50,15 @@ export const SiteHeader: React.FC = () => {
                           href="/"
                           className={classNames(
                             active ? "bg-gray-100" : "",
-                            "block px-4 py-2 text-base font-medium text-gray-700",
+                            "block px-4 py-2 text-gray-700",
                           )}
                         >
                           {session && session.user && session.user.name && (
-                            <div>{session.user.name + "さん"}</div>
+                            <div className="text-base font-medium">
+                              {session.user.displayname + "さん"}
+                            </div>
                           )}
+                          <div className="text-sm text-gray-400">@{session.user.handle}</div>
                         </Link>
                       )}
                     </Menu.Item>

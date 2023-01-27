@@ -81,6 +81,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  handle        String @unique
   admin         Boolean @default(false)
   leave         Boolean @default(false)
   contributor   Boolean @default(false)
