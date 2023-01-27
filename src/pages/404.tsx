@@ -1,3 +1,4 @@
+import { config } from "@site.config"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import type { NextPageWithLayout } from "@src/pages/_app"
@@ -16,10 +17,7 @@ const Page: NextPageWithLayout = () => {
           <div className="font-inter text-9xl font-bold">404</div>
           <h1 className="my-8 text-left text-lg font-bold text-gray-500 md:text-center md:text-xl">
             ページが見つかりませんでした。何か問題があれば
-            <a
-              className="text-gray-600 hover:underline"
-              href="https://n-jr.slack.com/archives/C02AVRGFM33"
-            >
+            <a className="text-gray-600 hover:underline" href={config.siteMeta.slack}>
               #next_njr_feedback
             </a>
             までご報告ください。

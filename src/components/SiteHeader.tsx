@@ -74,7 +74,7 @@ export const SiteHeader: React.FC = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              href="/"
+                              href={"/users/" + session.user.handle}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-gray-700",
@@ -223,7 +223,7 @@ export const SiteHeader: React.FC = () => {
                             <div className="mx-auto">
                               <p className="mb-3 text-gray-600">
                                 <span className="text-lg font-bold">Next NJR Feedback</span>
-                                はN中等部の生徒またはメンター・TAなどが使用できる議論&ナレッジ共有プラットフォームです。
+                                はN中等部の生徒、メンター・TAが使用できる議論&ナレッジ共有プラットフォームです。
                               </p>
                             </div>
                           </header>
@@ -239,11 +239,11 @@ export const SiteHeader: React.FC = () => {
                             </button>
                           </div>
                           <div className="mx-auto mb-4">
-                            <p className="mt-4 text-base text-gray-500">
-                              <Link href="/guideline">ガイドライン</Link>
+                            <p className="mt-4 text-base text-gray-600">
+                              ( <Link href="/guideline">ガイドライン</Link>
                               に同意の上、<span className="font-medium">@n-jr.jp</span>
                               または<span className="font-medium">@nnn.ac.jp</span>
-                              を含むGoogleアカウントでログインしてください
+                              を含むGoogleアカウントでログインしてください )
                             </p>
                           </div>
                         </div>
