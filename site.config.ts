@@ -1,4 +1,18 @@
 export const config = {
+  footerLinks: [
+    {
+      title: "ガイドライン",
+      href: "/guideline",
+    },
+    {
+      title: "プライバシーポリシー",
+      href: "/privacy",
+    },
+    {
+      title: "クレジット・ライセンス",
+      href: "/licence",
+    },
+  ],
   siteMeta: {
     title: "Next NJR Feedback",
     description:
