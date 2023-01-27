@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint --dir src",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier --write --ignore-path .gitignore \"./**/*.{js,jsx,ts,tsx,json,css}\""
+    "format": "prettier --write --ignore-path .gitignore \"./**/*.{js,jsx,ts,tsx,json,css}\"",
+    "textlint:fix": "yarn textlint --fix"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",

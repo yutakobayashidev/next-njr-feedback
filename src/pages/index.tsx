@@ -16,6 +16,7 @@ const Page: NextPageWithLayout = () => {
       </>
     )
   }
+
   return (
     <>
       <MyPageSeo path="/" title="NJR Feedback | 議論&ナレッジ共有プラットフォーム" />
@@ -31,8 +32,8 @@ const Page: NextPageWithLayout = () => {
           ></img>
           <p className="mb-6 text-xl text-maintext">
             <span className="font-medium">Next NJR Feedback</span>
-            はN中等部の<span className="font-medium">生徒またはメンター・TA</span>
-            などが使用できる議論&ナレッジ共有プラットフォームです。
+            はN中等部の<span className="font-medium">生徒、メンター・TA</span>
+            が使用できる議論&ナレッジ共有プラットフォームです。
           </p>
           <button
             onClick={() => signIn("google")}

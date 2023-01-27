@@ -6,6 +6,7 @@ import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod, KnowledgeProps } from "@src/types"
 import { getKnowledgeEditPath, getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -13,7 +14,8 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import Router, { useRouter } from "next/router"
-import { getSession, useSession } from "next-auth/react"
+import { unstable_getServerSession } from "next-auth"
+import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { BsPencilFill } from "react-icons/bs"
 import { remark } from "remark"
@@ -29,7 +31,7 @@ import Picker from "@emoji-mart/react"
 */
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await getSession({ req })
+  const session = await unstable_getServerSession(req, res, authOptions)
 
   if (!session) {
     res.statusCode = 403
@@ -63,6 +65,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       id: String(params?.id),
     },
   })
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
 
   if (data?.published === false && data.creator.id != session.user.id) {
     res.statusCode = 403

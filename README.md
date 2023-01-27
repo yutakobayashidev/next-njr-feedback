@@ -2,7 +2,7 @@
 
 ![Next NJR Feedback](https://user-images.githubusercontent.com/91340399/212465713-bf074f3e-b4f7-4baa-a35d-97bf5f4340e8.png)
 
-Next NJR Feedback は N 中等部の生徒またはメンター・TA などが使用できる議論&ナレッジ共有プラットフォームです。
+Next NJR Feedback は N 中等部の生徒、メンター・TA が使用できる議論&ナレッジ共有プラットフォームです。
 
 https://njr-feedback.vercel.app
 
