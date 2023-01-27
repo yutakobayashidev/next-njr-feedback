@@ -1,6 +1,8 @@
 import "@src/styles/globals.css" // Tailwind CSS
 
 import { Inter } from "@next/font/google"
+import GoogleAnalytics from "@src/components/GoogleAnalytics"
+import usePageView from "@src/hooks/usePageView"
 import { NextPage } from "next"
 import type { AppProps } from "next/app"
 import { Session } from "next-auth"
@@ -20,8 +22,11 @@ type AppPropsWithLayout<P> = AppProps<P> & {
 export default function App({ Component, pageProps }: AppPropsWithLayout<{ session: Session }>) {
   const getLayout = Component.getLayout || ((page: any) => page)
 
+  usePageView()
+
   return (
     <>
+      <GoogleAnalytics />
       <SessionProvider session={pageProps.session}>
         {getLayout(
           <>
