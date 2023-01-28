@@ -16,7 +16,7 @@ const Page: NextPageWithLayout<Props> = ({ postData }) => {
   return (
     <>
       <MyPageSeo path={"/" + postData.id} title={postData.title} />
-      <div className="bg-slate-50 py-6 sm:py-8 lg:py-12">
+      <div className="bg-slate-50 py-6 px-4 sm:py-8 lg:py-12">
         <article className="mx-auto max-w-screen-md rounded-xl bg-white px-4 py-12 md:px-8">
           <h1 className="pb-12 text-center text-3xl font-bold">{postData.title}</h1>
           <div
