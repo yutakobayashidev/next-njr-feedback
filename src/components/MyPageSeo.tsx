@@ -8,7 +8,7 @@ export const MyPageSeo: React.FC<MyPageSeoProps> = (props) => {
     description = config.siteMeta.description,
     noindex,
     noTitleTemplate,
-    ogImagePath = "/default-og.png",
+    ogImagePath = "/ogimage.jpg",
     path,
   } = props
 
