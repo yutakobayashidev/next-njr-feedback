@@ -43,4 +43,4 @@ MacBookでIllustratorを使って図形ツールを使った時に、急にソ�
 
 ## 安全について
 
-安全が脅かされると感じる場面に遭遇した場合は Slack の[#njr_feedbackチャンネル](https://n-jr.slack.com/archives/C02AVRGFM33)、または主要開発者に DM を送信してください。できるだけ早期に対応します。
+安全が脅かされると感じる場面に遭遇した場合は Slack の[#njr_feedbackチャンネル](https://n-jr.slack.com/archives/C04LXFN1PGC)、または主要開発者に DM を送信してください。できるだけ早期に対応します。
