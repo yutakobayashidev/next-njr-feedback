@@ -1,9 +1,8 @@
-import "dayjs/locale/ja"
-
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import Knowledge from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
+import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { KnowledgeProps } from "@src/types"
@@ -24,7 +23,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     include: {
       contributors: {
         select: {
-          name: true,
+          displayname: true,
+          handle: true,
           image: true,
         },
       },
@@ -100,20 +100,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               </div>
             </div>
           ) : (
-            <div className="text-center">
-              <p className="text-xl font-bold">
-                ナレッジが存在しません。最初の作成者になってみませんか？
-              </p>
-              <p className="mt-10">
-                <img
-                  className="mx-auto"
-                  width="300"
-                  height="243"
-                  src="/not-content.svg"
-                  alt={"My App"}
-                />
-              </p>
-            </div>
+            <NotContent />
           )}
         </ContentWrapper>
       </section>

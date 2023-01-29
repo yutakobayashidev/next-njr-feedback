@@ -1,21 +1,21 @@
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
-import { User } from "@src/components/User"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { signIn, useSession } from "next-auth/react"
+import { useEffect } from "react"
 
 const Page: NextPageWithLayout = () => {
   const { data: session } = useSession()
 
-  if (session && session.user) {
-    return (
-      <>
-        <MyPageSeo path="/" title="ホーム" />
-        <User />
-      </>
-    )
-  }
+  const router = useRouter()
+
+  useEffect(() => {
+    if (session && session.user) {
+      router.push(`/knowledge`)
+    }
+  }, [session, router])
 
   return (
     <>
