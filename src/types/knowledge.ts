@@ -9,7 +9,9 @@ export type KnowledgeProps = {
   creator: {
     id: string
     name: string
+    displayname: string
     email: string
+    handle: string
     image: string
   }
   emoji: string
@@ -26,6 +28,8 @@ interface Course {
 interface Contributor {
   id: string
   name: string
+  displayname: string
   email: string
+  handle: string
   image: string
 }

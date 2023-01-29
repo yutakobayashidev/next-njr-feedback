@@ -8,7 +8,7 @@ import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod, KnowledgeProps } from "@src/types"
-import { getKnowledgeEditPath, getKnowledgePath } from "@src/utils/helper"
+import { getKnowledgeEditPath, getKnowledgePath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
@@ -43,8 +43,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       contributors: {
         select: {
           id: true,
-          name: true,
+          displayname: true,
           email: true,
+          handle: true,
           image: true,
         },
       },
@@ -57,6 +58,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       creator: {
         select: {
           id: true,
+          displayname: true,
+          handle: true,
           image: true,
         },
       },
@@ -178,13 +181,15 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     <span className="flex items-center">
                       {publishedAt ? (
                         <>
-                          <img
-                            src={creator.image}
-                            height={45}
-                            width={45}
-                            className="mr-2 rounded-full"
-                            alt={creator.name}
-                          ></img>
+                          <Link href={getUserpagePath(creator.handle)}>
+                            <img
+                              src={creator.image}
+                              height={45}
+                              width={45}
+                              className="mr-2 rounded-full"
+                              alt={creator.displayname}
+                            ></img>
+                          </Link>
                           <time
                             dateTime={dayjs(publishedAt).toISOString()}
                             className="mr-3 text-sm text-gray-700  lg:text-lg"
@@ -196,13 +201,15 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                         </>
                       ) : (
                         <>
-                          <img
-                            src={creator.image}
-                            height={45}
-                            width={45}
-                            className="mr-2 rounded-full"
-                            alt={creator.name}
-                          ></img>
+                          <Link href={getUserpagePath(creator.handle)}>
+                            <img
+                              src={creator.image}
+                              height={45}
+                              width={45}
+                              className="mr-2 rounded-full"
+                              alt={creator.displayname}
+                            ></img>
+                          </Link>
                           <span className="mr-3 text-sm text-gray-700  lg:text-lg">非公開</span>
                         </>
                       )}
@@ -271,21 +278,24 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                         key={contributor?.id}
                         className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
                       >
-                        <div>
+                        <Link href={getUserpagePath(contributor.handle)}>
                           <img
                             className="rounded-full border"
                             src={contributor.image}
                             height={"65"}
                             width={"65"}
-                            alt={contributor.name}
+                            alt={contributor.displayname}
                           ></img>
-                        </div>
+                        </Link>
                         <div className="ml-5">
                           <div>
-                            <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
-                              {contributor.name}
+                            <Link
+                              href={getUserpagePath(contributor.handle)}
+                              className="text-xl font-bold text-gray-800 line-clamp-1"
+                            >
+                              {contributor.displayname}
                               {contributor.email === session?.user?.email && " (あなた)"}
-                            </h2>
+                            </Link>
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
