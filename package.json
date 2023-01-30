@@ -37,7 +37,7 @@
     "react-textarea-autosize": "^8.4.0",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
-    "swr": "^2.0.2",
+    "swr": "^2.0.3",
     "textlint-filter-rule-comments": "^1.2.2",
     "twemoji": "^14.0.2",
     "twemoji-parser": "^14.0.0",
