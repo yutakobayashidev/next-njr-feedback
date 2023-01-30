@@ -1,5 +1,7 @@
+import "dayjs/locale/ja"
+
 import { KnowledgeProps } from "@src/types"
-import { getKnowledgePath } from "@src/utils/helper"
+import { getKnowledgePath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Link from "next/link"
@@ -13,7 +15,7 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
   return (
     <div
       key={post.id}
-      className="flex items-center justify-between p-3 [&:not(:first-child)]:border-t"
+      className="flex items-center justify-between bg-white p-3 [&:not(:first-child)]:border-t"
     >
       <div className="flex flex-1 items-start">
         <Link
@@ -28,6 +30,7 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
             className="text-xl font-bold text-gray-800 line-clamp-2"
           >
             {post.title ? post.title : "無題のナレッジ"}
+            {!post.published && " (非公開)"}
           </Link>
           <div className="mt-2 flex items-center">
             {post?.course.map((post) => (
@@ -47,18 +50,19 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
       <div className="hidden items-center md:flex">
         {post.contributors &&
           post.contributors.slice(0, 3).map((contributor, index) => (
-            <span
+            <Link
               key={contributor?.id}
+              href={getUserpagePath(contributor.handle)}
               style={index === 0 ? { zIndex: 3 } : { marginLeft: -15, zIndex: 3 - index }}
             >
               <img
-                alt={contributor.name}
+                alt={contributor.displayname}
                 className="rounded-full border"
                 height="45"
                 width="45"
                 src={contributor.image}
               ></img>
-            </span>
+            </Link>
           ))}
         <span className="ml-2 text-gray-600">
           {post.contributors.length <= 3

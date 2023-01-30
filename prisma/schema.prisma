@@ -84,7 +84,7 @@ model Course {
 
 model User {
   id            String    @id @default(cuid())
-  bio           String?   @db.VarChar(191)
+  bio           String?
   name          String?
   displayname   String?
   email         String?   @unique

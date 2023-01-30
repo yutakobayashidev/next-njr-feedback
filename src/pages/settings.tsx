@@ -13,6 +13,7 @@ const Page: NextPageWithLayout = () => {
 
   const [disabled, setDisabled] = useState(true)
   const [data, setData] = useState<UserSettings | null>(null)
+  const [publishing, setPublishing] = useState(false)
 
   const router = useRouter()
 
@@ -31,6 +32,7 @@ const Page: NextPageWithLayout = () => {
 
   async function saveSettings(data: UserSettings | null) {
     setDisabled(true)
+    setPublishing(true)
     const response = await fetch("/api/settings", {
       body: JSON.stringify({
         ...data,
@@ -39,10 +41,12 @@ const Page: NextPageWithLayout = () => {
     })
     if (response.status !== 200) {
       setDisabled(false)
+      setPublishing(false)
       const paas = await response.json()
       toast.error(paas.error.messsage)
     } else {
       setDisabled(false)
+      setPublishing(false)
       toast.success(`変更を保存しました`)
     }
   }
@@ -85,29 +89,34 @@ const Page: NextPageWithLayout = () => {
             }
           />
           <label className="my-4 flex items-center text-lg font-medium">
-            生徒番号<span className="ml-1 text-red-800">*</span>
+            ハンドル<span className="ml-1 text-red-800">*</span>
           </label>
           <p className="mb-4 text-gray-600">
-            生徒番号はあなたのユーザーページのURLで使用されます。通常は自動で設定されますが、間違いがあれば修正できます。
+            ハンドルはあなたのユーザーページのURLで使用されます。
           </p>
-          <input
-            type="text"
-            name="name"
-            placeholder={
-              session?.user?.email?.substring(
-                session?.user?.email?.indexOf("_") + 1,
-                session?.user?.email?.indexOf("@"),
-              ) || "生徒番号"
-            }
-            className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-            value={data?.handle || ""}
-            onInput={(e) =>
-              setData({
-                ...data,
-                handle: (e.target as HTMLTextAreaElement).value,
-              })
-            }
-          />
+          <div className="flex items-center gap-2">
+            <label className="my-4 flex items-center text-gray-500">
+              njr-feedback.vercel.app/users/
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder={
+                session?.user?.email?.substring(
+                  session?.user?.email?.indexOf("_") + 1,
+                  session?.user?.email?.indexOf("@"),
+                ) || "ハンドル"
+              }
+              className="w-full flex-1 resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+              value={data?.handle || ""}
+              onInput={(e) =>
+                setData({
+                  ...data,
+                  handle: (e.target as HTMLTextAreaElement).value,
+                })
+              }
+            />
+          </div>
           <label className="my-4 flex items-center text-lg font-medium">自己紹介</label>
           <TextareaAutosize
             name="name"
@@ -115,12 +124,13 @@ const Page: NextPageWithLayout = () => {
             placeholder="自己紹介..."
             className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
             value={data?.bio || ""}
-            onInput={(e) =>
+            onInput={(e) => {
+              const value = (e.target as HTMLTextAreaElement).value
               setData({
                 ...data,
-                bio: (e.target as HTMLTextAreaElement).value,
+                bio: value,
               })
-            }
+            }}
           />
         </div>
         <div className="m-4 text-center">
@@ -130,10 +140,10 @@ const Page: NextPageWithLayout = () => {
             }}
             disabled={disabled}
             className={`${
-              disabled ? "bg-n opacity-95" : "bg-n hover:opacity-90"
-            } h-12 w-36 rounded bg-n font-bold text-white`}
+              disabled ? "bg-gray-300 opacity-95" : "bg-n hover:opacity-90"
+            } h-12 w-36 rounded-md font-bold text-white`}
           >
-            更新する
+            {publishing ? "保存中..." : "更新する"}
           </button>
         </div>
       </div>
