@@ -44,11 +44,12 @@ const Page: NextPageWithLayout = () => {
             </span>
             Login With Google
           </button>
-          <p className="mt-4 text-base text-gray-500">
-            ( <Link href="/guideline">ガイドライン</Link>
-            に同意の上、<span className="font-medium">@n-jr.jp</span>
+          <p className="mt-4 text-sm text-gray-500">
+            ( <Link href="/guideline">ガイドライン</Link>と
+            <Link href="/privacy">プライバシーポリシー</Link>に同意の上、
+            <span className="font-medium">@n-jr.jp</span>
             または<span className="font-medium">@nnn.ac.jp</span>
-            を含むGoogleアカウントでログインしてください )
+            を含むアカウントでログインしてください )
           </p>
         </div>
       </section>

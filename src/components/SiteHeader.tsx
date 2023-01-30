@@ -244,9 +244,10 @@ export const SiteHeader: React.FC = () => {
                                   </button>
                                 </div>
                                 <div className="mx-auto mb-4">
-                                  <p className="mt-4 text-base text-gray-600">
-                                    ( <Link href="/guideline">ガイドライン</Link>
-                                    に同意の上、<span className="font-medium">@n-jr.jp</span>
+                                  <p className="mt-4 text-sm text-gray-600">
+                                    ( <Link href="/guideline">ガイドライン</Link>と
+                                    <Link href="/privacy">プライバシーポリシー</Link>に同意の上、
+                                    <span className="font-medium">@n-jr.jp</span>
                                     または<span className="font-medium">@nnn.ac.jp</span>
                                     を含むGoogleアカウントでログインしてください )
                                   </p>
