@@ -21,6 +21,10 @@ module.exports = {
       fontFamily: {
         inter: ["var(--font-inter)"],
       },
+      padding: {
+        slide: "56.25%",
+        slidet: "35px",
+      },
     },
   },
 }
