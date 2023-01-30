@@ -85,7 +85,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
           <h1 className="mb-5 font-inter text-4xl font-bold">Knowledge</h1>
           <p className="mb-5 text-lg text-gray-500">
             ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
-            <Link href="/guideline">ナレッジについて詳しく →</Link>
+            <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
           </p>
           {props.knowledge.length > 0 ? (
             <div className="overflow-hidden rounded-2xl border">
