@@ -117,7 +117,7 @@ export const SiteHeader: React.FC = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="https://n-jr.slack.com/archives/C04BQAHNVMM"
+                                  href={config.siteMeta.slack}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "flex items-center px-4 py-2 text-base text-gray-700",
