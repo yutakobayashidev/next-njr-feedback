@@ -45,7 +45,7 @@ export const SiteHeader: React.FC = () => {
       <header className="border-b border-gray-200 bg-white">
         <ContentWrapper>
           <div className="flex h-14 items-center justify-between">
-            <Link href="/" className="font-inter font-bold text-n">
+            <Link href="/" className="font-inter font-bold text-primary">
               {config.siteMeta.title}
             </Link>
             {status != "loading" && (
@@ -175,7 +175,7 @@ export const SiteHeader: React.FC = () => {
                             await createKnowledge()
                           }}
                           disabled={knowledge}
-                          className="ml-4 rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
+                          className="ml-4 rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
                         >
                           {knowledge ? "作成中..." : "+ New"}
                         </button>
@@ -185,7 +185,7 @@ export const SiteHeader: React.FC = () => {
                     <>
                       <button
                         onClick={() => setIsOpen(true)}
-                        className="rounded-md bg-n px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
+                        className="rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
                       >
                         Log in
                       </button>
@@ -222,7 +222,7 @@ export const SiteHeader: React.FC = () => {
                             >
                               <div className="relative my-8 inline-block w-full max-w-md overflow-hidden rounded-xl bg-white p-6 align-middle shadow-xl transition-all">
                                 <header>
-                                  <h3 className="mb-6 text-center text-2xl font-bold text-n">
+                                  <h3 className="mb-6 text-center text-2xl font-bold text-primary">
                                     {config.siteMeta.title}
                                   </h3>
                                   <div className="mx-auto">
