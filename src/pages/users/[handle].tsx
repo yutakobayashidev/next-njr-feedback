@@ -117,7 +117,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <div className="items-center justify-between py-10 md:flex">
             <div>
-              {displayname && image && (
+              {handle && image && (
                 <img
                   className="rounded-full"
                   width="120"
@@ -145,7 +145,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                 {bio ? (
                   <p>{bio}</p>
                 ) : session && session.user.handle === handle ? (
-                  <p>
+                  <p className="break-words">
                     自己紹介がありません。<Link href="/settings">アカウント設定</Link>
                     で追加してみましょう。
                   </p>

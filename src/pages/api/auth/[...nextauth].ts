@@ -40,7 +40,6 @@ export const authOptions: NextAuthOptions = {
       profile: (profile) => {
         return {
           id: profile.sub,
-          name: profile.name,
           displayname: profile.name,
           email: profile.email,
           handle:

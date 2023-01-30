@@ -9,7 +9,7 @@ export const SiteFooter: React.FC = () => {
         <div className="flex flex-col items-center pt-6">
           <nav className="mb-4 flex flex-col flex-wrap justify-center gap-x-4 gap-y-2 text-center md:flex-row md:justify-start md:gap-6 md:text-left">
             {config.footerLinks.map((link, i) => {
-              const key = `header-link-${i}`
+              const key = `footer-link-${i}`
               if (link.href.startsWith("/")) {
                 return (
                   <Link key={key} href={link.href} className="text-gray-700 hover:underline">

@@ -22,12 +22,39 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     })
   }
 
+  if (handle.length < 4 || handle.length > 15) {
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: "生徒番号は4文字以上15文字以下で入力してください",
+      },
+    })
+  }
+
+  if (displayname.length > 30) {
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: "表示名は30文字以内で入力してください",
+      },
+    })
+  }
+
+  if (bio.length > 160) {
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: "自己紹介は160文字以内で入力してください",
+      },
+    })
+  }
+
   const handleRegExp = /^[a-zA-Z0-9]+$/
   if (!handleRegExp.test(handle)) {
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ハンドルはアルファベットと数字のみが使用できます`,
+        messsage: `生徒番号には アルファベットと数字のみが使用できます`,
       },
     })
   }
