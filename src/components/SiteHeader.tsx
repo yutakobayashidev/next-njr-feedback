@@ -50,7 +50,6 @@ export const SiteHeader: React.FC = () => {
             </Link>
             {status != "loading" && (
               <>
-                {" "}
                 <div className="flex items-center">
                   {session && session.user && session.user.name && session.user.image ? (
                     <>
