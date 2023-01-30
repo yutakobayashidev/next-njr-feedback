@@ -58,7 +58,14 @@ const Page: NextPageWithLayout = () => {
         <ContentWrapper>
           <h2 className="mb-5 text-center font-inter text-4xl font-bold">See more.</h2>
           <p className="mx-auto mb-5 table text-lg text-gray-600">
-            2023年のN中等部のLT大会で発表したスライドです。
+            2023年のN中等部の
+            <a
+              href="https://nnn.ed.jp/course/commute_programming/curriculum/lt/"
+              className="text-gray-700 underline"
+            >
+              LT大会
+            </a>
+            で発表したスライドです。
           </p>
           <div className="mx-auto max-w-3xl">
             <div className="relative w-full pb-slide pt-slidet">
