@@ -61,7 +61,7 @@ const Page: NextPageWithLayout = () => {
             2023年のN中等部のLT大会で発表したスライドです。
           </p>
           <div className="mx-auto max-w-3xl">
-            <div className="slide relative w-full pb-slide pt-slidet">
+            <div className="relative w-full pb-slide pt-slidet">
               <iframe
                 src="https://docs.google.com/presentation/d/e/2PACX-1vSMHhi4FRH5gS5WdOjvgNR_JqI8YKqHSef1IeOL2WfYn9lDcr5uArdTuOOUfzVeKSZd38raU8DjJzzq/embed?start=false&loop=false&delayms=30000"
                 allowFullScreen={true}
