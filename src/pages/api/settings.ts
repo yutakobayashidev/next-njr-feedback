@@ -26,7 +26,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "生徒番号は4文字以上15文字以下で入力してください",
+        messsage: "ハンドルは4文字以上15文字以下で入力してください",
       },
     })
   }
@@ -54,7 +54,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `生徒番号にはアルファベットと数字のみが使用できます`,
+        messsage: `ハンドルにはアルファベットと数字のみが使用できます`,
       },
     })
   }
@@ -78,7 +78,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
         return res.status(400).json({
           error: {
             code: 400,
-            messsage: `この生徒番号は既に使用されています。`,
+            messsage: `このハンドルは既に使用されています。`,
           },
         })
       }

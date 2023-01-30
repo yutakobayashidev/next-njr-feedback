@@ -89,29 +89,34 @@ const Page: NextPageWithLayout = () => {
             }
           />
           <label className="my-4 flex items-center text-lg font-medium">
-            生徒番号<span className="ml-1 text-red-800">*</span>
+            ハンドル<span className="ml-1 text-red-800">*</span>
           </label>
           <p className="mb-4 text-gray-600">
-            生徒番号はあなたのユーザーページのURLで使用されます。通常は自動で設定されますが、間違いがあれば修正できます。英数字（文字A～Z、数字0～9）のみ使用できます。
+            ハンドルはあなたのユーザーページのURLで使用されます。
           </p>
-          <input
-            type="text"
-            name="name"
-            placeholder={
-              session?.user?.email?.substring(
-                session?.user?.email?.indexOf("_") + 1,
-                session?.user?.email?.indexOf("@"),
-              ) || "生徒番号"
-            }
-            className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-            value={data?.handle || ""}
-            onInput={(e) =>
-              setData({
-                ...data,
-                handle: (e.target as HTMLTextAreaElement).value,
-              })
-            }
-          />
+          <div className="flex items-center gap-2">
+            <label className="my-4 flex items-center text-gray-500">
+              njr-feedback.vercel.app/users/
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder={
+                session?.user?.email?.substring(
+                  session?.user?.email?.indexOf("_") + 1,
+                  session?.user?.email?.indexOf("@"),
+                ) || "ハンドル"
+              }
+              className="w-full flex-1 resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+              value={data?.handle || ""}
+              onInput={(e) =>
+                setData({
+                  ...data,
+                  handle: (e.target as HTMLTextAreaElement).value,
+                })
+              }
+            />
+          </div>
           <label className="my-4 flex items-center text-lg font-medium">自己紹介</label>
           <TextareaAutosize
             name="name"
