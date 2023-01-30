@@ -54,10 +54,10 @@ const Page: NextPageWithLayout = () => {
           </p>
         </div>
       </section>
-      <section className="bg-gray-50 py-12 text-center">
+      <section className="bg-gray-50 py-12">
         <ContentWrapper>
-          <h2 className="mb-5 font-inter text-4xl font-bold">See more.</h2>
-          <p className="mb-5 text-center text-lg text-gray-600">
+          <h2 className="mb-5 text-center font-inter text-4xl font-bold">See more.</h2>
+          <p className="mx-auto mb-5 table text-lg text-gray-600">
             2023年のN中等部のLT大会で発表したスライドです。
           </p>
           <div className="mx-auto max-w-3xl">
