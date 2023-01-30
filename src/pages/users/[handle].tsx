@@ -10,7 +10,7 @@ import dayjs from "dayjs"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { unstable_getServerSession } from "next-auth"
+import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { FaCode } from "react-icons/fa"
@@ -49,7 +49,7 @@ export type UserProps = {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     res.statusCode = 403

@@ -9,14 +9,14 @@ import { KnowledgeProps } from "@src/types"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { unstable_getServerSession } from "next-auth"
+import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import React, { useEffect } from "react"
 
 import { authOptions } from "../api/auth/[...nextauth]"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
   if (!session) {
     res.statusCode = 403
     return { props: { knowledge: [] } }
