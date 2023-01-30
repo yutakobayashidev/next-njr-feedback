@@ -54,7 +54,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `生徒番号には アルファベットと数字のみが使用できます`,
+        messsage: `生徒番号にはアルファベットと数字のみが使用できます`,
       },
     })
   }
