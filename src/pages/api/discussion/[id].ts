@@ -1,4 +1,4 @@
-import { getDiscussion } from "@src/lib/api/discussion"
+import { getDiscussion } from "@src/lib/api"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
