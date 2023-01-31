@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-a {
-  @apply text-blue-400;
+@layer base {
+  a {
+    @apply text-blue-400;
+  }
 }

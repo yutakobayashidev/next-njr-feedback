@@ -14,7 +14,7 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import Router, { useRouter } from "next/router"
-import { unstable_getServerSession } from "next-auth"
+import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { BsPencilFill } from "react-icons/bs"
@@ -31,7 +31,7 @@ import Picker from "@emoji-mart/react"
 */
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session) {
     res.statusCode = 403

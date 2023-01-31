@@ -140,7 +140,7 @@ const Page: NextPageWithLayout = () => {
             }}
             disabled={disabled}
             className={`${
-              disabled ? "bg-gray-300 opacity-95" : "bg-n hover:opacity-90"
+              disabled ? "bg-gray-300 opacity-95" : "bg-primary hover:opacity-90"
             } h-12 w-36 rounded-md font-bold text-white`}
           >
             {publishing ? "保存中..." : "更新する"}

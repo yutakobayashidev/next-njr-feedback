@@ -302,7 +302,7 @@ export default function Post() {
                           checked={data.archive}
                           onChange={() => setData({ ...data, archive: !data.archive })}
                           className={`${
-                            data.archive ? "bg-n" : "bg-gray-300"
+                            data.archive ? "bg-primary" : "bg-gray-300"
                           } relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                         >
                           <span className="sr-only">Use setting</span>
@@ -338,7 +338,7 @@ export default function Post() {
                     onClick={async () => {
                       await publish()
                     }}
-                    className="rounded-md bg-n px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out hover:opacity-90 focus:outline-none"
+                    className="rounded-md bg-primary px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out hover:opacity-90 focus:outline-none"
                   >
                     {data.published ? "更新する" : "公開する"}
                   </button>
@@ -392,7 +392,7 @@ export default function Post() {
 
                 <button
                   onClick={() => setIsOpen(true)}
-                  className="ml-4 rounded-md bg-n px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out focus:outline-none"
+                  className="ml-4 rounded-md bg-primary px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out focus:outline-none"
                 >
                   {data.published ? "更新する" : "公開する"}
                 </button>
