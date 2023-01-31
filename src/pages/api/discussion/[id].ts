@@ -1,9 +1,8 @@
 import { getDiscussion } from "@src/lib/api"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
-import { getServerSession } from "next-auth"
-
-import { authOptions } from "../auth/[...nextauth]"
+import { getServerSession } from "next-auth/next"
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
