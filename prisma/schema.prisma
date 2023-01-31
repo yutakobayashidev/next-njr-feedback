@@ -44,10 +44,10 @@ model Session {
 }
 
 model Discussion {
-  id            Int      @id @default(autoincrement())
+  id            String      @id @default(cuid())
   title         String
-  course        Int
-  body          String   @db.Text
+  status        Boolean @default(false)
+  content       String   @db.Text
   totalComments Int      @default(0)
   vote          Int      @default(0)
   createdAt     DateTime @default(now())

@@ -1,4 +1,5 @@
 export * from "./alert"
+export * from "./discussion"
 export * from "./http"
 export * from "./knowledge"
 export * from "./seo"

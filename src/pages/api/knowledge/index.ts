@@ -91,6 +91,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     res.status(201).json(knowledge)
   } else {
+    res.setHeader("Allow", [HttpMethod.POST, HttpMethod.GET])
     return res.status(400).json({
       error: {
         code: 400,
