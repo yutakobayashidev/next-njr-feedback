@@ -389,7 +389,6 @@ export default function Post() {
                     )}
                   </button>
                 )}
-
                 <button
                   onClick={() => setIsOpen(true)}
                   className="ml-4 rounded-md bg-primary px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out focus:outline-none"

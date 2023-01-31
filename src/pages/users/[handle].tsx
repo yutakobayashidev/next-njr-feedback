@@ -4,6 +4,7 @@ import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { KnowledgeProps } from "@src/types"
 import { getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -15,8 +16,6 @@ import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
-
-import { authOptions } from "../api/auth/[...nextauth]"
 
 interface TabProps {
   title: string

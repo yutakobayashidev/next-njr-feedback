@@ -5,6 +5,7 @@ import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
 import type { NextPageWithLayout } from "@src/pages/_app"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { KnowledgeProps } from "@src/types"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
@@ -12,8 +13,6 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import React, { useEffect } from "react"
-
-import { authOptions } from "../api/auth/[...nextauth]"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)

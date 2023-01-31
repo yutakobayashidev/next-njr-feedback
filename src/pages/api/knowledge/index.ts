@@ -1,11 +1,10 @@
 import prisma from "@src/lib/prisma"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import initEmojiRegex from "emoji-regex"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth/next"
 import { z } from "zod"
-
-import { authOptions } from "../auth/[...nextauth]"
 
 const pickRandomEmoji = () => {
   // prettier-ignore
