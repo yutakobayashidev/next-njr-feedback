@@ -9,11 +9,14 @@ const Page: NextPageWithLayout = () => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [isChecked, setIsChecked] = useState(false)
+  const [publishing, setPublishing] = useState(false)
 
   const router = useRouter()
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    setPublishing(true)
     try {
       const body = { title, content }
       const response = await fetch("/api/discussion", {
@@ -23,10 +26,12 @@ const Page: NextPageWithLayout = () => {
       })
 
       if (response.ok) {
+        setPublishing(false)
         const json = await response.json()
         await router.push(`/discussion/${json.id}`)
       }
     } catch (error) {
+      setPublishing(false)
       console.error(error)
     }
   }
@@ -80,7 +85,7 @@ const Page: NextPageWithLayout = () => {
                 type="submit"
                 className="inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
               >
-                + ページを作成
+                {publishing ? "作成中..." : "+ ページを作成"}
               </button>
             </div>
           </form>
