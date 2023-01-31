@@ -41,8 +41,7 @@ const Page: NextPageWithLayout = () => {
       <MyPageSeo
         path="/discussion/new"
         title="ナレッジを作成"
-        description="ディスカッションは、N中等部内の様々なシステムや制度などに関して
-議論するスペースです。"
+        description="ディスカッションは、N中等部内の様々なシステムや制度などに関して議論するスペースです。"
       />
       <div className="py-12">
         <div className="mx-auto max-w-screen-sm px-4 md:px-8">
