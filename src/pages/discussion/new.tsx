@@ -2,7 +2,8 @@ import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -12,6 +13,8 @@ const Page: NextPageWithLayout = () => {
   const [publishing, setPublishing] = useState(false)
 
   const router = useRouter()
+
+  const { data: session } = useSession()
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -34,6 +37,16 @@ const Page: NextPageWithLayout = () => {
       setPublishing(false)
       console.error(error)
     }
+  }
+
+  useEffect(() => {
+    if (!session && typeof session != "undefined") {
+      router.push(`/`)
+    }
+  }, [session, router])
+
+  if (!session) {
+    return <></>
   }
 
   return (
