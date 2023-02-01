@@ -127,7 +127,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
             </h2>
             <Link
               href="/discussion/new"
-              className="my-4 inline-block rounded-md bg-primary py-2 px-4 font-bold text-white hover:opacity-90"
+              className="my-4 inline-block rounded-md bg-primary py-3 px-6 font-bold text-white hover:opacity-90"
             >
               + 議論を作成
             </Link>
