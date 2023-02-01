@@ -1,7 +1,7 @@
 export type DiscussionProps = {
   id: string
-  title?: string
-  content?: string
+  title: string
+  content: string
   createdAt: string
   status: boolean
   updatedAt: string
