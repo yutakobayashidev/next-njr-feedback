@@ -58,6 +58,7 @@ const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ discussion 
               <TfiReload className="mr-1" />
               {dayjs(discussion.updatedAt).fromNow()}
             </span>
+            <span className="flex items-center text-gray-500">{discussion.views}</span>
           </div>
         </div>
       </div>
@@ -87,7 +88,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
         <ContentWrapper>
           <h3 className="mb-7 font-noto text-3xl font-bold">注目のある議論</h3>
           <p className="mb-5 text-lg text-gray-500">
-            現在アクティブの注目されているディスカッションです。
+            現在アクティブの注目されているディスカッションです。注目度はコメント数、ページビューなどによって決定されています。
           </p>
           {props.open.length > 0 ? (
             <div className="overflow-hidden rounded-lg border">
@@ -157,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
-        updatedAt: "desc",
+        views: "desc",
       },
     ],
     take: 10,

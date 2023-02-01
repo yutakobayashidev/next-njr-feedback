@@ -13,4 +13,5 @@ export type DiscussionProps = {
     handle: string
     image: string
   }
+  views: number
 }

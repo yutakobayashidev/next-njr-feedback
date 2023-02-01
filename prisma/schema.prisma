@@ -50,6 +50,7 @@ model Discussion {
   content       String   @db.Text
   totalComments Int      @default(0)
   vote          Int      @default(0)
+  views         Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        String
@@ -61,6 +62,7 @@ model Discussion {
 model Knowledge {
   id            String     @id @default(cuid())
   title         String?
+  views         Int      @default(0)
   emoji         String
   content       String?   @db.Text
   createdAt     DateTime @default(now())

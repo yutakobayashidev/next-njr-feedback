@@ -13,7 +13,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return getDiscussion(req, res, session)
     default:
       res.setHeader("Allow", [HttpMethod.GET])
-      return res.status(404).json({
+      return res.status(405).json({
         error: {
           messsage: `${req.method}メソッドはサポートされていません。`,
         },
