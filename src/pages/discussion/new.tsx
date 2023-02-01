@@ -72,7 +72,7 @@ const Page: NextPageWithLayout = () => {
               className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              placeholder="ディスカッションのタイトル"
+              placeholder="タイトル"
             />
             <label className="my-2 flex items-center text-base font-medium">概要</label>
             <TextareaAutosize
@@ -81,7 +81,7 @@ const Page: NextPageWithLayout = () => {
               className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
               onChange={(e) => setContent(e.target.value)}
               value={content}
-              placeholder="議論の概要を入力"
+              placeholder="ディスカッションの概要を入力"
             />
             <div className="my-3 flex items-center">
               <input
@@ -102,7 +102,7 @@ const Page: NextPageWithLayout = () => {
                 type="submit"
                 className="inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
               >
-                {publishing ? "作成中..." : "+ ページを作成"}
+                {publishing ? "作成中..." : "+ 議論を作成"}
               </button>
             </div>
           </form>

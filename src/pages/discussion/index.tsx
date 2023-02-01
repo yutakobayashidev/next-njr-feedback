@@ -86,7 +86,9 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <section className="bg-gray-50 py-10">
         <ContentWrapper>
           <h3 className="mb-7 font-noto text-3xl font-bold">注目のある議論</h3>
-          <p className="mb-5 text-lg text-gray-500">現在アクティブの注目されている議論です。</p>
+          <p className="mb-5 text-lg text-gray-500">
+            現在アクティブの注目されているディスカッションです。
+          </p>
           {props.open.length > 0 ? (
             <div className="overflow-hidden rounded-lg border">
               {props.open.map((discussion) => (
@@ -101,7 +103,9 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <section className="bg-white py-10">
         <ContentWrapper>
           <h3 className="mb-7 font-noto text-3xl font-bold">アーカイブされた議論</h3>
-          <p className="mb-5 text-lg text-gray-500">解決済み・または終了した議論の一覧です。</p>
+          <p className="mb-5 text-lg text-gray-500">
+            解決済み・または終了したディスカッションです。
+          </p>
           {props.archive.length > 0 ? (
             <div className="overflow-hidden rounded-lg border">
               {props.archive.map((discussion) => (
@@ -116,12 +120,16 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <section className="py-10">
         <ContentWrapper>
           <div className="text-center">
-            <h2 className="text-xl font-bold">見つかりませんでしたか？作成しましょう</h2>
+            <h2 className="text-xl font-bold">
+              見つかりませんでしたか？
+              <br className="block md:hidden" />
+              作成しましょう
+            </h2>
             <Link
               href="/discussion/new"
               className="my-4 inline-block rounded-md bg-primary py-2 px-4 font-bold text-white hover:opacity-90"
             >
-              + 新規作成
+              + 議論を作成
             </Link>
           </div>
         </ContentWrapper>
