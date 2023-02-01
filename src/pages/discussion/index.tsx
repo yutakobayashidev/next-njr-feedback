@@ -23,7 +23,7 @@ dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
 type Props = {
-  archive: DiscussionProps[]
+  latest: DiscussionProps[]
   open: DiscussionProps[]
 }
 
@@ -86,7 +86,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <MyPageSeo path="/discussion" title="ディスカッション" />
       <section className="bg-gray-50 py-10">
         <ContentWrapper>
-          <h3 className="mb-7 text-3xl font-bold">注目のある議論</h3>
+          <h3 className="mb-7 text-3xl font-bold">🔥 注目のある議論</h3>
           <p className="mb-5 text-lg text-gray-500">
             現在アクティブの注目されているディスカッションです。注目度はコメント数、ページビューなどによって決定されています。
           </p>
@@ -103,13 +103,11 @@ const Page: NextPageWithLayout<Props> = (props) => {
       </section>
       <section className="bg-white py-10">
         <ContentWrapper>
-          <h3 className="mb-7 text-3xl font-bold">アーカイブされた議論</h3>
-          <p className="mb-5 text-lg text-gray-500">
-            解決済み・または終了したディスカッションです。
-          </p>
-          {props.archive.length > 0 ? (
+          <h3 className="mb-7 text-3xl font-bold">🚀 最近作成された議論</h3>
+          <p className="mb-5 text-lg text-gray-500">最近作成されたディスカッションです。</p>
+          {props.latest.length > 0 ? (
             <div className="overflow-hidden rounded-lg border">
-              {props.archive.map((discussion) => (
+              {props.latest.map((discussion) => (
                 <DiscussionCard key={discussion.id} discussion={discussion} />
               ))}
             </div>
@@ -181,19 +179,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
-        updatedAt: "desc",
+        createdAt: "desc",
       },
     ],
     take: 10,
     where: {
-      status: true,
+      status: false,
     },
   })
 
-  const archive = JSON.parse(JSON.stringify(archivedata))
+  const latest = JSON.parse(JSON.stringify(archivedata))
 
   return {
-    props: { archive, open },
+    props: { latest, open },
   }
 }
 
