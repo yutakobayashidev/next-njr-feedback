@@ -56,7 +56,7 @@ const Page: NextPageWithLayout = () => {
               </span>
             </div>
             <div className="flex items-center">
-              <Link href={"/users" + discussion?.user?.handle}>
+              <Link href={"/users/" + discussion?.user?.handle}>
                 <img
                   src={discussion?.user?.image}
                   alt={discussion?.user?.displayname}
