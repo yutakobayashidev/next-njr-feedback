@@ -81,7 +81,7 @@ const Page: NextPageWithLayout = () => {
               className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
               onChange={(e) => setContent(e.target.value)}
               value={content}
-              placeholder="概要を入力"
+              placeholder="議論の概要を入力"
             />
             <div className="my-3 flex items-center">
               <input
