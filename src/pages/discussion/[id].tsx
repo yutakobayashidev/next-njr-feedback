@@ -36,6 +36,10 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     }
   }, [id, session])
 
+  if (!session) {
+    return null
+  }
+
   return (
     <>
       <MyPageSeo path={getDiscussionPath(id)} title={title} />

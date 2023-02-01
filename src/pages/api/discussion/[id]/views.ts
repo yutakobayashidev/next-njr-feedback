@@ -9,9 +9,27 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   const { id } = req.query
 
-  if (!session) return res.status(400).json({ error: { messsage: "ログインしてください" } })
+  if (!id || typeof id !== "string" || !session?.user?.id) {
+    return res.status(400).json({
+      error: {
+        code: 400,
+        messsage: `ディスカッションIDまたはセッションが見つかりませんでした`,
+      },
+    })
+  }
+
+  const data = await prisma.discussion.findUnique({ where: { id } })
 
   if (req.method === HttpMethod.POST) {
+    if (session.user.id == data?.userId) {
+      return res.status(500).json({
+        error: {
+          code: 500,
+          messsage: `この操作は許可されていません`,
+        },
+      })
+    }
+
     const response = await prisma.discussion.update({
       data: { views: { increment: 1 } },
       where: { id: String(id) },
