@@ -17,8 +17,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return updatePost(req, res, session)
     default:
       res.setHeader("Allow", [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT])
-      return res.status(404).json({
+      return res.status(405).json({
         error: {
+          code: 405,
           messsage: `${req.method}メソッドはサポートされていません。`,
         },
       })

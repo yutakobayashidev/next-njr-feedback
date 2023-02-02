@@ -91,9 +91,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     res.status(201).json(knowledge)
   } else {
-    return res.status(400).json({
+    res.setHeader("Allow", [HttpMethod.POST, HttpMethod.GET])
+    return res.status(405).json({
       error: {
-        code: 400,
+        code: 405,
         messsage: `${req.method}メソッドはサポートされていません。`,
       },
     })
