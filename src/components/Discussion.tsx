@@ -1,3 +1,5 @@
+import "dayjs/locale/ja"
+
 import { DiscussionProps } from "@src/types"
 import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"

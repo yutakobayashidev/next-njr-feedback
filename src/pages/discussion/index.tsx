@@ -1,5 +1,3 @@
-import "dayjs/locale/ja"
-
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { DiscussionCard } from "@src/components/Discussion"
 import { Layout } from "@src/components/Layout"
