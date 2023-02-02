@@ -17,12 +17,6 @@ export const authOptions: NextAuthOptions = {
         handle: user.handle,
       },
     }),
-    async signIn({ account, profile }) {
-      if (account && account.provider === "google" && profile && profile.email) {
-        return profile.email.endsWith("@n-jr.jp") || profile.email.endsWith("@nnn.ac.jp")
-      }
-      return true
-    },
   },
   debug: process.env.VERCEL_ENV ? false : true,
   pages: {
@@ -40,13 +34,12 @@ export const authOptions: NextAuthOptions = {
       profile: (profile) => {
         return {
           id: profile.sub,
+          name: profile.name,
           displayname: profile.name,
           email: profile.email,
           handle:
-            profile.hd == "n-jr.jp"
+            profile.email.endsWith("@n-jr.jp") && profile.email.split("@")[0].indexOf("njr") != -1
               ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
-              : profile.hd == "nnn.ac.jp"
-              ? profile.email.split("@")[0]
               : profile.sub,
           image: profile.picture,
         }
