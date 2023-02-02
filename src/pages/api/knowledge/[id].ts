@@ -6,7 +6,10 @@ import { getServerSession } from "next-auth/next"
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
-  if (!session) return res.status(400).json({ error: { messsage: "ログインしてください" } })
+  if (!session)
+    return res.status(401).json({
+      error: { code: 401, messsage: "ログインしてください" },
+    })
 
   switch (req.method) {
     case HttpMethod.GET:
@@ -17,8 +20,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return updatePost(req, res, session)
     default:
       res.setHeader("Allow", [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT])
-      return res.status(404).json({
+      return res.status(405).json({
         error: {
+          code: 405,
           messsage: `${req.method}メソッドはサポートされていません。`,
         },
       })

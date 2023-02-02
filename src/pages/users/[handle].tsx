@@ -1,4 +1,4 @@
-import Knowledge from "@src/components/Knowledge"
+import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
@@ -183,7 +183,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
           <div className="mx-auto max-w-screen-lg px-4 md:px-8">
             <div className="overflow-hidden rounded-2xl border">
               {knowledge.map((post) => (
-                <Knowledge post={post} key={post.id} />
+                <Knowledge knowledge={post} key={post.id} />
               ))}
             </div>
           </div>
