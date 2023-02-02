@@ -6,7 +6,10 @@ import { getServerSession } from "next-auth/next"
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
-  if (!session) return res.status(400).json({ error: { messsage: "ログインしてください" } })
+  if (!session)
+    return res.status(400).json({
+      error: { code: 401, messsage: "ログインしてください" },
+    })
 
   switch (req.method) {
     case HttpMethod.GET:
