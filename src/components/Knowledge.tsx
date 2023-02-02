@@ -11,47 +11,45 @@ import { TfiReload } from "react-icons/tfi"
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
-const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
+export const Knowledge: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledge }) => {
   return (
-    <div
-      key={post.id}
-      className="flex items-center justify-between bg-white p-3 [&:not(:first-child)]:border-t"
-    >
+    <div className="flex items-center justify-between bg-white p-3 [&:not(:first-child)]:border-t">
       <div className="flex flex-1 items-start">
         <Link
-          href={getKnowledgePath(post.id)}
+          href={getKnowledgePath(knowledge.id)}
           className="mr-4 flex h-16 w-16 items-center justify-center rounded-lg bg-gray-100 text-4xl"
         >
-          <span>{post.emoji}</span>
+          <span>{knowledge.emoji}</span>
         </Link>
         <div className="w-[calc(100%-100px)]">
           <Link
-            href={getKnowledgePath(post.id)}
+            href={getKnowledgePath(knowledge.id)}
             className="text-xl font-bold text-gray-800 line-clamp-2"
           >
-            {post.title ? post.title : "無題のナレッジ"}
-            {!post.published && " (非公開)"}
+            {knowledge.title ? knowledge.title : "無題のナレッジ"}
+            {!knowledge.published && " (非公開)"}
           </Link>
           <div className="mt-2 flex items-center">
-            {post?.course.map((post) => (
-              <>
-                <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                  {post.name}
-                </span>
-              </>
+            {knowledge?.course.map((course) => (
+              <span
+                key={course.id}
+                className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course"
+              >
+                {course.name}
+              </span>
             ))}
             <span className="flex items-center text-gray-500">
               <TfiReload className="mr-1" />
-              {dayjs(post.updatedAt).fromNow()}
+              {dayjs(knowledge.updatedAt).fromNow()}
             </span>
           </div>
         </div>
       </div>
       <div className="hidden items-center md:flex">
-        {post.contributors &&
-          post.contributors.slice(0, 3).map((contributor, index) => (
+        {knowledge.contributors &&
+          knowledge.contributors.slice(0, 3).map((contributor, index) => (
             <Link
-              key={contributor?.id}
+              key={`knowledge-item-${index}`}
               href={getUserpagePath(contributor.handle)}
               style={index === 0 ? { zIndex: 3 } : { marginLeft: -15, zIndex: 3 - index }}
             >
@@ -65,13 +63,11 @@ const Knowledge: React.FC<{ post: KnowledgeProps }> = ({ post }) => {
             </Link>
           ))}
         <span className="ml-2 text-gray-600">
-          {post.contributors.length <= 3
+          {knowledge.contributors.length <= 3
             ? "さんらが貢献"
-            : "+" + (post.contributors.length - 3) + "人が貢献"}
+            : "+" + (knowledge.contributors.length - 3) + "人が貢献"}
         </span>
       </div>
     </div>
   )
 }
-
-export default Knowledge
