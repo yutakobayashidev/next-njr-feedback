@@ -81,7 +81,7 @@ const Page: NextPageWithLayout = () => {
         <div className="mx-auto max-w-screen-sm px-4 md:px-8">
           {submitted ? (
             <>
-              <h1 className="mb-4 text-center text-4xl font-bold">送信に成功しました</h1>
+              <h1 className="mb-4 text-center text-4xl font-bold">送信が完了しました</h1>
               <p className="mb-6 leading-7 text-gray-500">
                 報告いただきありがとうございます。運営チームは、適切な対応を行います。なお、対応に関して返信に時間がかかる場合や返信ができない場合がありますので、ご了承いただけますようお願い申し上げます。返信内容は、あなたのメールアドレス
                 ({session?.user.email}) にお送りいたします。
