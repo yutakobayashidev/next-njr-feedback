@@ -32,8 +32,8 @@ module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   const { content, slackname, url } = req.body
 
   if (!content || !slackname || !url)
-    return res.status(401).json({
-      error: { code: 401, messsage: "必須項目が入力されていません" },
+    return res.status(400).json({
+      error: { code: 400, messsage: "必須項目が入力されていません" },
     })
 
   if (!z.string().url().safeParse(url).success) {
