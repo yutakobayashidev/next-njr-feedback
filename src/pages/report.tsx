@@ -62,7 +62,11 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <>
-      <MyPageSeo path="/report" title="違反を報告" />
+      <MyPageSeo
+        path="/report"
+        title="違反を報告"
+        description="ガイドラインに違反するコンテンツを見つけた・安全が脅かされると感じる場面などに遭遇した場合はこちらのフォームでご報告ください。"
+      />
       <Toaster
         position="bottom-right"
         toastOptions={{
