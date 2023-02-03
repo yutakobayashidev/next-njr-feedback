@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
 import { z } from "zod"
 
-module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
 
   if (!session)
