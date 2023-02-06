@@ -83,7 +83,7 @@ const Page: NextPage = () => {
               ようこそ！まずはプロフィールを作成しましょう。
               Slackと同じユーザー情報を使用することをおすすめします。
             </p>
-            <img src="/profile.jpg" alt="Profile" className="mx-auto mb-5" width={500} />
+            <img src="/profile.png" alt="Profile" className="mx-auto mb-5" width={500} />
             <div>
               <label className="text-2xl font-bold">表示名</label>
               <input
