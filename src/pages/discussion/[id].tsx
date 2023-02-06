@@ -1,11 +1,11 @@
 import "dayjs/locale/ja"
 
 import { CommentCard } from "@src/components/Comment"
+import { CommentSidebar } from "@src/components/CommentSideber"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
-import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
@@ -20,21 +20,15 @@ import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { Fragment, useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
-import { AiOutlineCheck, AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
+import { AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
 import { BsPencil } from "react-icons/bs"
-import { FaRegComment } from "react-icons/fa"
 import TextareaAutosize from "react-textarea-autosize"
-import useSWR from "swr"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
-interface SitediscussionData {
-  data: Array<DiscussionProps>
-}
-
 const Page: NextPageWithLayout<DiscussionProps> = (props) => {
-  const { id, title, archive, archived_at, comments, content, updatedAt, user, views } = props
+  const { id, title, archive, comments, content, updatedAt, user, views } = props
   const { data: session } = useSession()
 
   const router = useRouter()
@@ -47,31 +41,6 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     // Set initial value to no-prefix and comment's content.
     if (title) setTitle(title)
   }, [title])
-
-  const { data } = useSWR<SitediscussionData>(router.isReady && `/api/discussion`, fetcher)
-  async function status(archive: boolean) {
-    try {
-      const response = await fetch(`/api/discussion/${id}`, {
-        body: JSON.stringify({
-          archive: archive,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: HttpMethod.PUT,
-      })
-
-      if (response.status !== 200) {
-        const paas = await response.json()
-
-        toast.error(paas.error.messsage)
-      } else {
-        router.replace(router.asPath)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   async function postcomments() {
     try {
@@ -303,97 +272,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 </div>
               </div>
             </div>
-            <div className="flex-1 p-4">
-              {user.id == session.user.id && (
-                <>
-                  {archive ? (
-                    <div className="mb-4 flex items-center justify-between">
-                      {archived_at && (
-                        <span className="mr-1">
-                          {dayjs(archived_at).format("YYYY/MM/DD")}にアーカイブ
-                        </span>
-                      )}
-                      <button
-                        className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-gray-50 py-2 px-4 text-center font-bold shadow-md"
-                        onClick={async () => {
-                          await status(false)
-                        }}
-                      >
-                        <AiOutlineCheck className="mr-2 text-gray-600" />
-                        再オープン
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      className="mb-4 inline-flex w-full items-center justify-center rounded-md border border-gray-300 bg-gray-50 py-3 px-6 text-center font-bold shadow-md"
-                      onClick={async () => {
-                        await status(true)
-                      }}
-                    >
-                      <AiOutlineCheck className="mr-2 text-gray-600" />
-                      アーカイブする
-                    </button>
-                  )}
-                </>
-              )}
-              <h4 className="text-2xl font-bold">新しく作成された議論</h4>
-              <p className="my-2 text-gray-500">最近作成されたアーカイブされていない議論の一覧</p>
-              <div className="my-4">
-                {data && data?.data.length > 0 ? (
-                  <>
-                    {data?.data.map((post) => (
-                      <div key={post.id}>
-                        <div className="my-2 flex items-center">
-                          <Link href={getUserpagePath(post.user.handle)}>
-                            <img
-                              src={post.user.image}
-                              alt={post.user.displayname}
-                              height={30}
-                              width={30}
-                              className="mr-1 rounded-full"
-                            />
-                          </Link>
-                          <Link href={getUserpagePath(post.user.handle)}>
-                            <span className="mr-2 text-xs font-bold text-gray-800 ">
-                              {post.user.displayname}
-                            </span>
-                          </Link>
-                          <span className="text-xs font-bold text-gray-400">投稿</span>
-                        </div>
-                        <Link
-                          href={getDiscussionPath(post.id)}
-                          className="text-base font-bold leading-7 text-gray-800 line-clamp-3"
-                        >
-                          {post.title}
-                        </Link>
-                        <span className="mt-2 flex items-center text-gray-600">
-                          <FaRegComment className="mr-1" size={17} />
-                          {post._count.comments} comments
-                        </span>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <NotContent />
-                )}
-              </div>
-              {/*
-              <h4 className="font-inter text-3xl font-bold">Top Contributors</h4>
-              <p className="my-2 text-gray-500">最も多く貢献したユーザーです。</p>
-              <div className="my-4">
-                <Link href={getUserpagePath("yuta")} className="flex items-center">
-                  <img
-                    height={40}
-                    width={40}
-                    className="mr-2 rounded-full"
-                    src="https://lh3.googleusercontent.com/a/AEdFTp7CJbDs6e2z5NtruYwrWD_nhPBInFvCDq-Zo6Nf=s96-c"
-                    alt={session.user.name}
-                  ></img>
-                  <span className="font-inter font-bold text-gray-800">Yuta Kobayashi</span>
-                </Link>
-              </div>
-            */}
-            </div>
+            <CommentSidebar props={props} session={session} />
           </div>
         </ContentWrapper>
       </div>
