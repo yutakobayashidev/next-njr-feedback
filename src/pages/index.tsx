@@ -85,15 +85,9 @@ const Page: NextPageWithLayout<Props> = (props) => {
               <h3 className="mb-7 text-3xl font-bold">📚 よく見られているナレッジ</h3>
               {props.knowledge.length > 0 ? (
                 <div className="overflow-hidden rounded-lg border">
-                  <div className="flex bg-gray-100 p-3 font-bold">
-                    <span className="mr-1 ">✨</span>
-                    <span>最近更新されたナレッジ</span>
-                  </div>
-                  <div className="border-t">
-                    {props.knowledge.map((knowledge) => (
-                      <Knowledge knowledge={knowledge} key={knowledge.id} />
-                    ))}
-                  </div>
+                  {props.knowledge.map((knowledge) => (
+                    <Knowledge knowledge={knowledge} key={knowledge.id} />
+                  ))}
                 </div>
               ) : (
                 <NotContent />
