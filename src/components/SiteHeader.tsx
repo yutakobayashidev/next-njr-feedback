@@ -227,7 +227,9 @@ export const SiteHeader: React.FC = () => {
                                   </h3>
                                   <div className="mx-auto">
                                     <p className="mb-3 text-gray-600">
-                                      <span className="text-lg font-bold">Next NJR Feedback</span>
+                                      <span className="text-lg font-bold">
+                                        {config.siteMeta.title}
+                                      </span>
                                       はN中等部の生徒、メンター・TAが使用できる議論&ナレッジ共有プラットフォームです。
                                     </p>
                                   </div>
