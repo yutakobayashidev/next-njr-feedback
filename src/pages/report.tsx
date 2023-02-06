@@ -113,7 +113,7 @@ const Page: NextPageWithLayout = () => {
                   あなたのSlack名
                 </label>
                 <input
-                  name="title"
+                  name="name"
                   className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                   placeholder={session?.user.displayname || "N中太郎"}
                   onChange={(e) => setSlackName(e.target.value)}
