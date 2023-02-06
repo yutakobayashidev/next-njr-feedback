@@ -5,7 +5,7 @@ import { HttpMethod, UserSettings } from "@src/types"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -59,16 +59,6 @@ const Page: NextPageWithLayout = () => {
   return (
     <>
       <MyPageSeo path="/settings" title="アカウント設定" />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       <div className="mx-auto mt-10 max-w-screen-md px-4 md:px-8">
         <h1 className="text-center text-4xl font-bold">アカウント設定</h1>
         <div className="mt-10">

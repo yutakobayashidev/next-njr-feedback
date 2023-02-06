@@ -19,7 +19,7 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { Fragment, useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
 import { BsPencil } from "react-icons/bs"
 import TextareaAutosize from "react-textarea-autosize"
@@ -110,16 +110,6 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   return (
     <>
       <MyPageSeo path={getDiscussionPath(id)} title={title} />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       <div className="py-16">
         <ContentWrapper>
           <div className="block md:flex md:items-start">

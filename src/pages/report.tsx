@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -66,16 +66,6 @@ const Page: NextPageWithLayout = () => {
         path="/report"
         title="違反を報告"
         description="ガイドラインに違反するコンテンツを見つけた・安全が脅かされると感じる場面などに遭遇した場合はこちらのフォームでご報告ください。"
-      />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
       />
       <div className="py-12">
         <div className="mx-auto max-w-screen-sm px-4 md:px-8">

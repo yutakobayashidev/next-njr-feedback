@@ -29,13 +29,13 @@ export const SiteFooter: React.FC = () => {
               href={config.siteMeta.slack}
               className="text-gray-400 transition duration-100 hover:text-gray-500"
             >
-              <FaSlack size={24} />
+              <FaSlack size={24} aria-label="Slack" />
             </a>
             <a
               href={config.siteMeta.repository}
               className="text-gray-400 transition duration-100 hover:text-gray-500"
             >
-              <FaGithub size={24} />
+              <FaGithub size={24} aria-label="GitHub" />
             </a>
           </div>
         </div>
