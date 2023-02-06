@@ -30,7 +30,7 @@ export async function getKnowledge(
         contributors: {
           select: {
             id: true,
-            name: true,
+            displayname: true,
             email: true,
             image: true,
           },
