@@ -1,3 +1,4 @@
+import { config } from "@site.config"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
@@ -72,6 +73,7 @@ const Page: NextPageWithLayout = () => {
               <iframe
                 src="https://docs.google.com/presentation/d/e/2PACX-1vSMHhi4FRH5gS5WdOjvgNR_JqI8YKqHSef1IeOL2WfYn9lDcr5uArdTuOOUfzVeKSZd38raU8DjJzzq/embed?start=false&loop=false&delayms=30000"
                 allowFullScreen={true}
+                title={config.siteMeta.title + "  議論&ナレッジ共有プラットフォームの開発"}
                 className="absolute inset-y-0 h-full w-full border-0"
               />
             </div>
