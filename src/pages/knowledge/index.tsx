@@ -1,5 +1,5 @@
 import { ContentWrapper } from "@src/components/ContentWrapper"
-import Knowledge from "@src/components/Knowledge"
+import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
@@ -90,14 +90,14 @@ const Page: NextPageWithLayout<Props> = (props) => {
             <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
           </p>
           {props.knowledge.length > 0 ? (
-            <div className="overflow-hidden rounded-2xl border">
+            <div className="overflow-hidden rounded-lg border">
               <div className="flex bg-gray-100 p-3 font-bold">
                 <span className="mr-1 ">✨</span>
                 <span>最近更新されたナレッジ</span>
               </div>
               <div className="border-t">
-                {props.knowledge.map((post) => (
-                  <Knowledge post={post} key={post.id} />
+                {props.knowledge.map((knowledge) => (
+                  <Knowledge knowledge={knowledge} key={knowledge.id} />
                 ))}
               </div>
             </div>
