@@ -8,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
-import toast from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 import { AiOutlineCheck } from "react-icons/ai"
 import { HiTrash } from "react-icons/hi"
 import { IoArrowBackOutline } from "react-icons/io5"
@@ -172,6 +172,16 @@ export default function Post() {
 
   return (
     <>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 10000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
           <Transition.Child
