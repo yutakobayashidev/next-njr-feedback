@@ -8,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { AiOutlineCheck } from "react-icons/ai"
 import { HiTrash } from "react-icons/hi"
 import { IoArrowBackOutline } from "react-icons/io5"
@@ -395,16 +395,6 @@ export default function Post() {
                 >
                   {data.published ? "更新する" : "公開する"}
                 </button>
-                <Toaster
-                  position="bottom-right"
-                  toastOptions={{
-                    duration: 10000,
-                    style: {
-                      background: "#363636",
-                      color: "#fff",
-                    },
-                  }}
-                />
               </div>
             </div>
           </div>
