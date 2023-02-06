@@ -78,12 +78,14 @@ const Page: NextPage = () => {
       ) : (
         <>
           <div className="my-24 mx-auto max-w-screen-sm px-4 md:px-8">
-            <h1 className="mb-8 text-center font-inter text-5xl font-bold">Welcome!</h1>
-            <p className="text-base text-gray-600">
-              ようこそ！まずはプロフィールを作成しましょう。
-              Slackと同じユーザー情報を使用することをおすすめします。
-            </p>
-            <img src="/profile.png" alt="Profile" className="mx-auto mb-5" width={500} />
+            <div className="text-center">
+              <h1 className="mb-8 font-inter text-5xl font-bold">Welcome!</h1>
+              <p className="text-base text-gray-600">
+                まずはプロフィールを作成しましょう。
+                Slackと同じユーザー情報を使用することをおすすめします。
+              </p>
+              <img src="/profile.png" alt="Profile" className="mx-auto my-8" width={500} />
+            </div>
             <div>
               <label className="text-2xl font-bold">表示名</label>
               <input
