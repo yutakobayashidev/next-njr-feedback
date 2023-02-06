@@ -117,15 +117,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         views: "desc",
       },
     ],
-    take: 10,
+    take: 5,
     where: {
-      status: false,
+      archive: false,
     },
   })
 
   const open = JSON.parse(JSON.stringify(opendata))
 
-  const archivedata = await prisma.discussion.findMany({
+  const latestdata = await prisma.discussion.findMany({
     include: {
       user: {
         select: {
@@ -142,11 +142,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     ],
     take: 10,
     where: {
-      status: false,
+      archive: false,
     },
   })
 
-  const latest = JSON.parse(JSON.stringify(archivedata))
+  const latest = JSON.parse(JSON.stringify(latestdata))
 
   return {
     props: { latest, open },

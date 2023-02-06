@@ -1,9 +1,16 @@
+import { CommentProps } from "@src/types/comment"
+
 export type DiscussionProps = {
   id: string
   title: string
+  _count: {
+    comments: number
+  }
+  archive: boolean
+  archived_at: string
+  comments: CommentProps[]
   content: string
   createdAt: string
-  status: boolean
   updatedAt: string
   user: {
     id: string

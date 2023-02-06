@@ -1,4 +1,4 @@
-import { getDiscussion } from "@src/lib/api"
+import { getDiscussion, updateDiscussion } from "@src/lib/api"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -14,8 +14,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   switch (req.method) {
     case HttpMethod.GET:
       return getDiscussion(req, res, session)
+    case HttpMethod.PUT:
+      return updateDiscussion(req, res, session)
     default:
-      res.setHeader("Allow", [HttpMethod.GET])
+      res.setHeader("Allow", [HttpMethod.GET, HttpMethod.PUT])
       return res.status(405).json({
         error: {
           code: 405,

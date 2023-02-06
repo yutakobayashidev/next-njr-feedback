@@ -31,6 +31,9 @@ export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ disc
             {discussion.title}
           </Link>
           <div className="mt-2 flex items-center">
+            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+              {discussion.archive ? "Archive" : "Open"}
+            </span>
             <Link
               href={getUserpagePath(discussion.user.handle)}
               className="mr-2 text-gray-800 hover:underline"
