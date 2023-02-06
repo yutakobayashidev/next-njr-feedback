@@ -43,7 +43,7 @@
     "textlint-filter-rule-comments": "^1.2.2",
     "twemoji": "^14.0.2",
     "twemoji-parser": "^14.0.0",
-    "typescript": "4.9.4",
+    "typescript": "4.9.5",
     "zod": "^3.20.2"
   },
   "devDependencies": {
