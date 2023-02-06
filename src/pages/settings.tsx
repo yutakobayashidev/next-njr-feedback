@@ -1,3 +1,4 @@
+import { config } from "@site.config"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import type { NextPageWithLayout } from "@src/pages/_app"
@@ -85,9 +86,7 @@ const Page: NextPageWithLayout = () => {
             ハンドルはあなたのユーザーページのURLで使用されます。
           </p>
           <div className="flex items-center gap-2">
-            <label className="my-4 flex items-center text-gray-500">
-              njr-feedback.vercel.app/users/
-            </label>
+            <label className="my-4 flex items-center text-gray-500">{config.siteRoot}/users/</label>
             <input
               type="text"
               name="name"
