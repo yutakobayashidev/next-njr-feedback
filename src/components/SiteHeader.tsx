@@ -1,6 +1,7 @@
 import { Dialog, Menu, Transition } from "@headlessui/react"
 import { config } from "@site.config"
 import { ContentWrapper } from "@src/components/ContentWrapper"
+import GoogleLogin from "@src/components/GoogleLogin"
 import { getKnowledgeEditPath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -9,8 +10,6 @@ import { Fragment, useState } from "react"
 import { FaGithub, FaSlackHash } from "react-icons/fa"
 import { FiSettings } from "react-icons/fi"
 import { MdOutlineLogout } from "react-icons/md"
-
-import GoogleLogin from "./GoogleLogin"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
