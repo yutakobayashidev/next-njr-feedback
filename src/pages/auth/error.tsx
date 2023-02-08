@@ -48,7 +48,7 @@ const Page: NextPageWithLayout = () => {
               </div>
               <h3 className="mt-4 text-xl font-bold">N中等部の関係者ではない方</h3>
               <p className="my-4 text-base text-gray-500">
-                申し訳ございませんが、本サービスは、N中等部に在籍する生徒とメンター・TAの方だけが利用可能です。ただし、本サービスのソースコードはGithubで公開されており、ライセンスに従って自由にご自身の環境でお使いいただけます。
+                申し訳ございませんが、本サービスは、N中等部に在籍する生徒とメンター・TAの方だけが利用可能です。ただし、本サービスのソースコードはGitHubで公開されており、ライセンスに従って自由にご自身の環境でお使いいただけます。
               </p>
               <a
                 href={config.siteMeta.repository}
