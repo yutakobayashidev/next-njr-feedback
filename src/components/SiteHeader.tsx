@@ -1,7 +1,7 @@
 import { Dialog, Menu, Transition } from "@headlessui/react"
 import { config } from "@site.config"
 import { ContentWrapper } from "@src/components/ContentWrapper"
-import GoogleLogin from "@src/components/GoogleLogin"
+import { GoogleLogin } from "@src/components/GoogleLogin"
 import { getKnowledgeEditPath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"

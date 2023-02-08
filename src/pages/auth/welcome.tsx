@@ -73,7 +73,9 @@ const Page: NextPage = () => {
       <MyPageSeo path={"/auth/welcome"} title="Welcome!" />
       {thanks ? (
         <div className="flex h-screen items-center justify-center">
-          <div className="font-inter text-7xl font-bold md:text-8xl">Thanks!</div>
+          <div className="text-center">
+            <div className="mb-4 font-inter text-7xl font-bold md:text-8xl">Thanks!</div>
+          </div>
         </div>
       ) : (
         <>
