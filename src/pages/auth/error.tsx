@@ -61,11 +61,7 @@ const Page: NextPageWithLayout = () => {
             </>
           )}
           <div className="text-center">
-            {(query.error == "AccessDenied") == false ? (
-              <GoogleLogin callbackUrl={"/"} />
-            ) : (
-              <LinkBackHome />
-            )}
+            {query.error == "AccessDenied" ? <LinkBackHome /> : <GoogleLogin callbackUrl={"/"} />}
           </div>
         </div>
       </div>
