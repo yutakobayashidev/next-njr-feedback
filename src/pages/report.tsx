@@ -90,7 +90,7 @@ const Page: NextPageWithLayout = () => {
                 </Link>
                 に違反するコンテンツを見つけた・安全が脅かされると感じる場面などに遭遇した場合はこちらのフォームでご報告ください。なお、機能リクエストやバグ報告は
                 <Link className="text-gray-600 underline" href={config.siteMeta.repository}>
-                  Github
+                  GitHub
                 </Link>
                 またはSlackの
                 <Link className="text-gray-600 underline" href={config.siteMeta.slack}>

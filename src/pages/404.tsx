@@ -28,7 +28,7 @@ const Page: NextPageWithLayout = () => {
                 className="text-gray-600 hover:underline"
                 href={config.siteMeta.repository + "/issues/new"}
               >
-                Github
+                GitHub
               </a>
             )}
             までご報告ください。

@@ -143,7 +143,7 @@ export const SiteHeader: React.FC = () => {
                                   <span className="mr-1">
                                     <FaGithub color="#93a5b1" />
                                   </span>
-                                  Githubで貢献
+                                  GitHubで貢献
                                 </a>
                               )}
                             </Menu.Item>
