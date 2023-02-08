@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
   },
   debug: process.env.VERCEL_ENV ? false : true,
   pages: {
-    error: "/",
+    error: "/auth/error",
     newUser: "/auth/welcome",
   },
   providers: [

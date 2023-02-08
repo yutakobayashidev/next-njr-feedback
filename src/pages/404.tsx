@@ -18,7 +18,7 @@ const Page: NextPageWithLayout = () => {
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <div className="font-inter text-9xl font-bold">404</div>
           <h1 className="my-8 text-left text-lg font-bold text-gray-500 md:text-center md:text-xl">
-            このページが見つかりませんでした。何か問題があれば
+            ページが見つかりませんでした。何か問題があれば
             {session ? (
               <a className="text-gray-600 hover:underline" href={config.siteMeta.slack}>
                 #next_njr_feedback
