@@ -39,7 +39,7 @@ export const SiteFooter: React.FC = () => {
             </a>
           </div>
         </div>
-        <div className="py-4 text-center text-sm text-gray-400">© {config.siteMeta.title} Team</div>
+        <div className="py-4 text-center text-sm text-gray-400">© 2023 {config.siteMeta.title} Team</div>
       </footer>
     </div>
   )
