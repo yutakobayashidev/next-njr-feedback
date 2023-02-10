@@ -53,6 +53,7 @@ model Discussion {
   views         Int      @default(0)
   createdAt     DateTime @default(now())
   archived_at   DateTime?
+  last_comment_created_at   DateTime?
   updatedAt     DateTime @updatedAt
   userId        String
   user          User     @relation(fields: [userId], references: [id])

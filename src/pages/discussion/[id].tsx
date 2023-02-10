@@ -1,5 +1,6 @@
 import "dayjs/locale/ja"
 
+import Alert from "@src/components/Alert"
 import { CommentCard } from "@src/components/Comment"
 import { CommentSidebar } from "@src/components/CommentSideber"
 import { ContentWrapper } from "@src/components/ContentWrapper"
@@ -28,7 +29,8 @@ dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
 const Page: NextPageWithLayout<DiscussionProps> = (props) => {
-  const { id, title, archive, comments, content, updatedAt, user, views } = props
+  const { id, title, archive, comments, content, last_comment_created_at, updatedAt, user, views } =
+    props
   const { data: session } = useSession()
 
   const router = useRouter()
@@ -110,6 +112,9 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   return (
     <>
       <MyPageSeo path={getDiscussionPath(id)} title={title} />
+      {last_comment_created_at && dayjs(last_comment_created_at).diff(dayjs(), "month") < -6 && (
+        <Alert>💡最後のコメントが追加されてから半年以上が経過しています</Alert>
+      )}
       <div className="py-16">
         <ContentWrapper>
           <div className="block md:flex md:items-start">
@@ -123,8 +128,9 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   <span className="flex items-center">{archive ? "Archive" : "Open"}</span>
                 </div>
                 <span className="mr-2 text-gray-600">
-                  {dayjs(updatedAt).format("YYYY/MM/DD")}
-                  に投稿
+                  {last_comment_created_at
+                    ? dayjs(last_comment_created_at).fromNow() + "にコメント追加"
+                    : dayjs(updatedAt).fromNow() + "に作成"}
                 </span>
                 <span className="flex items-center text-gray-500">
                   <AiOutlineEye className="mr-1" />
@@ -224,7 +230,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   ))}
                 </>
               ) : (
-                <NotContent message="最初のコメントを追加しましょう" />
+                <NotContent message="最初のコメントを投稿しましょう" />
               )}
               <div className="my-10">
                 <div className="flex items-start">

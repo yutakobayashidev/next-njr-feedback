@@ -11,6 +11,7 @@ export type DiscussionProps = {
   comments: CommentProps[]
   content: string
   createdAt: string
+  last_comment_created_at: string
   updatedAt: string
   user: {
     id: string
