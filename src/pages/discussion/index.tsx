@@ -44,7 +44,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <MyPageSeo path="/discussion" title="ディスカッション" />
       <section className="bg-gray-50 py-10">
         <ContentWrapper>
-          <h3 className="mb-7 text-3xl font-bold">🔥 注目のある議論</h3>
+          <h3 className="mb-7 text-3xl font-bold">🔥 注目されている議論</h3>
           <p className="mb-5 text-lg text-gray-500">
             現在アクティブの注目されているディスカッションです。
           </p>

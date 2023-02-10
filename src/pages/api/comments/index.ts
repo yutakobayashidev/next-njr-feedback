@@ -25,10 +25,17 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
 
     try {
+      await prisma.discussion.update({
+        data: { last_comment_created_at: new Date() },
+        where: { id: id },
+      })
+
       const result = await prisma.comment.create({
         data: {
-          content: content,
-          discussion: { connect: { id: id } },
+          content,
+          discussion: {
+            connect: { id: id },
+          },
           user: { connect: { id: session.user.id } },
         },
       })
