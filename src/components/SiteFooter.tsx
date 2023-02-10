@@ -3,6 +3,8 @@ import Link from "next/link"
 import { FaGithub, FaSlack } from "react-icons/fa"
 
 export const SiteFooter: React.FC = () => {
+  const year = new Date().getFullYear()
+
   return (
     <div className="border-t bg-white">
       <footer className="mx-auto">
@@ -29,17 +31,19 @@ export const SiteFooter: React.FC = () => {
               href={config.siteMeta.slack}
               className="text-gray-400 transition duration-100 hover:text-gray-500"
             >
-              <FaSlack size={24} />
+              <FaSlack size={24} aria-label="Slack" />
             </a>
             <a
               href={config.siteMeta.repository}
               className="text-gray-400 transition duration-100 hover:text-gray-500"
             >
-              <FaGithub size={24} />
+              <FaGithub size={24} aria-label="GitHub" />
             </a>
           </div>
         </div>
-        <div className="py-4 text-center text-sm text-gray-400">© {config.siteMeta.title} Team</div>
+        <div className="py-4 text-center text-sm text-gray-400">
+          © {year} {config.siteMeta.title}
+        </div>
       </footer>
     </div>
   )

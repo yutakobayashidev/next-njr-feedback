@@ -26,7 +26,8 @@ export const authOptions: NextAuthOptions = {
   },
   debug: process.env.VERCEL_ENV ? false : true,
   pages: {
-    error: "/",
+    error: "/auth/error",
+    newUser: "/auth/welcome",
   },
   providers: [
     GoogleProvider({
@@ -40,13 +41,12 @@ export const authOptions: NextAuthOptions = {
       profile: (profile) => {
         return {
           id: profile.sub,
+          name: profile.name,
           displayname: profile.name,
           email: profile.email,
           handle:
-            profile.hd == "n-jr.jp"
+            profile.email.endsWith("@n-jr.jp") && profile.email.split("@")[0].indexOf("njr") != -1
               ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
-              : profile.hd == "nnn.ac.jp"
-              ? profile.email.split("@")[0]
               : profile.sub,
           image: profile.picture,
         }

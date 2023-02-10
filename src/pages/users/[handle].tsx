@@ -1,9 +1,10 @@
-import Knowledge from "@src/components/Knowledge"
+import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { KnowledgeProps } from "@src/types"
 import { getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -15,8 +16,6 @@ import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
-
-import { authOptions } from "../api/auth/[...nextauth]"
 
 interface TabProps {
   title: string
@@ -184,7 +183,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
           <div className="mx-auto max-w-screen-lg px-4 md:px-8">
             <div className="overflow-hidden rounded-2xl border">
               {knowledge.map((post) => (
-                <Knowledge post={post} key={post.id} />
+                <Knowledge knowledge={post} key={post.id} />
               ))}
             </div>
           </div>

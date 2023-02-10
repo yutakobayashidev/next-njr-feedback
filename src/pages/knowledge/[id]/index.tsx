@@ -136,13 +136,11 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     <>
       <MyPageSeo path={getKnowledgePath(id)} title={title ? title : "無題のナレッジ"} />
       {!published && (
-        <Alert id={id} edit={true}>
-          💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう
-        </Alert>
+        <Alert id={id}>💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう</Alert>
       )}
       {published && !archive && dayjs(updatedAt).diff(dayjs(), "month") < -6 && (
         <>
-          <Alert id={id} edit={true}>
+          <Alert id={id}>
             💡
             更新から半年以上が経過しています。情報が古い場合更新するか、不要な情報はアーカイブしましょう
           </Alert>

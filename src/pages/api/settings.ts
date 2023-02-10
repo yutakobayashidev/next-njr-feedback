@@ -40,7 +40,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     })
   }
 
-  if (bio.length > 160) {
+  if (bio?.length > 160) {
     return res.status(400).json({
       error: {
         code: 400,

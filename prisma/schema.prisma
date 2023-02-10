@@ -44,23 +44,55 @@ model Session {
 }
 
 model Discussion {
-  id            Int      @id @default(autoincrement())
+  id            String      @id @default(cuid())
   title         String
-  course        Int
-  body          String   @db.Text
+  archive       Boolean @default(false)
+  content       String   @db.Text
   totalComments Int      @default(0)
   vote          Int      @default(0)
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  archived_at   DateTime?
+  last_comment_created_at   DateTime?
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  comments      Comment[]
+
+  @@index([userId])
+}
+
+model Vote {
+  id            String     @id @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        String
   user          User     @relation(fields: [userId], references: [id])
-
+  comment       Comment @relation(references: [id], fields:[commentId])
+  commentId String
   @@index([userId])
+  @@index([commentId])
+}
+
+model Comment {
+  id            String     @id @default(cuid())
+  content       String     @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  updated_at    DateTime?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  discussion    Discussion     @relation(fields: [discussionId], references: [id])
+  discussionId  String
+  votes         Vote[]
+  @@index([userId])
+  @@index([discussionId])
 }
 
 model Knowledge {
   id            String     @id @default(cuid())
   title         String?
+  views         Int      @default(0)
   emoji         String
   content       String?   @db.Text
   createdAt     DateTime @default(now())
@@ -98,9 +130,11 @@ model User {
   leave         Boolean @default(false)
   contributor   Boolean @default(false)
   createdAt     DateTime?    @default(now())
+  comments      Comment[]
   updatedAt     DateTime?    @updatedAt
   discussion    Discussion[]
   createKnowledge    Knowledge[]
+  votes            Vote[]
 }
 
 model VerificationToken {

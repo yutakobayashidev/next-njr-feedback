@@ -1,3 +1,4 @@
+import { config } from "@site.config"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import type { NextPageWithLayout } from "@src/pages/_app"
@@ -5,7 +6,7 @@ import { HttpMethod, UserSettings } from "@src/types"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -59,16 +60,6 @@ const Page: NextPageWithLayout = () => {
   return (
     <>
       <MyPageSeo path="/settings" title="アカウント設定" />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       <div className="mx-auto mt-10 max-w-screen-md px-4 md:px-8">
         <h1 className="text-center text-4xl font-bold">アカウント設定</h1>
         <div className="mt-10">
@@ -78,7 +69,7 @@ const Page: NextPageWithLayout = () => {
           <input
             type="text"
             name="name"
-            placeholder="表示名を入力..."
+            placeholder={data?.name || "表示名"}
             className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
             value={data?.displayname || ""}
             onInput={(e) =>
@@ -95,17 +86,21 @@ const Page: NextPageWithLayout = () => {
             ハンドルはあなたのユーザーページのURLで使用されます。
           </p>
           <div className="flex items-center gap-2">
-            <label className="my-4 flex items-center text-gray-500">
-              njr-feedback.vercel.app/users/
-            </label>
+            <label className="my-4 flex items-center text-gray-500">{config.siteRoot}/users/</label>
             <input
               type="text"
               name="name"
               placeholder={
-                session?.user?.email?.substring(
-                  session?.user?.email?.indexOf("_") + 1,
-                  session?.user?.email?.indexOf("@"),
-                ) || "ハンドル"
+                session &&
+                session.user &&
+                session.user.email &&
+                session.user.email.endsWith("@n-jr.jp") &&
+                session.user.email.split("@")[0].indexOf("njr") != -1
+                  ? session.user.email.substring(
+                      session.user.email.indexOf("_") + 1,
+                      session.user.email.indexOf("@"),
+                    )
+                  : "ハンドル"
               }
               className="w-full flex-1 resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
               value={data?.handle || ""}

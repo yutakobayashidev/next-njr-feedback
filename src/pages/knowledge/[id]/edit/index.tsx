@@ -172,6 +172,16 @@ export default function Post() {
 
   return (
     <>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 10000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
           <Transition.Child
@@ -389,23 +399,12 @@ export default function Post() {
                     )}
                   </button>
                 )}
-
                 <button
                   onClick={() => setIsOpen(true)}
                   className="ml-4 rounded-md bg-primary px-4 py-2 font-bold text-white transition-all duration-150 ease-in-out focus:outline-none"
                 >
                   {data.published ? "更新する" : "公開する"}
                 </button>
-                <Toaster
-                  position="bottom-right"
-                  toastOptions={{
-                    duration: 10000,
-                    style: {
-                      background: "#363636",
-                      color: "#fff",
-                    },
-                  }}
-                />
               </div>
             </div>
           </div>
