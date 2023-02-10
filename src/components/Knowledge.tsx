@@ -1,7 +1,8 @@
 import "dayjs/locale/ja"
 
+import { Contributors } from "@src/components/Contributors"
 import { KnowledgeProps } from "@src/types"
-import { getKnowledgePath, getUserpagePath } from "@src/utils/helper"
+import { getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Link from "next/link"
@@ -45,29 +46,7 @@ export const Knowledge: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledge }
           </div>
         </div>
       </div>
-      <div className="hidden items-center md:flex">
-        {knowledge.contributors &&
-          knowledge.contributors.slice(0, 3).map((contributor, index) => (
-            <Link
-              key={`knowledge-item-${index}`}
-              href={getUserpagePath(contributor.handle)}
-              style={index === 0 ? { zIndex: 3 } : { marginLeft: -15, zIndex: 3 - index }}
-            >
-              <img
-                alt={contributor.displayname}
-                className="rounded-full border"
-                height="45"
-                width="45"
-                src={contributor.image}
-              ></img>
-            </Link>
-          ))}
-        <span className="ml-2 text-gray-600">
-          {knowledge.contributors.length <= 3
-            ? "さんらが貢献"
-            : "+" + (knowledge.contributors.length - 3) + "人が貢献"}
-        </span>
-      </div>
+      <Contributors knowledge={knowledge} />
     </div>
   )
 }
