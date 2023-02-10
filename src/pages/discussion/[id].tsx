@@ -224,7 +224,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   ))}
                 </>
               ) : (
-                <NotContent />
+                <NotContent message="最初のコメントを追加しましょう" />
               )}
               <div className="my-10">
                 <div className="flex items-start">
