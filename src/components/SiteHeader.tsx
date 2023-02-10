@@ -5,20 +5,19 @@ import { GoogleLogin } from "@src/components/GoogleLogin"
 import { getKnowledgeEditPath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 import { Fragment, useState } from "react"
-import { FaGithub, FaSlackHash } from "react-icons/fa"
+import { FaGithub, FaRegCommentDots, FaSlackHash } from "react-icons/fa"
 import { FiSettings } from "react-icons/fi"
+import { HiOutlineBookOpen } from "react-icons/hi"
 import { MdOutlineLogout } from "react-icons/md"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-export const SiteHeader: React.FC = () => {
-  const { data: session, status } = useSession()
-
-  const [isOpen, setIsOpen] = useState(false)
+const New: React.FC<{ session: Session }> = ({ session }) => {
   const [knowledge, setcreateKnowledge] = useState(false)
 
   const router = useRouter()
@@ -43,6 +42,195 @@ export const SiteHeader: React.FC = () => {
 
   return (
     <>
+      {session && session.user && session.user.name && session.user.image && (
+        <Menu as="div" className="relative">
+          <div>
+            <Menu.Button className="ml-4 rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90">
+              + New
+            </Menu.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 my-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={async () => {
+                      await createKnowledge()
+                    }}
+                    disabled={knowledge}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex w-full items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <HiOutlineBookOpen color="#93a5b1" />
+                    </span>
+                    {knowledge ? "作成中..." : "ナレッジを作成"}
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/discussion/new"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex border-t-2 border-gray-100 items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FaRegCommentDots color="#93a5b1" />
+                    </span>
+                    ディスカッションを作成
+                  </Link>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      )}
+    </>
+  )
+}
+
+const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
+  return (
+    <>
+      {session && session.user && session.user.name && session.user.image && (
+        <Menu as="div" className="relative">
+          <div>
+            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <img
+                className="h-10 w-10 rounded-full"
+                src={session.user.image}
+                alt="メニューを開く"
+              />
+            </Menu.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 my-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href={"/users/" + session.user.handle}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-gray-700",
+                    )}
+                  >
+                    {session && session.user && session.user.name && session.user.handle && (
+                      <>
+                        <div className="text-base font-medium">
+                          {session.user.displayname + "さん"}
+                        </div>
+                        <div className="text-sm text-gray-400 line-clamp-1">
+                          @{session.user.handle}
+                        </div>
+                      </>
+                    )}
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/settings"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700 border-t-2 border-gray-100",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FiSettings color="#93a5b1" />
+                    </span>
+                    アカウント設定
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href={config.siteMeta.slack}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FaSlackHash color="#93a5b1" />
+                    </span>
+                    Slackチャンネルに参加
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href={config.siteMeta.repository}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FaGithub color="#93a5b1" />
+                    </span>
+                    GitHubで貢献
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: "/",
+                      })
+                    }
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "w-full flex border-t-2 border-gray-100 items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <MdOutlineLogout color="#93a5b1" />
+                    </span>
+                    ログアウト
+                  </button>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      )}
+    </>
+  )
+}
+
+export const SiteHeader: React.FC = () => {
+  const { data: session, status } = useSession()
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
       <header className="border-b border-gray-200 bg-white">
         <ContentWrapper>
           <div className="flex h-14 items-center justify-between">
@@ -52,135 +240,10 @@ export const SiteHeader: React.FC = () => {
             {status != "loading" && (
               <>
                 <div className="flex items-center">
-                  {session && session.user && session.user.name && session.user.image ? (
+                  {session ? (
                     <>
-                      <Menu as="div" className="relative">
-                        <div>
-                          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={session.user.image}
-                              alt="メニューを開く"
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 my-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  href={"/users/" + session.user.handle}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-gray-700",
-                                  )}
-                                >
-                                  {session &&
-                                    session.user &&
-                                    session.user.name &&
-                                    session.user.handle && (
-                                      <>
-                                        <div className="text-base font-medium">
-                                          {session.user.displayname + "さん"}
-                                        </div>
-                                        <div className="text-sm text-gray-400 line-clamp-1">
-                                          @{session.user.handle}
-                                        </div>
-                                      </>
-                                    )}
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  href="/settings"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "flex items-center px-4 py-2 text-base text-gray-700 border-t-2 border-gray-100",
-                                  )}
-                                >
-                                  <span className="mr-1">
-                                    <FiSettings color="#93a5b1" />
-                                  </span>
-                                  アカウント設定
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href={config.siteMeta.slack}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "flex items-center px-4 py-2 text-base text-gray-700",
-                                  )}
-                                >
-                                  <span className="mr-1">
-                                    <FaSlackHash color="#93a5b1" />
-                                  </span>
-                                  Slackチャンネルに参加
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href={config.siteMeta.repository}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "flex items-center px-4 py-2 text-base text-gray-700",
-                                  )}
-                                >
-                                  <span className="mr-1">
-                                    <FaGithub color="#93a5b1" />
-                                  </span>
-                                  GitHubで貢献
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <button
-                                  onClick={() =>
-                                    signOut({
-                                      callbackUrl: "/",
-                                    })
-                                  }
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "w-full flex border-t-2 border-gray-100 items-center px-4 py-2 text-base text-gray-700",
-                                  )}
-                                >
-                                  <span className="mr-1">
-                                    <MdOutlineLogout color="#93a5b1" />
-                                  </span>
-                                  ログアウト
-                                </button>
-                              )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                      <div>
-                        <button
-                          onClick={async () => {
-                            await createKnowledge()
-                          }}
-                          disabled={knowledge}
-                          className="ml-4 rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
-                        >
-                          {knowledge ? "作成中..." : "+ New"}
-                        </button>
-                      </div>
+                      <UserMenu session={session} />
+                      <New session={session} />
                     </>
                   ) : (
                     <>
