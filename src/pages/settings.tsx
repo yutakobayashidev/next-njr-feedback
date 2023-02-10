@@ -69,7 +69,7 @@ const Page: NextPageWithLayout = () => {
           <input
             type="text"
             name="name"
-            placeholder="表示名を入力..."
+            placeholder={data?.name || "表示名"}
             className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
             value={data?.displayname || ""}
             onInput={(e) =>
@@ -91,10 +91,16 @@ const Page: NextPageWithLayout = () => {
               type="text"
               name="name"
               placeholder={
-                session?.user?.email?.substring(
-                  session?.user?.email?.indexOf("_") + 1,
-                  session?.user?.email?.indexOf("@"),
-                ) || "ハンドル"
+                session &&
+                session.user &&
+                session.user.email &&
+                session.user.email.endsWith("@n-jr.jp") &&
+                session.user.email.split("@")[0].indexOf("njr") != -1
+                  ? session.user.email.substring(
+                      session.user.email.indexOf("_") + 1,
+                      session.user.email.indexOf("@"),
+                    )
+                  : "ハンドル"
               }
               className="w-full flex-1 resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
               value={data?.handle || ""}
