@@ -24,7 +24,10 @@ const Page: NextPageWithLayout<Props> = (props) => {
 
   return (
     <>
-      <MyPageSeo path="/" title="NJR Feedback | 議論&ナレッジ共有プラットフォーム" />
+      <MyPageSeo
+        path="/"
+        title={session ? "ホーム" : `${config.siteMeta.title} | 議論&ナレッジ共有プラットフォーム`}
+      />
       {!session ? (
         <section className="mx-auto bg-n-50 py-12 text-center">
           <div className="mx-auto max-w-screen-md px-4 md:px-8">
@@ -176,7 +179,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
-        updatedAt: "desc",
+        views: "desc",
       },
     ],
     take: 10,

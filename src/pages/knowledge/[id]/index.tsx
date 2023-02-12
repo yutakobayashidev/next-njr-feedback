@@ -128,6 +128,17 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     }
   }, [session, router])
 
+  useEffect(() => {
+    const registerView = () =>
+      fetch(`/api/knowledge/${id}/views`, {
+        method: "POST",
+      })
+
+    if (session) {
+      registerView()
+    }
+  }, [id, session])
+
   if (!session) {
     return null
   }
