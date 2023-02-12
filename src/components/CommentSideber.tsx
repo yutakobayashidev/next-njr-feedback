@@ -41,11 +41,10 @@ export const CommentSidebar: React.FC<{
     }
   }
 
-  interface SitediscussionData {
-    data: Array<DiscussionProps>
-  }
-
-  const { data } = useSWR<SitediscussionData>(router.isReady && `/api/discussion`, fetcher)
+  const { data: discussions } = useSWR<Array<DiscussionProps>>(
+    session && `/api/discussion`,
+    fetcher,
+  )
 
   return (
     <>
@@ -85,36 +84,36 @@ export const CommentSidebar: React.FC<{
         <h4 className="text-2xl font-bold">新しく作成された議論</h4>
         <p className="my-2 text-gray-500">最近作成されたアーカイブされていない議論の一覧</p>
         <div className="my-4">
-          {data && data?.data.length > 0 ? (
+          {discussions && discussions.length > 0 ? (
             <>
-              {data?.data.map((post) => (
-                <div key={post.id}>
+              {discussions.map((discussion) => (
+                <div key={discussion.id}>
                   <div className="my-2 flex items-center">
-                    <Link href={getUserpagePath(post.user.handle)}>
+                    <Link href={getUserpagePath(discussion.user.handle)}>
                       <img
-                        src={post.user.image}
-                        alt={post.user.displayname}
+                        src={discussion.user.image}
+                        alt={discussion.user.displayname}
                         height={30}
                         width={30}
                         className="mr-1 rounded-full"
                       />
                     </Link>
-                    <Link href={getUserpagePath(post.user.handle)}>
+                    <Link href={getUserpagePath(discussion.user.handle)}>
                       <span className="mr-2 text-xs font-bold text-gray-800 ">
-                        {post.user.displayname}
+                        {discussion.user.displayname}
                       </span>
                     </Link>
                     <span className="text-xs font-bold text-gray-400">投稿</span>
                   </div>
                   <Link
-                    href={getDiscussionPath(post.id)}
+                    href={getDiscussionPath(discussion.id)}
                     className="text-base font-bold leading-7 text-gray-800 line-clamp-3"
                   >
-                    {post.title}
+                    {discussion.title}
                   </Link>
                   <span className="mt-2 flex items-center text-gray-600">
                     <FaRegComment className="mr-1" size={17} />
-                    {post._count.comments} comments
+                    {discussion._count.comments} comments
                   </span>
                 </div>
               ))}

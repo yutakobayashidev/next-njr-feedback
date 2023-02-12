@@ -1,12 +1,16 @@
+import { DiscussionCard } from "@src/components/Discussion"
 import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
+import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
+import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { KnowledgeProps } from "@src/types"
-import { getUserpagePath } from "@src/utils/helper"
+import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { CommentProps } from "@src/types/comment"
+import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
@@ -16,6 +20,7 @@ import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
+import useSWR from "swr"
 
 interface TabProps {
   title: string
@@ -39,6 +44,7 @@ export type UserProps = {
     knowledge: number
   }
   bio: string
+  contributor: boolean
   createdAt: string
   displayname: string
   email: string
@@ -56,28 +62,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 
   const data = await prisma.user.findUnique({
-    include: {
-      knowledge: {
-        orderBy: {
-          publishedAt: "desc",
-        },
-        select: {
-          id: true,
-          title: true,
-          content: true,
-          contributors: true,
-          course: true,
-          emoji: true,
-          published: true,
-          publishedAt: true,
-          updatedAt: true,
-        },
-        where: {
-          archive: false,
-          published: true,
-        },
-      },
-    },
     where: {
       handle: String(params?.handle),
     },
@@ -97,9 +81,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
-  const { bio, createdAt, displayname, email, handle, image, knowledge } = props
+  const { bio, contributor, createdAt, displayname, email, handle, image } = props
 
-  const { query } = useRouter()
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -109,9 +92,33 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
     }
   }, [session, router])
 
+  const { data: discussions, isValidating } = useSWR<Array<DiscussionProps>>(
+    session && !router.query.tab && `/api/discussion?handle=${handle}`,
+    fetcher,
+  )
+
+  const { data: knowledge, isValidating: isKnowledgeValidating } = useSWR<Array<KnowledgeProps>>(
+    session && router.query.tab == "knowledge" && `/api/knowledge?count=10&handle=${handle}`,
+    fetcher,
+  )
+
+  const { data: comments, isValidating: isCommentsValidating } = useSWR<Array<CommentProps>>(
+    session && router.query.tab == "comment" && `/api/comments?handle=${handle}`,
+    fetcher,
+  )
+
+  const title =
+    router.query.tab == "Knowledge"
+      ? "ナレッジ"
+      : router.query.tab == "knowledge"
+      ? "ナレッジ"
+      : router.query.tab == "comment"
+      ? "コメント"
+      : "ディスカッション"
+
   return (
     <>
-      <MyPageSeo path={getUserpagePath(handle)} title={displayname} />
+      <MyPageSeo path={getUserpagePath(handle)} title={displayname + "さんの" + title} />
       <header>
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <div className="items-center justify-between py-10 md:flex">
@@ -166,9 +173,13 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                       <span>{email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}</span>
                     </span>
                   )}
-                  <span className="mr-1 flex items-center font-medium">
-                    <FaCode size={20} color="#61bd8d" className="mr-1" />
-                  </span>
+                  {contributor && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <FaCode size={20} color="#61bd8d" className="mr-1" />
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -176,20 +187,129 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
         </div>
       </header>
       <div className="mx-auto flex max-w-screen-lg items-center px-4 md:px-8">
-        <Tab href={`/users/${handle}`} title={`Knowledge`} isSelected={!query.tab} />
+        <Tab href={`/users/${handle}/`} title="Discussion" isSelected={!router.query.tab} />
+        <Tab
+          href={`/users/${handle}?tab=knowledge`}
+          title="Knowledge"
+          isSelected={router.query.tab == "knowledge"}
+        />
+        <Tab
+          href={`/users/${handle}/?tab=comment`}
+          title="Comment"
+          isSelected={router.query.tab == "comment"}
+        />
       </div>
-      <div className="bg-gray-100 pt-16 pb-20">
-        {props.knowledge.length > 0 ? (
-          <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-            <div className="overflow-hidden rounded-2xl border">
-              {knowledge.map((post) => (
-                <Knowledge knowledge={post} key={post.id} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <NotContent />
-        )}
+      <div className="min-h-screen bg-gray-100 pt-16 pb-20">
+        <div className="mx-auto max-w-screen-lg px-4 md:px-8">
+          {isCommentsValidating ? (
+            <UserLoader />
+          ) : (
+            <>
+              {router.query.tab == "comment" && (
+                <>
+                  {comments && comments.length > 0 ? (
+                    <>
+                      <div className="overflow-hidden rounded-lg border">
+                        {comments.map((post) => (
+                          <div
+                            key={post.id}
+                            className="bg-white p-3 [&:not(:first-child)]:border-t"
+                          >
+                            <div className="flex items-center">
+                              <Link href={getUserpagePath(post.user.handle)}>
+                                <img
+                                  width="40"
+                                  height="40"
+                                  src={post.user.image}
+                                  className="mr-2 rounded-full"
+                                  alt={post.user.displayname}
+                                ></img>
+                              </Link>
+                              <div>
+                                <Link
+                                  href={getUserpagePath(post.user.handle)}
+                                  className="font-bold text-gray-800"
+                                >
+                                  {post.user.displayname}
+                                </Link>
+                                <div className="text-sm text-gray-500">
+                                  <time dateTime={dayjs(post.createdAt).toISOString()}>
+                                    {dayjs(post.createdAt).format("YYYY/MM/DD")}に
+                                  </time>
+                                  <Link
+                                    href={getDiscussionPath(post.discussion.id)}
+                                    className="font-bold text-gray-500 hover:underline"
+                                  >
+                                    {post.discussion.title}
+                                  </Link>
+                                  <span>で投稿</span>
+                                </div>
+                              </div>
+                            </div>
+                            <Link
+                              href={"/discussion/" + post.discussion.id + "#comment-" + post.id}
+                              className="mt-4 block text-gray-800 hover:underline"
+                            >
+                              {post.content}
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <NotContent message="アクティビティが存在しません" />
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {isKnowledgeValidating ? (
+            <UserLoader />
+          ) : (
+            <>
+              {router.query.tab == "knowledge" && (
+                <>
+                  {knowledge && knowledge.length > 0 ? (
+                    <>
+                      <div className="overflow-hidden rounded-lg border">
+                        {knowledge.map((post) => (
+                          <Knowledge knowledge={post} key={post.id} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <NotContent message="アクティビティが存在しません" />
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {isValidating ? (
+            <UserLoader />
+          ) : (
+            <>
+              {!router.query.tab && (
+                <>
+                  {discussions && discussions.length > 0 ? (
+                    <>
+                      <div className="overflow-hidden rounded-lg border">
+                        {discussions?.map((discussion) => (
+                          <DiscussionCard key={discussion.id} discussion={discussion} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <NotContent message="アクティビティが存在しません" />
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </>
   )

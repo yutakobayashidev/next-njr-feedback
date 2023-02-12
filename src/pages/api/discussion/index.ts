@@ -48,6 +48,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(500).end(error)
     }
   } else if (req.method === HttpMethod.GET) {
+    const { handle } = req.query
+
     const data = await prisma.discussion.findMany({
       include: {
         _count: {
@@ -64,12 +66,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       ],
       where: {
         archive: false,
+        ...(handle && { user: { handle: String(handle) } }),
       },
     })
 
-    const discussion = JSON.parse(JSON.stringify({ data: data }))
-
-    res.status(201).json(discussion)
+    res.status(201).json(data)
   } else {
     res.setHeader("Allow", [HttpMethod.POST, HttpMethod.GET])
     return res.status(405).json({

@@ -38,14 +38,47 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           },
           user: { connect: { id: session.user.id } },
         },
+        include: {
+          _count: {
+            select: {
+              votes: true,
+            },
+          },
+          user: true,
+        },
       })
       res.status(201).json(result)
     } catch (error) {
       console.error(error)
       return res.status(500).end(error)
     }
+  } else if (req.method === HttpMethod.GET) {
+    const { handle } = req.query
+
+    const comment = await prisma.comment.findMany({
+      include: {
+        discussion: true,
+        user: {
+          select: {
+            displayname: true,
+            handle: true,
+            image: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          updatedAt: "desc",
+        },
+      ],
+      where: {
+        ...(handle && { user: { handle: String(handle) } }),
+      },
+    })
+
+    res.status(201).json(comment)
   } else {
-    res.setHeader("Allow", [HttpMethod.POST])
+    res.setHeader("Allow", [HttpMethod.GET, HttpMethod.POST])
     return res.status(405).json({
       error: {
         code: 405,
