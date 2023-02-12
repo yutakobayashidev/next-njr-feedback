@@ -66,6 +66,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     const { count } = result.data
 
+    const { handle } = req.query
+
     const data = await prisma.knowledge.findMany({
       include: {
         contributors: {
@@ -74,6 +76,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             image: true,
           },
         },
+        course: true,
       },
       orderBy: [
         {
@@ -83,6 +86,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       take: count,
       where: {
         archive: false,
+        ...(handle && { creator: { handle: String(handle) } }),
         published: true,
       },
     })

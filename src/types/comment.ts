@@ -1,3 +1,5 @@
+import { DiscussionProps } from "./discussion"
+
 export type CommentProps = {
   id: string
   _count: {
@@ -5,6 +7,7 @@ export type CommentProps = {
   }
   content: string
   createdAt: string
+  discussion: DiscussionProps
   updated_at?: string
   user: {
     id: string

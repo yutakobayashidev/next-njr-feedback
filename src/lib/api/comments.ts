@@ -51,6 +51,14 @@ export async function updateComment(
         content,
         updated_at: new Date(),
       },
+      include: {
+        _count: {
+          select: {
+            votes: true,
+          },
+        },
+        user: true,
+      },
       where: { id },
     })
     return res.status(200).json(response)
