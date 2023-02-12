@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       _count: {
         select: {
           discussion: true,
-          knowledge: true,
+          knowledge: { where: { published: true } },
         },
       },
     },
