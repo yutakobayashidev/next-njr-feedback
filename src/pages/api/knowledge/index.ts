@@ -78,11 +78,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         },
         course: true,
       },
-      orderBy: [
-        {
-          updatedAt: "desc",
-        },
-      ],
+      orderBy: {
+        publishedAt: "desc",
+      },
       take: count,
       where: {
         archive: false,
