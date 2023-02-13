@@ -1,3 +1,4 @@
+import Google from "@public/google.svg"
 import { config } from "@site.config"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { DiscussionCard } from "@src/components/Discussion"
@@ -49,7 +50,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-xl font-bold text-gray-700 shadow-md shadow-gray-300"
             >
               <span className="mr-2 inline-flex items-center">
-                <img src="/google.svg" alt="Google" width="22" height="22"></img>
+                <Google width={22} height={22} />
               </span>
               Login With Google
             </button>
