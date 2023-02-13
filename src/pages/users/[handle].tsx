@@ -161,7 +161,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   <p>{bio}</p>
                 ) : session && session.user.handle === handle ? (
                   <p className="break-words">
-                    自己紹介がありません。<Link href="/settings">アカウント設定</Link>
+                    自己紹介がありません。<Link href="/dashboard/settings">アカウント設定</Link>
                     で追加してみましょう。
                   </p>
                 ) : null}
