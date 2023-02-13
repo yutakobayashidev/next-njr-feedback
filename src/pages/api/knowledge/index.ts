@@ -72,7 +72,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       include: {
         contributors: {
           select: {
-            name: true,
+            displayname: true,
+            handle: true,
             image: true,
           },
         },
