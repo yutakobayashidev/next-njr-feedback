@@ -150,27 +150,11 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <Link
-                    href="/settings"
-                    className={classNames(
-                      active ? "bg-gray-100" : "",
-                      "flex items-center px-4 py-2 text-base text-gray-700 border-t-2 border-gray-100",
-                    )}
-                  >
-                    <span className="mr-1">
-                      <FiSettings color="#93a5b1" />
-                    </span>
-                    アカウント設定
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
                   <a
                     href={config.siteMeta.slack}
                     className={classNames(
                       active ? "bg-gray-100" : "",
-                      "flex items-center px-4 py-2 text-base text-gray-700",
+                      "flex border-t-2 border-gray-100 items-center px-4 py-2 text-base text-gray-700",
                     )}
                   >
                     <span className="mr-1">
@@ -194,6 +178,38 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
                     </span>
                     GitHubで貢献
                   </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/dashboard"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700 border-t-2 border-gray-100",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <HiOutlineBookOpen color="#93a5b1" />
+                    </span>
+                    下書きの管理
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/dashboard/settings"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FiSettings color="#93a5b1" />
+                    </span>
+                    アカウント設定
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>
