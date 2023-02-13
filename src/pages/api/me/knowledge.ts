@@ -12,6 +12,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 401, messsage: "ログインしてください" },
     })
 
+  if (!session.user.id)
+    return res.status(500).json({
+      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+    })
+
   if (req.method !== HttpMethod.GET) {
     res.setHeader("Allow", [HttpMethod.GET])
     return res.status(405).end(`${req.method}メソッドはサポートされていません。`)
