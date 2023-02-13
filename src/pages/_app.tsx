@@ -25,10 +25,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout<{ sessi
 
   usePageView()
 
-  console.log(
-    `%c${config.siteMeta.title}の開発に貢献することに興味がありますか？\n${config.siteMeta.repository}`,
-    "color:#0099D9; font-size:3em",
-  )
+  if (process.env.NODE_ENV === "production") {
+    console.log(
+      `%c${config.siteMeta.title}の開発に貢献することに興味がありますか？\n${config.siteMeta.repository}`,
+      "color:#0099D9; font-size:3em",
+    )
+  }
 
   return (
     <>
