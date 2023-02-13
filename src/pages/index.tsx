@@ -135,7 +135,6 @@ const Page: NextPageWithLayout<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
-    res.statusCode = 403
     return { props: { discussion: [], knowledge: [] } }
   }
 
