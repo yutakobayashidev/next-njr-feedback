@@ -17,7 +17,7 @@ const links = [
   },
   {
     href: "/dashboard/settings",
-    icon: <FiSettings className="mx-auto" color="#93a5b1" />,
+    icon: <FiSettings className="mx-auto md:mx-0" color="#93a5b1" />,
     label: "アカウント設定",
   },
 ]
