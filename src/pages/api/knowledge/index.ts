@@ -35,12 +35,22 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
 
     try {
+      const emoji = pickRandomEmoji()
       const result = await prisma.knowledge.create({
         data: {
           contributors: { connect: { id: session.user.id } },
           course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },
-          emoji: pickRandomEmoji(),
+          emoji: emoji,
+        },
+      })
+
+      await prisma.diff.create({
+        data: {
+          author: { connect: { id: session.user.id } },
+          course: { connect: { id: 1 } },
+          emoji: emoji,
+          knowledge: { connect: { id: result.id } },
         },
       })
       res.status(201).json(result)
