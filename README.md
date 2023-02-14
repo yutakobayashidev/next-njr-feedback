@@ -4,7 +4,7 @@
 
 Next NJR Feedback は N 中等部の生徒、メンター・TA が使用できる議論&ナレッジ共有プラットフォームです。
 
-https://njr-feedback.vercel.app
+https://nextnjrfeedback.net
 
 ## Contribution
 
