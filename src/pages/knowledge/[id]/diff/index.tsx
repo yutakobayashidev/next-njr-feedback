@@ -48,8 +48,9 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
           </h1>
           <p className="my-4 text-lg">
             {diff.length}
-            件の変更履歴が見つかりました。<Link href={getKnowledgeEditPath(id)}>ナレッジ</Link>
-            を編集してより良いナレッジベースを構築しましょう。
+            件の変更履歴が見つかりました。
+            <Link href={getKnowledgeEditPath(id)}>ナレッジ を編集</Link>
+            してより良いナレッジベースを構築しましょう。
           </p>
           <div className="relative min-h-screen border-l-2 py-0.5">
             {diff.map((history) => (
