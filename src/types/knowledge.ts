@@ -1,7 +1,11 @@
 export type KnowledgeProps = {
   id: string
   title?: string
+  _count: {
+    bookmarks: number
+  }
   archive: boolean
+  bookmarks: Bookmark[]
   content?: string
   contributors: Contributor[]
   course: Course[]
@@ -18,6 +22,12 @@ export type KnowledgeProps = {
   published: boolean
   publishedAt: string
   updatedAt: string
+}
+
+interface Bookmark {
+  user: {
+    id: string
+  }
 }
 
 interface Course {

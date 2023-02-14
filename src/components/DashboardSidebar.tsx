@@ -1,13 +1,19 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { BsBookmark } from "react-icons/bs"
 import { FiSettings } from "react-icons/fi"
 import { HiOutlineBookOpen } from "react-icons/hi"
 
 const links = [
   {
     href: "/dashboard",
-    icon: <HiOutlineBookOpen className="mx-auto" color="#93a5b1" />,
+    icon: <HiOutlineBookOpen className="mx-auto md:mx-0" color="#93a5b1" />,
     label: "下書きの管理",
+  },
+  {
+    href: "/dashboard/bookmarks",
+    icon: <BsBookmark className="mx-auto md:mx-0" color="#93a5b1" />,
+    label: "ブックマーク",
   },
   {
     href: "/dashboard/settings",
