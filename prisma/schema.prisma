@@ -98,7 +98,7 @@ model Diff {
     authorId      String
     content       String?   @db.Text
     createdAt     DateTime @default(now())
-    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id])
+    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id], onDelete: Cascade)
     knowledgeId   String
     course        Course[]
 
