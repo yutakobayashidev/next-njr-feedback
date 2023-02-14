@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 import { Fragment, useState } from "react"
+import { BsBookmark } from "react-icons/bs"
 import { FaGithub, FaRegCommentDots, FaSlackHash } from "react-icons/fa"
 import { FiSettings } from "react-icons/fi"
 import { HiOutlineBookOpen } from "react-icons/hi"
@@ -196,6 +197,23 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
                   </Link>
                 )}
               </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/dashboard/bookmarks"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <BsBookmark color="#93a5b1" />
+                    </span>
+                    ブックマーク
+                  </Link>
+                )}
+              </Menu.Item>
+
               <Menu.Item>
                 {({ active }) => (
                   <Link

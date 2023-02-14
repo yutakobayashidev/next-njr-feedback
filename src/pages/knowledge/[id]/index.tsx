@@ -16,8 +16,8 @@ import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
-import { useEffect } from "react"
-import { BsPencilFill } from "react-icons/bs"
+import { useEffect, useState } from "react"
+import { BsBookmark, BsFillBookmarkCheckFill, BsPencilFill } from "react-icons/bs"
 import { remark } from "remark"
 import html from "remark-html"
 
@@ -29,67 +29,6 @@ import data from "@emoji-mart/data"
 import i18n from "@emoji-mart/data/i18n/ja.json"
 import Picker from "@emoji-mart/react"
 */
-
-export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await getServerSession(req, res, authOptions)
-
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
-
-  const data = await prisma.knowledge.findFirst({
-    include: {
-      contributors: {
-        select: {
-          id: true,
-          displayname: true,
-          email: true,
-          handle: true,
-          image: true,
-        },
-      },
-      course: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-      creator: {
-        select: {
-          id: true,
-          displayname: true,
-          handle: true,
-          image: true,
-        },
-      },
-    },
-    where: {
-      id: String(params?.id),
-    },
-  })
-
-  if (!data) {
-    return {
-      notFound: true,
-    }
-  }
-
-  if (data?.published === false && data.creator.id != session.user.id) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
-
-  const knowledge = JSON.parse(JSON.stringify(data))
-
-  const htmlBody = await remark().use(html).process(knowledge.content)
-  const contentHtml = htmlBody.toString()
-  knowledge.content = contentHtml
-
-  return {
-    props: knowledge,
-  }
-}
 
 async function restorearchivePost(id: string): Promise<void> {
   await fetch(`/api/knowledge/${id}`, {
@@ -108,7 +47,9 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const {
     id,
     title,
+    _count,
     archive,
+    bookmarks,
     content,
     contributors,
     course,
@@ -121,6 +62,31 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
 
   const { data: session } = useSession()
   const router = useRouter()
+
+  const [bookmarkCount, setBookmarkCount] = useState(Number(_count.bookmarks))
+
+  const [bookmark, setBookmark] = useState(false)
+
+  useEffect(() => {
+    if (bookmarks.some((bookmark) => bookmark.user.id === session?.user.id)) {
+      setBookmark(true)
+    }
+  }, [bookmarks, session?.user.id])
+
+  async function addbookmarks() {
+    const response = await fetch(`/api/knowledge/${id}/bookmarks`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: HttpMethod.POST,
+    })
+
+    if (response.ok) {
+      bookmark ? setBookmark(false) : setBookmark(true)
+
+      bookmark ? setBookmarkCount(bookmarkCount - 1) : setBookmarkCount(bookmarkCount + 1)
+    }
+  }
 
   useEffect(() => {
     if (!session && typeof session != "undefined") {
@@ -260,8 +226,17 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
           />
           */}
               <div className="mt-10 flex items-center justify-between">
-                <div className="flex">
-                  <button aria-label="ブックマーク">111</button>
+                <div className="inline-flex items-center">
+                  <button
+                    aria-label="ブックマーク"
+                    onClick={async () => {
+                      await addbookmarks()
+                    }}
+                    className="inline-flex items-center justify-center rounded-full border bg-gray-100 p-3"
+                  >
+                    {bookmark ? <BsFillBookmarkCheckFill size={25} /> : <BsBookmark size={25} />}
+                  </button>
+                  <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
                 <Link
                   href={getKnowledgeEditPath(id)}
@@ -331,4 +306,78 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
 
 Page.getLayout = (page) => <Layout>{page}</Layout>
 
+export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
+
+  if (!session) {
+    res.statusCode = 403
+    return { props: { knowledge: [] } }
+  }
+
+  const data = await prisma.knowledge.findFirst({
+    include: {
+      _count: {
+        select: {
+          bookmarks: true,
+        },
+      },
+      bookmarks: {
+        select: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+      contributors: {
+        select: {
+          id: true,
+          displayname: true,
+          email: true,
+          handle: true,
+          image: true,
+        },
+      },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      creator: {
+        select: {
+          id: true,
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+    },
+    where: {
+      id: String(params?.id),
+    },
+  })
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  if (data?.published === false && data.creator.id != session.user.id) {
+    res.statusCode = 403
+    return { props: { knowledge: [] } }
+  }
+
+  const knowledge = JSON.parse(JSON.stringify(data))
+
+  const htmlBody = await remark().use(html).process(knowledge.content)
+  const contentHtml = htmlBody.toString()
+  knowledge.content = contentHtml
+
+  return {
+    props: knowledge,
+  }
+}
 export default Page

@@ -102,11 +102,24 @@ model Knowledge {
   published     Boolean @default(false)
   archive       Boolean @default(false)
   contributors  User[] @relation(name: "Usercontributors")
+  bookmarks     Bookmark[]
   creatorId     String
   creator       User     @relation(fields: [creatorId], references: [id])
   course        Course[]
 
   @@index([creatorId])
+}
+
+model Bookmark {
+  id            String   @id @default(cuid())
+  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
+  createdAt     DateTime @default(now())
+  knowledgeId   String
+  user          User     @relation(fields: [userId], references: [id])
+  userId      String
+  @@unique([userId, knowledgeId])
+  @@index([knowledgeId])
+  @@index([userId])
 }
 
 model Course {
@@ -130,6 +143,7 @@ model User {
   admin         Boolean @default(false)
   leave         Boolean @default(false)
   contributor   Boolean @default(false)
+  bookmarks     Bookmark[]
   createdAt     DateTime?    @default(now())
   comments      Comment[]
   updatedAt     DateTime?    @updatedAt
