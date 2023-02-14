@@ -21,7 +21,5 @@ export const config = {
     slack: "https://n-jr.slack.com/archives/C04LXFN1PGC",
   },
   siteRoot:
-    process.env.NODE_ENV === "production"
-      ? "https://njr-feedback.vercel.app"
-      : "http://localhost:3000",
+    process.env.NODE_ENV === "production" ? "https://nextnjrfeedback.net" : "http://localhost:3000",
 }
