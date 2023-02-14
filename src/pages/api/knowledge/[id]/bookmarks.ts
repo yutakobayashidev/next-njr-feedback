@@ -16,49 +16,45 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
-  switch (req.method) {
-    case HttpMethod.POST:
-      const { id } = req.query
+  if (req.method !== HttpMethod.POST) {
+    res.setHeader("Allow", [HttpMethod.POST])
+    return res.status(405).end(`${req.method}メソッドはサポートされていません。`)
+  }
 
-      if (!id)
-        return res.status(400).end("リクエストパラメータに不足・不備がある可能性があります。")
+  if (req.method == HttpMethod.POST) {
+    const { id } = req.query
 
-      const bookmark = await prisma.bookmark.findFirst({
+    if (!id) return res.status(400).end("リクエストパラメータに不足・不備がある可能性があります。")
+
+    const bookmark = await prisma.bookmark.findFirst({
+      where: {
+        knowledgeId: String(id),
+        userId: session.user.id,
+      },
+    })
+
+    if (!bookmark) {
+      const response = await prisma.bookmark.upsert({
+        create: {
+          knowledge: { connect: { id: String(id) } },
+          user: { connect: { id: session.user.id } },
+        },
+        update: {},
         where: {
-          knowledgeId: String(id),
-          userId: session.user.id,
+          id: String(id),
         },
       })
 
-      if (!bookmark) {
-        const response = await prisma.bookmark.upsert({
-          create: {
-            knowledge: { connect: { id: String(id) } },
-            user: { connect: { id: session.user.id } },
-          },
-          update: {},
-          where: {
-            id: String(id),
-          },
-        })
+      return res.status(201).json(response)
+    }
 
-        return res.status(200).json(response)
-      }
-
-      if (bookmark) {
-        await prisma.bookmark.delete({
-          where: {
-            id: bookmark.id,
-          },
-        })
-        return res.status(204).end()
-      }
-    default:
-      res.setHeader("Allow", [HttpMethod.POST])
-      return res.status(404).json({
-        error: {
-          messsage: `${req.method}メソッドはサポートされていません。`,
+    if (bookmark) {
+      await prisma.bookmark.delete({
+        where: {
+          id: bookmark.id,
         },
       })
+      return res.status(204).end()
+    }
   }
 }
