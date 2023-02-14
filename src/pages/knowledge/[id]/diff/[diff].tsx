@@ -7,26 +7,39 @@ import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { KnowledgeProps } from "@src/types"
+import { Diff, KnowledgeProps } from "@src/types"
 import { getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
+import { useSession } from "next-auth/react"
+import { useEffect } from "react"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
 type Props = {
-  diff: KnowledgeProps
+  diff: Diff
   knowledge: KnowledgeProps
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
-  const { title, createdAt, emoji } = props.diff
+  const { title, createdAt } = props.diff
+
+  const { data: session } = useSession()
 
   const { id } = props.knowledge
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!session && typeof session != "undefined") {
+      router.push(`/`)
+    }
+  }, [session, router])
 
   return (
     <>

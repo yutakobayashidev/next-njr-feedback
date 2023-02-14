@@ -12,7 +12,10 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
+import { useSession } from "next-auth/react"
+import { useEffect } from "react"
 import { GrHistory } from "react-icons/gr"
 
 dayjs.extend(relativeTime)
@@ -20,6 +23,16 @@ dayjs.locale("ja")
 
 const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const { id, title, diff } = props
+
+  const { data: session } = useSession()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!session && typeof session != "undefined") {
+      router.push(`/`)
+    }
+  }, [session, router])
 
   return (
     <>
