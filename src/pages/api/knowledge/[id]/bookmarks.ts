@@ -1,10 +1,11 @@
 import prisma from "@src/lib/prisma"
+import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "next-auth/react"
+import { getServerSession } from "next-auth"
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const session = await getSession({ req })
+  const session = await getServerSession(req, res, authOptions)
 
   if (!session)
     return res.status(401).json({

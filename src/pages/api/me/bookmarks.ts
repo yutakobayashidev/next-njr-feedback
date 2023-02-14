@@ -38,6 +38,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             },
             course: true,
             emoji: true,
+            published: true,
+            updatedAt: true,
           },
         },
         user: {
