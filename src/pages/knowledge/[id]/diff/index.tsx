@@ -38,13 +38,15 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     <>
       <MyPageSeo
         path={`/knowledge/${id}/diff`}
-        title={title ? title : "無題のナレッジ" + "の履歴"}
+        title={title ? title + "の履歴" : "無題のナレッジ" + "の履歴"}
       />
       <section className="py-12">
         <ContentWrapper>
           <h1 className="mb-7 flex items-center text-3xl font-bold">
             <GrHistory color="#93a5b1" className="mr-4" />
-            {title ? title : "「無題のナレッジ」" + "の履歴" + "「" + title + "」" + "の変更履歴"}
+            {title
+              ? title
+              : "「無題のナレッジ」" + "の変更履歴" + "「" + title + "」" + "の変更履歴"}
           </h1>
           <p className="my-4 text-lg">
             {diff.length}
