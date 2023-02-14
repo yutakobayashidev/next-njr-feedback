@@ -54,41 +54,6 @@ export type UserProps = {
   knowledge: KnowledgeProps[]
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await getServerSession(req, res, authOptions)
-
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
-
-  const data = await prisma.user.findUnique({
-    include: {
-      _count: {
-        select: {
-          discussion: true,
-          knowledge: { where: { published: true } },
-        },
-      },
-    },
-    where: {
-      handle: String(params?.handle),
-    },
-  })
-
-  if (!data) {
-    return {
-      notFound: true,
-    }
-  }
-
-  const profile = JSON.parse(JSON.stringify(data))
-
-  return {
-    props: profile,
-  }
-}
-
 const Page: NextPageWithLayout<UserProps> = (props) => {
   const { _count, bio, contributor, createdAt, displayname, email, handle, image } = props
 
@@ -148,7 +113,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                 {session && session.user.handle === handle && (
                   <div className="text-right">
                     <Link
-                      href="/settings"
+                      href="/dashboard/settings"
                       className="inline-flex items-center rounded-full border py-2 px-4 text-base font-bold text-gray-800 hover:bg-gray-200"
                     >
                       プロフィールを編集
@@ -329,5 +294,40 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
 }
 
 Page.getLayout = (page) => <Layout>{page}</Layout>
+
+export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
+
+  if (!session) {
+    res.statusCode = 403
+    return { props: { profile: [] } }
+  }
+
+  const data = await prisma.user.findUnique({
+    include: {
+      _count: {
+        select: {
+          discussion: true,
+          knowledge: { where: { published: true } },
+        },
+      },
+    },
+    where: {
+      handle: String(params?.handle),
+    },
+  })
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const profile = JSON.parse(JSON.stringify(data))
+
+  return {
+    props: profile,
+  }
+}
 
 export default Page
