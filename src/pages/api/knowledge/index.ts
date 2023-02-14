@@ -86,6 +86,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             handle: true,
             image: true,
           },
+          where: {
+            ...(handle && { handle: String(handle) }),
+          },
         },
         course: true,
       },
@@ -95,7 +98,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       take: count,
       where: {
         ...(archive == "false" && { archive: false }),
-        ...(handle && { creator: { handle: String(handle) } }),
         published: true,
       },
     })
