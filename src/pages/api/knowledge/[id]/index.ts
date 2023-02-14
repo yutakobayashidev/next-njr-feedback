@@ -1,4 +1,4 @@
-import { deletePost, getKnowledge, updatePost } from "@src/lib/api"
+import { deleteKnowledge, getKnowledge, updateKnowledge } from "@src/lib/api"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -15,9 +15,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     case HttpMethod.GET:
       return getKnowledge(req, res, session)
     case HttpMethod.DELETE:
-      return deletePost(req, res, session)
+      return deleteKnowledge(req, res, session)
     case HttpMethod.PUT:
-      return updatePost(req, res, session)
+      return updateKnowledge(req, res, session)
     default:
       res.setHeader("Allow", [HttpMethod.GET, HttpMethod.DELETE, HttpMethod.PUT])
       return res.status(405).json({

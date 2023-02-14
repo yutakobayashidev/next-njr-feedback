@@ -1,3 +1,4 @@
+import Google from "@public/google.svg"
 import { config } from "@site.config"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { DiscussionCard } from "@src/components/Discussion"
@@ -24,7 +25,10 @@ const Page: NextPageWithLayout<Props> = (props) => {
 
   return (
     <>
-      <MyPageSeo path="/" title="NJR Feedback | 議論&ナレッジ共有プラットフォーム" />
+      <MyPageSeo
+        path="/"
+        title={session ? "ホーム" : `${config.siteMeta.title} | 議論&ナレッジ共有プラットフォーム`}
+      />
       {!session ? (
         <section className="mx-auto bg-n-50 py-12 text-center">
           <div className="mx-auto max-w-screen-md px-4 md:px-8">
@@ -46,7 +50,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-xl font-bold text-gray-700 shadow-md shadow-gray-300"
             >
               <span className="mr-2 inline-flex items-center">
-                <img src="/google.svg" alt="Google" width="22" height="22"></img>
+                <Google width={22} height={22} />
               </span>
               Login With Google
             </button>
@@ -131,7 +135,6 @@ const Page: NextPageWithLayout<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
-    res.statusCode = 403
     return { props: { discussion: [], knowledge: [] } }
   }
 
@@ -176,7 +179,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
-        updatedAt: "desc",
+        views: "desc",
       },
     ],
     take: 10,

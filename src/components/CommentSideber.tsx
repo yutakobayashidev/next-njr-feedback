@@ -42,7 +42,7 @@ export const CommentSidebar: React.FC<{
   }
 
   const { data: discussions } = useSWR<Array<DiscussionProps>>(
-    session && `/api/discussion`,
+    session && `/api/discussion?archive=false`,
     fetcher,
   )
 

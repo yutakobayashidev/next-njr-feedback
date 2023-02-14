@@ -7,6 +7,7 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount"]
 }
 
 model Account {
@@ -89,11 +90,28 @@ model Comment {
   @@index([discussionId])
 }
 
+model Diff {
+    id            String     @id @default(cuid())
+    title         String?
+    emoji         String
+    author        User     @relation(fields: [authorId], references: [id])
+    authorId      String
+    content       String?   @db.Text
+    createdAt     DateTime @default(now())
+    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id])
+    knowledgeId   String
+    course        Course[]
+
+    @@index([authorId])
+    @@index([knowledgeId])
+}
+
 model Knowledge {
   id            String     @id @default(cuid())
   title         String?
   views         Int      @default(0)
   emoji         String
+  diff          Diff[]
   content       String?   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -101,6 +119,7 @@ model Knowledge {
   published     Boolean @default(false)
   archive       Boolean @default(false)
   contributors  User[] @relation(name: "Usercontributors")
+  bookmarks     Bookmark[]
   creatorId     String
   creator       User     @relation(fields: [creatorId], references: [id])
   course        Course[]
@@ -108,10 +127,23 @@ model Knowledge {
   @@index([creatorId])
 }
 
+model Bookmark {
+  id            String   @id @default(cuid())
+  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
+  createdAt     DateTime @default(now())
+  knowledgeId   String
+  user          User     @relation(fields: [userId], references: [id])
+  userId      String
+  @@unique([userId, knowledgeId])
+  @@index([knowledgeId])
+  @@index([userId])
+}
+
 model Course {
     id      Int      @id @default(autoincrement())
     name    String
     knowledge Knowledge[]
+    diff      Diff[]
 }
 
 model User {
@@ -120,15 +152,17 @@ model User {
   name          String?
   displayname   String?
   email         String?   @unique
+  handle        String @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
+  diff          Diff[]
   sessions      Session[]
-  handle        String @unique
   knowledge     Knowledge[] @relation(name: "Usercontributors")
   admin         Boolean @default(false)
   leave         Boolean @default(false)
   contributor   Boolean @default(false)
+  bookmarks     Bookmark[]
   createdAt     DateTime?    @default(now())
   comments      Comment[]
   updatedAt     DateTime?    @updatedAt

@@ -41,6 +41,7 @@ const Tab = ({ title, href, isSelected }: TabProps) => (
 
 export type UserProps = {
   _count: {
+    discussion: number
     knowledge: number
   }
   bio: string
@@ -62,6 +63,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 
   const data = await prisma.user.findUnique({
+    include: {
+      _count: {
+        select: {
+          discussion: true,
+          knowledge: { where: { published: true } },
+        },
+      },
+    },
     where: {
       handle: String(params?.handle),
     },
@@ -81,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
-  const { bio, contributor, createdAt, displayname, email, handle, image } = props
+  const { _count, bio, contributor, createdAt, displayname, email, handle, image } = props
 
   const router = useRouter()
   const { data: session } = useSession()
@@ -152,7 +161,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   <p>{bio}</p>
                 ) : session && session.user.handle === handle ? (
                   <p className="break-words">
-                    自己紹介がありません。<Link href="/settings">アカウント設定</Link>
+                    自己紹介がありません。<Link href="/dashboard/settings">アカウント設定</Link>
                     で追加してみましょう。
                   </p>
                 ) : null}
@@ -187,10 +196,14 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
         </div>
       </header>
       <div className="mx-auto flex max-w-screen-lg items-center px-4 md:px-8">
-        <Tab href={`/users/${handle}/`} title="Discussion" isSelected={!router.query.tab} />
+        <Tab
+          href={`/users/${handle}/`}
+          title={"Discussion " + _count.discussion}
+          isSelected={!router.query.tab}
+        />
         <Tab
           href={`/users/${handle}?tab=knowledge`}
-          title="Knowledge"
+          title={"Knowledge " + _count.knowledge}
           isSelected={router.query.tab == "knowledge"}
         />
         <Tab

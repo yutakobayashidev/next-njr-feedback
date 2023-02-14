@@ -68,7 +68,7 @@ export async function getKnowledge(
  * @param req - Next.js API Request
  * @param res - Next.js API Response
  */
-export async function updatePost(
+export async function updateKnowledge(
   req: NextApiRequest,
   res: NextApiResponse,
   session: Session,
@@ -108,6 +108,16 @@ export async function updatePost(
 
     let publishedAt = new Date()
 
+    await prisma.diff.create({
+      data: {
+        title,
+        author: { connect: { id: session.user.id } },
+        content,
+        emoji,
+        knowledge: { connect: { id: id } },
+      },
+    })
+
     const post = await prisma.knowledge.update({
       data: {
         title,
@@ -133,7 +143,7 @@ export async function updatePost(
  * @param req - Next.js API Request
  * @param res - Next.js API Response
  */
-export async function deletePost(
+export async function deleteKnowledge(
   req: NextApiRequest,
   res: NextApiResponse,
   session: Session,

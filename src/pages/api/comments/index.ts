@@ -68,7 +68,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
       orderBy: [
         {
-          updatedAt: "desc",
+          createdAt: "desc",
         },
       ],
       where: {

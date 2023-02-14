@@ -1,5 +1,6 @@
 import "dayjs/locale/ja"
 
+import { Menu, Transition } from "@headlessui/react"
 import { Alert } from "@src/components/Alert"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { Layout } from "@src/components/Layout"
@@ -8,7 +9,12 @@ import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod, KnowledgeProps } from "@src/types"
-import { getKnowledgeEditPath, getKnowledgePath, getUserpagePath } from "@src/utils/helper"
+import {
+  getKnowledgeEditPath,
+  getKnowledgePath,
+  getReportPath,
+  getUserpagePath,
+} from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
@@ -16,80 +22,26 @@ import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
-import { useEffect } from "react"
-import { BsPencilFill } from "react-icons/bs"
+import { Fragment, useEffect, useState } from "react"
+import { AiOutlineFlag } from "react-icons/ai"
+import { BiChevronDown } from "react-icons/bi"
+import { BsBookmark, BsFillBookmarkCheckFill, BsPencilFill } from "react-icons/bs"
+import { GrHistory } from "react-icons/gr"
 import { remark } from "remark"
 import html from "remark-html"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ")
+}
+
 /*
 import data from "@emoji-mart/data"
 import i18n from "@emoji-mart/data/i18n/ja.json"
 import Picker from "@emoji-mart/react"
 */
-
-export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
-  const session = await getServerSession(req, res, authOptions)
-
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
-
-  const data = await prisma.knowledge.findFirst({
-    include: {
-      contributors: {
-        select: {
-          id: true,
-          displayname: true,
-          email: true,
-          handle: true,
-          image: true,
-        },
-      },
-      course: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-      creator: {
-        select: {
-          id: true,
-          displayname: true,
-          handle: true,
-          image: true,
-        },
-      },
-    },
-    where: {
-      id: String(params?.id),
-    },
-  })
-
-  if (!data) {
-    return {
-      notFound: true,
-    }
-  }
-
-  if (data?.published === false && data.creator.id != session.user.id) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
-
-  const knowledge = JSON.parse(JSON.stringify(data))
-
-  const htmlBody = await remark().use(html).process(knowledge.content)
-  const contentHtml = htmlBody.toString()
-  knowledge.content = contentHtml
-
-  return {
-    props: knowledge,
-  }
-}
 
 async function restorearchivePost(id: string): Promise<void> {
   await fetch(`/api/knowledge/${id}`, {
@@ -108,7 +60,9 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const {
     id,
     title,
+    _count,
     archive,
+    bookmarks,
     content,
     contributors,
     course,
@@ -122,11 +76,46 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const { data: session } = useSession()
   const router = useRouter()
 
+  const [bookmarkCount, setBookmarkCount] = useState(Number(_count.bookmarks))
+  const [bookmark, setBookmark] = useState(false)
+
+  useEffect(() => {
+    if (bookmarks.some((bookmark) => bookmark.user.id === session?.user.id)) {
+      setBookmark(true)
+    }
+  }, [bookmarks, session?.user.id])
+
+  async function addbookmarks() {
+    const response = await fetch(`/api/knowledge/${id}/bookmarks`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: HttpMethod.POST,
+    })
+
+    if (response.ok) {
+      bookmark ? setBookmark(false) : setBookmark(true)
+
+      bookmark ? setBookmarkCount(bookmarkCount - 1) : setBookmarkCount(bookmarkCount + 1)
+    }
+  }
+
   useEffect(() => {
     if (!session && typeof session != "undefined") {
       router.push(`/`)
     }
   }, [session, router])
+
+  useEffect(() => {
+    const registerView = () =>
+      fetch(`/api/knowledge/${id}/views`, {
+        method: "POST",
+      })
+
+    if (session) {
+      registerView()
+    }
+  }, [id, session])
 
   if (!session) {
     return null
@@ -249,16 +238,74 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
           />
           */}
               <div className="mt-10 flex items-center justify-between">
-                <div className="flex">
-                  <button aria-label="ブックマーク">111</button>
+                <div className="inline-flex items-center">
+                  <button
+                    aria-label="ブックマーク"
+                    onClick={async () => {
+                      await addbookmarks()
+                    }}
+                    className="inline-flex items-center justify-center rounded-full border bg-gray-100 p-3"
+                  >
+                    {bookmark ? <BsFillBookmarkCheckFill size={25} /> : <BsBookmark size={25} />}
+                  </button>
+                  <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
-                <Link
-                  href={getKnowledgeEditPath(id)}
-                  className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
-                >
-                  <BsPencilFill className="mr-2" />
-                  ナレッジを編集
-                </Link>
+                <div className="flex items-center">
+                  <Menu as="div" className="relative ml-auto  inline-block">
+                    <Menu.Button>
+                      <BiChevronDown className="mr-2 text-gray-400" size={35} aria-hidden="true" />
+                    </Menu.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href={`/knowledge/${id}/diff`}
+                                className={classNames(
+                                  active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                  "flex items-center px-4 py-2 text-base",
+                                )}
+                              >
+                                <GrHistory color="#93a5b1" className="mr-1" />
+                                変更履歴を表示
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href={getReportPath()}
+                                className={classNames(
+                                  active ? "bg-gray-100 text-red-900" : "text-red-700",
+                                  "flex border-t-2 border-gray-100 items-center text-base px-4 py-2",
+                                )}
+                              >
+                                <AiOutlineFlag className="mr-1" />
+                                違反を報告
+                              </Link>
+                            )}
+                          </Menu.Item>{" "}
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                  <Link
+                    href={getKnowledgeEditPath(id)}
+                    className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
+                  >
+                    <BsPencilFill className="mr-2" />
+                    ナレッジを編集
+                  </Link>
+                </div>
               </div>
               <div className="my-5 border-t pt-5">
                 <h2 className="mb-5 text-2xl font-bold">
@@ -293,7 +340,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             >
                               {contributor.displayname}
                               {contributor.email === session?.user?.email && " (あなた)"}
-                            </Link>
+                            </Link> 
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
@@ -320,4 +367,78 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
 
 Page.getLayout = (page) => <Layout>{page}</Layout>
 
+export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
+  const session = await getServerSession(req, res, authOptions)
+
+  if (!session) {
+    res.statusCode = 403
+    return { props: { knowledge: [] } }
+  }
+
+  const data = await prisma.knowledge.findFirst({
+    include: {
+      _count: {
+        select: {
+          bookmarks: true,
+        },
+      },
+      bookmarks: {
+        select: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+      contributors: {
+        select: {
+          id: true,
+          displayname: true,
+          email: true,
+          handle: true,
+          image: true,
+        },
+      },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      creator: {
+        select: {
+          id: true,
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+    },
+    where: {
+      id: String(params?.id),
+    },
+  })
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  if (data?.published === false && data.creator.id != session.user.id) {
+    res.statusCode = 403
+    return { props: { knowledge: [] } }
+  }
+
+  const knowledge = JSON.parse(JSON.stringify(data))
+
+  const htmlBody = await remark().use(html).process(knowledge.content)
+  const contentHtml = htmlBody.toString()
+  knowledge.content = contentHtml
+
+  return {
+    props: knowledge,
+  }
+}
 export default Page

@@ -48,7 +48,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(500).end(error)
     }
   } else if (req.method === HttpMethod.GET) {
-    const { handle } = req.query
+    const { archive, handle } = req.query
 
     const data = await prisma.discussion.findMany({
       include: {
@@ -61,11 +61,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
       orderBy: [
         {
-          updatedAt: "desc",
+          createdAt: "desc",
         },
       ],
       where: {
-        archive: false,
+        ...(archive == "false" && { archive: false }),
         ...(handle && { user: { handle: String(handle) } }),
       },
     })
