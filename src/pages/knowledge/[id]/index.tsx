@@ -1,5 +1,6 @@
 import "dayjs/locale/ja"
 
+import { Menu, Transition } from "@headlessui/react"
 import { Alert } from "@src/components/Alert"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { Layout } from "@src/components/Layout"
@@ -8,7 +9,12 @@ import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod, KnowledgeProps } from "@src/types"
-import { getKnowledgeEditPath, getKnowledgePath, getUserpagePath } from "@src/utils/helper"
+import {
+  getKnowledgeEditPath,
+  getKnowledgePath,
+  getReportPath,
+  getUserpagePath,
+} from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
@@ -16,13 +22,20 @@ import Link from "next/link"
 import Router, { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
+import { AiOutlineFlag } from "react-icons/ai"
+import { BiChevronDown } from "react-icons/bi"
 import { BsBookmark, BsFillBookmarkCheckFill, BsPencilFill } from "react-icons/bs"
+import { GrHistory } from "react-icons/gr"
 import { remark } from "remark"
 import html from "remark-html"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ")
+}
 
 /*
 import data from "@emoji-mart/data"
@@ -64,7 +77,6 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const router = useRouter()
 
   const [bookmarkCount, setBookmarkCount] = useState(Number(_count.bookmarks))
-
   const [bookmark, setBookmark] = useState(false)
 
   useEffect(() => {
@@ -238,13 +250,62 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                   </button>
                   <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
-                <Link
-                  href={getKnowledgeEditPath(id)}
-                  className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
-                >
-                  <BsPencilFill className="mr-2" />
-                  ナレッジを編集
-                </Link>
+                <div className="flex items-center">
+                  <Menu as="div" className="relative ml-auto  inline-block">
+                    <Menu.Button>
+                      <BiChevronDown className="mr-2 text-gray-400" size={35} aria-hidden="true" />
+                    </Menu.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href={`/knowledge/${id}/diff`}
+                                className={classNames(
+                                  active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                  "flex items-center px-4 py-2 text-base",
+                                )}
+                              >
+                                <GrHistory color="#93a5b1" className="mr-1" />
+                                変更履歴を表示
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href={getReportPath()}
+                                className={classNames(
+                                  active ? "bg-gray-100 text-red-900" : "text-red-700",
+                                  "flex border-t-2 border-gray-100 items-center text-base px-4 py-2",
+                                )}
+                              >
+                                <AiOutlineFlag className="mr-1" />
+                                違反を報告
+                              </Link>
+                            )}
+                          </Menu.Item>{" "}
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                  <Link
+                    href={getKnowledgeEditPath(id)}
+                    className="flex items-center rounded-full border p-3 font-medium text-gray-400 hover:text-gray-600"
+                  >
+                    <BsPencilFill className="mr-2" />
+                    ナレッジを編集
+                  </Link>
+                </div>
               </div>
               <div className="my-5 border-t pt-5">
                 <h2 className="mb-5 text-2xl font-bold">
@@ -279,7 +340,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             >
                               {contributor.displayname}
                               {contributor.email === session?.user?.email && " (あなた)"}
-                            </Link>
+                            </Link> 
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">

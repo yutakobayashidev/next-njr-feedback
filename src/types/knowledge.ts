@@ -18,10 +18,26 @@ export type KnowledgeProps = {
     handle: string
     image: string
   }
+  diff: Diff[]
   emoji: string
   published: boolean
   publishedAt: string
   updatedAt: string
+}
+
+export type Diff = {
+  id: string
+  title: string
+  author: {
+    id: string
+    displayname: string
+    handle: string
+    image: string
+  }
+  content: string
+  course: Course[]
+  createdAt: string
+  emoji: string
 }
 
 interface Bookmark {
