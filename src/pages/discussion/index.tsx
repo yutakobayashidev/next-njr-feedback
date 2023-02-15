@@ -104,6 +104,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const open = await prisma.discussion.findMany({
     include: {
+      _count: {
+        select: {
+          comments: true,
+          votes: true,
+        },
+      },
       user: {
         select: {
           displayname: true,
@@ -125,6 +131,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const latest = await prisma.discussion.findMany({
     include: {
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
       user: {
         select: {
           displayname: true,
