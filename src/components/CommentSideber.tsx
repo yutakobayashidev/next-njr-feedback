@@ -95,7 +95,7 @@ export const CommentSidebar: React.FC<{
                         alt={discussion.user.displayname}
                         height={30}
                         width={30}
-                        className="mr-1 rounded-full"
+                        className="mr-1 rounded-full object-cover aspect-square"
                       />
                     </Link>
                     <Link href={getUserpagePath(discussion.user.handle)}>

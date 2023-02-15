@@ -210,7 +210,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                         height={65}
                         width={65}
                         src={user.image}
-                        className="mr-6 h-auto rounded-full"
+                        className="mr-6 h-auto rounded-full object-cover aspect-square"
                         alt={user.displayname}
                       />
                     </Link>
@@ -258,7 +258,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 <div className="flex items-start">
                   {session && session.user && session.user.image && session.user.displayname && (
                     <img
-                      className="mr-4 rounded-full"
+                      className="mr-4 rounded-full object-cover aspect-square"
                       src={session.user.image}
                       height={60}
                       width={60}

@@ -63,7 +63,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       src={history.author.image}
                       width={45}
                       height={45}
-                      className="rounded-full"
+                      className="rounded-full object-cover aspect-square"
                       alt={history.author.image}
                     ></img>
                   </Link>
