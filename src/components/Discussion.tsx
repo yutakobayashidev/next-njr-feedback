@@ -16,7 +16,7 @@ export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ disc
       <div className="flex flex-1 items-start">
         <Link className="mr-4" href={getUserpagePath(discussion.user.handle)}>
           <img
-            className="rounded-full border"
+            className="rounded-full border object-cover aspect-square"
             src={discussion.user.image}
             height={60}
             width={60}

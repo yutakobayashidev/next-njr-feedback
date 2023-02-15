@@ -111,7 +111,7 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
           <div>
             <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <img
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full object-cover aspect-square"
                 src={session.user.image}
                 alt="メニューを開く"
               />
