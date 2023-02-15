@@ -91,14 +91,14 @@ model Comment {
 }
 
 model Diff {
-    id            String     @id @default(cuid())
+    id            Int     @id @default(autoincrement())
     title         String?
     emoji         String
     author        User     @relation(fields: [authorId], references: [id])
     authorId      String
     content       String?   @db.Text
     createdAt     DateTime @default(now())
-    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id], onDelete: Cascade)
+    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id])
     knowledgeId   String
     course        Course[]
 

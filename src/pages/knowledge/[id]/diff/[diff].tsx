@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       course: true,
     },
     where: {
-      id: String(params?.diff),
+      id: Number(params?.diff),
     },
   })
 
