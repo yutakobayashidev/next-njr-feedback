@@ -44,7 +44,24 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
               votes: true,
             },
           },
-          user: true,
+          user: {
+            select: {
+              id: true,
+              displayname: true,
+              email: true,
+              handle: true,
+              image: true,
+            },
+          },
+          votes: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
         },
       })
       res.status(201).json(result)

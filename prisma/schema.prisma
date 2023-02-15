@@ -63,18 +63,6 @@ model Discussion {
   @@index([userId])
 }
 
-model Vote {
-  id            String     @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  comment       Comment @relation(references: [id], fields:[commentId])
-  commentId String
-  @@index([userId])
-  @@index([commentId])
-}
-
 model Comment {
   id            String     @id @default(cuid())
   content       String     @db.Text
@@ -88,6 +76,18 @@ model Comment {
   votes         Vote[]
   @@index([userId])
   @@index([discussionId])
+}
+
+model Vote {
+  id            String     @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  comment       Comment @relation(references: [id], fields:[commentId])
+  commentId     String
+  @@index([userId])
+  @@index([commentId])
 }
 
 model Diff {
