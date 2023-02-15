@@ -52,7 +52,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
             <Link href={getKnowledgeEditPath(id)}>ナレッジを編集</Link>
             してより良いナレッジベースを構築しましょう。
           </p>
-          <div className="relative min-h-screen border-l-2 py-0.5">
+          <div className="relative ml-5 min-h-screen border-l-2 py-0.5">
             {diff.map((history) => (
               <div className="relative mt-10 block pl-10" key={history.id}>
                 <div className="absolute -left-6 -top-1.5 flex items-center justify-center">
@@ -61,7 +61,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       src={history.author.image}
                       width={45}
                       height={45}
-                      className="rounded-full object-cover aspect-square"
+                      className="aspect-square rounded-full object-cover"
                       alt={history.author.image}
                     ></img>
                   </Link>
