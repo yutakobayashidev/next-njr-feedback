@@ -124,6 +124,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       author: {
         select: {
           displayname: true,
+          handle: true,
           image: true,
         },
       },

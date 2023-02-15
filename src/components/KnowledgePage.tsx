@@ -22,7 +22,7 @@ export const KnowledgePage: React.FC<{ diff: Diff; knowledge: KnowledgeProps }> 
               <span className="flex items-center">
                 {knowledge.publishedAt ? (
                   <>
-                    <Link href={getUserpagePath(knowledge.creator.handle)}>
+                    <Link href={getUserpagePath(diff.author.handle)}>
                       <img
                         src={diff.author.image}
                         height={45}
