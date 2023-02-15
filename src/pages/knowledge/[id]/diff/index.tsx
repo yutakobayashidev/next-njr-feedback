@@ -17,6 +17,7 @@ import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { GrHistory } from "react-icons/gr"
+import { IoTimeOutline } from "react-icons/io5"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -61,7 +62,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       src={history.author.image}
                       width={45}
                       height={45}
-                      className="aspect-square rounded-full object-cover"
+                      className="aspect-square rounded-full border object-cover"
                       alt={history.author.image}
                     ></img>
                   </Link>
@@ -94,7 +95,20 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       >
                         {history.title ? history.title : "無題のナレッジ"}
                       </Link>
-                      <div className="mt-2 flex items-center"></div>
+                      <div className="mt-2 flex items-center text-xs md:text-base">
+                        {history?.course.map((course) => (
+                          <span
+                            key={course.id}
+                            className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course"
+                          >
+                            {course.name}
+                          </span>
+                        ))}
+                        <span className="flex items-center text-gray-500">
+                          <IoTimeOutline className="mr-1" />
+                          {dayjs(history.createdAt).fromNow()}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -129,6 +143,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           id: true,
           title: true,
           author: true,
+          course: true,
           createdAt: true,
           emoji: true,
         },

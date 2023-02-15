@@ -113,6 +113,7 @@ export async function updateKnowledge(
         title,
         author: { connect: { id: session.user.id } },
         content,
+        course: { connect: { id: 1 } },
         emoji,
         knowledge: { connect: { id: id } },
       },
