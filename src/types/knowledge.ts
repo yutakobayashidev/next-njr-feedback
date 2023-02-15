@@ -22,6 +22,7 @@ export type KnowledgeProps = {
   emoji: string
   published: boolean
   publishedAt: string
+  updated_at: string
   updatedAt: string
 }
 

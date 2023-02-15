@@ -109,9 +109,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       {
         views: "desc",
       },
-      {
-        updatedAt: "desc",
-      },
     ],
     take: 10,
     where: {
@@ -138,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
-        updatedAt: "asc",
+        updated_at: "asc",
       },
     ],
     take: 10,

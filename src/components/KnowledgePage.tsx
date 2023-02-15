@@ -35,9 +35,9 @@ export const KnowledgePage: React.FC<{ diff: Diff; knowledge: KnowledgeProps }> 
                       dateTime={dayjs(knowledge.publishedAt).toISOString()}
                       className="mr-3 text-sm text-gray-700  lg:text-lg"
                     >
-                      {dayjs(knowledge.publishedAt).isSame(dayjs(knowledge.updatedAt), "day")
+                      {dayjs(knowledge.publishedAt).isSame(dayjs(knowledge.updated_at), "day")
                         ? `${dayjs(knowledge.publishedAt).format("YYYY/MM/DD")}に公開 `
-                        : `${dayjs(knowledge.updatedAt).fromNow()}に更新`}
+                        : `${dayjs(knowledge.updated_at).fromNow()}に更新`}
                     </time>
                   </>
                 ) : (

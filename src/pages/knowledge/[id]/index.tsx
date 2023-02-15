@@ -57,7 +57,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     emoji,
     published,
     publishedAt,
-    updatedAt,
+    updated_at,
   } = props
 
   const { data: session } = useSession()
@@ -114,7 +114,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
       {!published && (
         <Alert id={id}>💡 このナレッジは非公開です。有益な知識は積極的に公開しましょう</Alert>
       )}
-      {published && !archive && dayjs(updatedAt).diff(dayjs(), "month") < -6 && (
+      {published && !archive && dayjs(updated_at).diff(dayjs(), "month") < -6 && (
         <>
           <Alert id={id}>
             💡
@@ -150,7 +150,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               src={creator.image}
                               height={45}
                               width={45}
-                              className="mr-2 rounded-full object-cover aspect-square"
+                              className="mr-2 aspect-square rounded-full object-cover"
                               alt={creator.displayname}
                             ></img>
                           </Link>
@@ -158,9 +158,9 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             dateTime={dayjs(publishedAt).toISOString()}
                             className="mr-3 text-sm text-gray-700  lg:text-lg"
                           >
-                            {dayjs(publishedAt).isSame(dayjs(updatedAt), "day")
+                            {dayjs(publishedAt).isSame(dayjs(updated_at), "day")
                               ? `${dayjs(publishedAt).format("YYYY/MM/DD")}に公開 `
-                              : `${dayjs(updatedAt).fromNow()}に更新`}
+                              : `${dayjs(updated_at).fromNow()}に更新`}
                           </time>
                         </>
                       ) : (
@@ -170,7 +170,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               src={creator.image}
                               height={45}
                               width={45}
-                              className="mr-2 rounded-full object-cover aspect-square"
+                              className="mr-2 aspect-square rounded-full object-cover"
                               alt={creator.displayname}
                             ></img>
                           </Link>
@@ -302,7 +302,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       >
                         <Link href={getUserpagePath(contributor.handle)}>
                           <img
-                            className="rounded-full border object-cover aspect-square"
+                            className="aspect-square rounded-full border object-cover"
                             src={contributor.image}
                             height={"65"}
                             width={"65"}
