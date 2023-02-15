@@ -339,6 +339,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         },
         orderBy: [
           {
+            votes: {
+              _count: "desc",
+            },
+          },
+          {
             createdAt: "asc",
           },
         ],
