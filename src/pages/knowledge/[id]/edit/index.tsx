@@ -370,7 +370,8 @@ export default function Post() {
                 href={getKnowledgePath(knowledgeId as string)}
                 className="flex items-center text-gray-700 "
               >
-                <IoArrowBackOutline size={22} className="mr-2" /> ナレッジを見る
+                <IoArrowBackOutline size={22} className="mr-2" />
+                <span className="hidden md:block"> ナレッジを見る</span>
               </Link>
               <div className="flex items-center">
                 {!knowledge?.published && (
@@ -441,7 +442,7 @@ export default function Post() {
               placeholder="💡 この本文にはMarkdownを使用できます。"
               value={data.content}
             />
-            <div className="flex items-center text-base text-gray-500 md:text-lg">
+            <div className="flex items-center text-sm text-gray-500 md:text-base">
               <MdOutlineInfo className="mr-1" />
               <Link href="/guideline" className="text-gray-500 underline">
                 ガイドライン
