@@ -5,7 +5,6 @@ import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Link from "next/link"
-import { TfiReload } from "react-icons/tfi"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -13,10 +12,10 @@ dayjs.locale("ja")
 export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ discussion }) => {
   return (
     <div className="flex items-center bg-white p-3 [&:not(:first-child)]:border-t">
-      <div className="flex flex-1 items-start">
+      <div className="flex flex-1 items-center">
         <Link className="mr-4" href={getUserpagePath(discussion.user.handle)}>
           <img
-            className="rounded-full border object-cover aspect-square"
+            className="aspect-square rounded-full border object-cover"
             src={discussion.user.image}
             height={60}
             width={60}
@@ -30,7 +29,7 @@ export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ disc
           >
             {discussion.title}
           </Link>
-          <div className="mt-2 flex items-center">
+          <div className="mt-2 flex items-center text-xs md:text-base">
             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
               {discussion.archive ? "Archive" : "Open"}
             </span>
@@ -41,11 +40,25 @@ export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ disc
               {discussion.user.displayname}
             </Link>
             <span className="mr-2 flex items-center text-gray-500">
-              <TfiReload className="mr-1" />
-              {dayjs(discussion.updatedAt).fromNow()}
+              {discussion.last_comment_created_at
+                ? dayjs(discussion.last_comment_created_at).fromNow() + "に追加"
+                : dayjs(discussion.updatedAt).fromNow() + "に作成"}
             </span>
-            <span className="flex items-center text-gray-500">{discussion.views}</span>
           </div>
+        </div>
+        <div className="hidden flex-1 justify-around md:flex">
+          <span className="items-center text-gray-500">
+            <span className="block text-center font-bold text-gray-800">
+              {discussion._count.votes}
+            </span>
+            Votes
+          </span>
+          <span className="items-center text-gray-500">
+            <span className="block text-center font-bold text-gray-800">
+              {discussion._count.comments}
+            </span>
+            Comments
+          </span>
         </div>
       </div>
     </div>

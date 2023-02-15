@@ -17,6 +17,8 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
+import { remark } from "remark"
+import html from "remark-html"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -119,6 +121,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
   const data = await prisma.diff.findFirst({
     include: {
+      author: {
+        select: {
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
       course: true,
     },
     where: {
@@ -139,6 +148,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
   const diff = JSON.parse(JSON.stringify(data))
   const knowledge = JSON.parse(JSON.stringify(knowledgedata))
+
+  const htmlBody = await remark().use(html).process(diff.content)
+  const contentHtml = htmlBody.toString()
+  diff.content = contentHtml
 
   return {
     props: { diff, knowledge },

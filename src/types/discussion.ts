@@ -5,6 +5,7 @@ export type DiscussionProps = {
   title: string
   _count: {
     comments: number
+    votes: number
   }
   archive: boolean
   archived_at: string

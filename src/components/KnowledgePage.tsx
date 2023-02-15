@@ -22,13 +22,13 @@ export const KnowledgePage: React.FC<{ diff: Diff; knowledge: KnowledgeProps }> 
               <span className="flex items-center">
                 {knowledge.publishedAt ? (
                   <>
-                    <Link href={getUserpagePath(knowledge.creator.handle)}>
+                    <Link href={getUserpagePath(diff.author.handle)}>
                       <img
-                        src={knowledge.creator.image}
+                        src={diff.author.image}
                         height={45}
                         width={45}
-                        className="mr-2 rounded-full"
-                        alt={knowledge.creator.displayname}
+                        className="mr-2 aspect-square rounded-full object-cover"
+                        alt={diff.author.image}
                       ></img>
                     </Link>
                     <time
@@ -47,7 +47,7 @@ export const KnowledgePage: React.FC<{ diff: Diff; knowledge: KnowledgeProps }> 
                         src={knowledge.creator.image}
                         height={45}
                         width={45}
-                        className="mr-2 rounded-full"
+                        className="mr-2 aspect-square rounded-full object-cover"
                         alt={knowledge.creator.displayname}
                       ></img>
                     </Link>
