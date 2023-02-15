@@ -30,7 +30,7 @@ export const Knowledge: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledge }
             {knowledge.title ? knowledge.title : "無題のナレッジ"}
             {!knowledge.published && " (非公開)"}
           </Link>
-          <div className="mt-2 flex items-center">
+          <div className="mt-2 flex items-center text-xs md:text-base">
             {knowledge?.course.map((course) => (
               <span
                 key={course.id}

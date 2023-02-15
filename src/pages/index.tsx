@@ -140,6 +140,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const discussiondata = await prisma.discussion.findMany({
     include: {
+      _count: {
+        select: {
+          comments: true,
+          votes: true,
+        },
+      },
       user: {
         select: {
           displayname: true,

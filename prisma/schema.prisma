@@ -50,7 +50,7 @@ model Discussion {
   archive       Boolean @default(false)
   content       String   @db.Text
   totalComments Int      @default(0)
-  vote          Int      @default(0)
+  votes         DiscussionVote[]
   views         Int      @default(0)
   createdAt     DateTime @default(now())
   archived_at   DateTime?
@@ -61,6 +61,18 @@ model Discussion {
   comments      Comment[]
 
   @@index([userId])
+}
+
+model DiscussionVote {
+  id            String     @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  discussion    Discussion @relation(references: [id], fields:[discussionId])
+  discussionId  String
+  @@index([userId])
+  @@index([discussionId])
 }
 
 model Comment {
@@ -167,6 +179,7 @@ model User {
   comments      Comment[]
   updatedAt     DateTime?    @updatedAt
   discussion    Discussion[]
+  discussionvote    DiscussionVote[]
   createKnowledge    Knowledge[]
   votes            Vote[]
 }

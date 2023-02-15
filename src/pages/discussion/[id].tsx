@@ -23,14 +23,25 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
 import { BsPencil } from "react-icons/bs"
+import { IoTriangle } from "react-icons/io5"
 import TextareaAutosize from "react-textarea-autosize"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
 
 const Page: NextPageWithLayout<DiscussionProps> = (props) => {
-  const { id, title, archive, comments, content, last_comment_created_at, updatedAt, user, views } =
-    props
+  const {
+    id,
+    title,
+    _count,
+    archive,
+    comments,
+    content,
+    last_comment_created_at,
+    updatedAt,
+    user,
+    views,
+  } = props
   const { data: session } = useSession()
 
   const router = useRouter()
@@ -40,6 +51,24 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   const [commentcontent, setContent] = useState<string>("")
   const [discussiontitle, setTitle] = useState<string>("")
   const [showtitleEditForm, setTitleEditForm] = useState(false)
+  const [isVoted, setIsVoted] = useState(false)
+  const [voteCount, setVoteCount] = useState(Number(_count.votes))
+
+  async function votes(id: string) {
+    const response = await fetch(`/api/discussion/${id}/votes`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: HttpMethod.POST,
+    })
+
+    if (response.ok) {
+      setIsVoted(!isVoted)
+      setVoteCount(voteCount + (isVoted ? -1 : +1))
+    } else {
+      console.error("投票に失敗しました")
+    }
+  }
 
   useEffect(() => {
     // Set initial value to no-prefix and comment's content.
@@ -210,7 +239,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                         height={65}
                         width={65}
                         src={user.image}
-                        className="mr-6 h-auto rounded-full object-cover aspect-square"
+                        className="mr-6 aspect-square h-auto rounded-full object-cover"
                         alt={user.displayname}
                       />
                     </Link>
@@ -237,6 +266,23 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                     </time>
                     <div className="mt-2 font-inter text-lg leading-7 text-gray-800">{content}</div>
                   </div>
+                  <div>
+                    <div className="flex flex-col text-center">
+                      <button
+                        onClick={async () => {
+                          await votes(id as string)
+                        }}
+                      >
+                        <IoTriangle
+                          className={` ${
+                            isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                      <div className="my-3 text-gray-600">{voteCount}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <h3 className="my-5 text-2xl font-bold">{allcomments.length}件のコメント</h3>
@@ -258,7 +304,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 <div className="flex items-start">
                   {session && session.user && session.user.image && session.user.displayname && (
                     <img
-                      className="mr-4 rounded-full object-cover aspect-square"
+                      className="mr-4 aspect-square rounded-full object-cover"
                       src={session.user.image}
                       height={60}
                       width={60}
@@ -311,6 +357,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
   const data = await prisma.discussion.findFirst({
     include: {
+      _count: {
+        select: {
+          votes: true,
+        },
+      },
       comments: {
         include: {
           _count: {
