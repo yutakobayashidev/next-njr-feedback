@@ -14,7 +14,7 @@ export const Contributors: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledg
           >
             <img
               alt={contributor.displayname}
-              className="rounded-full border"
+              className="rounded-full border object-cover aspect-square"
               height="45"
               width="45"
               src={contributor.image}

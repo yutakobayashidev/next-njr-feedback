@@ -99,7 +99,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
             <div>
               {handle && image && (
                 <img
-                  className="rounded-full"
+                  className="rounded-full object-cover aspect-square"
                   width="120"
                   height="120"
                   alt={displayname}
@@ -199,7 +199,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                                   width="40"
                                   height="40"
                                   src={post.user.image}
-                                  className="mr-2 rounded-full"
+                                  className="mr-2 rounded-full object-cover aspect-square"
                                   alt={post.user.displayname}
                                 ></img>
                               </Link>
