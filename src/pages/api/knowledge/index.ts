@@ -42,6 +42,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },
           emoji: emoji,
+          updated_at: new Date(),
         },
       })
 

@@ -121,6 +121,7 @@ model Diff {
 model Knowledge {
   id            String     @id @default(cuid())
   title         String?
+  updated_at    DateTime
   views         Int      @default(0)
   emoji         String
   diff          Diff[]

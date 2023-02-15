@@ -37,6 +37,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     archive,
     comments,
     content,
+    createdAt,
     last_comment_created_at,
     updatedAt,
     user,
@@ -176,7 +177,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 <span className="mr-2 text-gray-600">
                   {last_comment_created_at
                     ? dayjs(last_comment_created_at).fromNow() + "にコメント追加"
-                    : dayjs(updatedAt).fromNow() + "に作成"}
+                    : dayjs(createdAt).fromNow() + "に作成"}
                 </span>
                 <span className="flex items-center text-gray-500">
                   <AiOutlineEye className="mr-1" />
@@ -262,7 +263,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       {user.email.endsWith("@n-jr.jp") ? "(生徒)" : "(メンター / TA)"}
                     </Link>
                     <time className="text-sm text-gray-500" dateTime={updatedAt}>
-                      {dayjs(updatedAt).fromNow()}
+                      {dayjs(createdAt).fromNow()}
                     </time>
                     <div className="mt-2 font-inter text-lg leading-7 text-gray-800">{content}</div>
                   </div>
