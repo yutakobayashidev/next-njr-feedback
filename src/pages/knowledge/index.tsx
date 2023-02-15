@@ -14,6 +14,74 @@ import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import React, { useEffect } from "react"
 
+type Props = {
+  old: KnowledgeProps[]
+  views: KnowledgeProps[]
+}
+
+const Page: NextPageWithLayout<Props> = (props) => {
+  const { data: session } = useSession()
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!session && typeof session != "undefined") {
+      router.push(`/`)
+    }
+  }, [session, router])
+
+  if (!session) {
+    return null
+  }
+
+  return (
+    <>
+      <MyPageSeo
+        path="/knowledge"
+        title="ナレッジ"
+        description="ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。"
+      />
+      <section className="bg-gray-50 py-10">
+        <ContentWrapper>
+          <h1 className="mb-7 text-2xl font-bold md:text-3xl">📈 アクセスの多い情報</h1>
+          <p className="mb-5 text-lg text-gray-500">
+            ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
+            <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
+          </p>
+          {props.views.length > 0 ? (
+            <div className="overflow-hidden rounded-lg border">
+              {props.views.map((knowledge) => (
+                <Knowledge knowledge={knowledge} key={knowledge.id} />
+              ))}
+            </div>
+          ) : (
+            <NotContent />
+          )}
+        </ContentWrapper>
+      </section>
+      <section className="bg-white py-10">
+        <ContentWrapper>
+          <h3 className="mb-7 text-2xl font-bold md:text-3xl">📉 更新が必要な情報</h3>
+          <p className="mb-5 text-lg text-gray-500">
+            更新が行われていない順のナレッジです。古い情報などがあれば編集してみましょう。
+          </p>
+          {props.old.length > 0 ? (
+            <div className="overflow-hidden rounded-lg border">
+              {props.old.map((knowledge) => (
+                <Knowledge knowledge={knowledge} key={knowledge.id} />
+              ))}
+            </div>
+          ) : (
+            <NotContent />
+          )}
+        </ContentWrapper>
+      </section>
+    </>
+  )
+}
+
+Page.getLayout = (page) => <Layout>{page}</Layout>
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
@@ -21,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: { knowledge: [] } }
   }
 
-  const data = await prisma.knowledge.findMany({
+  const views = await prisma.knowledge.findMany({
     include: {
       contributors: {
         select: {
@@ -39,6 +107,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     orderBy: [
       {
+        views: "desc",
+      },
+      {
         updatedAt: "desc",
       },
     ],
@@ -49,67 +120,37 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   })
 
-  const knowledge = JSON.parse(JSON.stringify(data))
+  const old = await prisma.knowledge.findMany({
+    include: {
+      contributors: {
+        select: {
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        updatedAt: "asc",
+      },
+    ],
+    take: 10,
+    where: {
+      archive: false,
+      published: true,
+    },
+  })
 
   return {
-    props: { knowledge },
+    props: { old: JSON.parse(JSON.stringify(old)), views: JSON.parse(JSON.stringify(views)) },
   }
 }
-
-type Props = {
-  knowledge: KnowledgeProps[]
-}
-
-const Page: NextPageWithLayout<Props> = (props) => {
-  const { data: session } = useSession()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
-  if (!session) {
-    return <></>
-  }
-
-  return (
-    <>
-      <MyPageSeo
-        path="/knowledge"
-        title="ナレッジ"
-        description="ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。"
-      />
-      <section className="my-10">
-        <ContentWrapper>
-          <h1 className="mb-5 font-inter text-4xl font-bold">Knowledge</h1>
-          <p className="mb-5 text-lg text-gray-500">
-            ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
-            <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
-          </p>
-          {props.knowledge.length > 0 ? (
-            <div className="overflow-hidden rounded-lg border">
-              <div className="flex bg-gray-100 p-3 font-bold">
-                <span className="mr-1 ">✨</span>
-                <span>最近更新されたナレッジ</span>
-              </div>
-              <div className="border-t">
-                {props.knowledge.map((knowledge) => (
-                  <Knowledge knowledge={knowledge} key={knowledge.id} />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <NotContent />
-          )}
-        </ContentWrapper>
-      </section>
-    </>
-  )
-}
-
-Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page
