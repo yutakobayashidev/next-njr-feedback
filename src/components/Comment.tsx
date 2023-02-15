@@ -128,7 +128,7 @@ export const CommentCard: React.FC<{
             <div className="relative">
               <Link href={getUserpagePath(comment.user.handle)}>
                 <img
-                  className="mr-3 rounded-full"
+                  className="mr-3 rounded-full object-cover aspect-square"
                   height={46}
                   width={46}
                   src={comment.user.image}

@@ -150,7 +150,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               src={creator.image}
                               height={45}
                               width={45}
-                              className="mr-2 rounded-full"
+                              className="mr-2 rounded-full object-cover aspect-square"
                               alt={creator.displayname}
                             ></img>
                           </Link>
@@ -170,7 +170,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               src={creator.image}
                               height={45}
                               width={45}
-                              className="mr-2 rounded-full"
+                              className="mr-2 rounded-full object-cover aspect-square"
                               alt={creator.displayname}
                             ></img>
                           </Link>
@@ -302,7 +302,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       >
                         <Link href={getUserpagePath(contributor.handle)}>
                           <img
-                            className="rounded-full border"
+                            className="rounded-full border object-cover aspect-square"
                             src={contributor.image}
                             height={"65"}
                             width={"65"}

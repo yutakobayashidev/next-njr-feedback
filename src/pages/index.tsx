@@ -67,7 +67,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
         <>
           <section className="bg-gray-50 py-12">
             <ContentWrapper>
-              <h3 className="mb-7 text-3xl font-bold">🚀 話題のディスカッション</h3>
+              <h3 className="mb-7 text-2xl font-bold md:text-3xl">🚀 話題のディスカッション</h3>
               {props.discussion.length > 0 ? (
                 <div className="overflow-hidden rounded-lg border">
                   {props.discussion.map((discussion) => (
@@ -86,7 +86,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
           </section>
           <section className="bg-white py-12 ">
             <ContentWrapper>
-              <h3 className="mb-7 text-3xl font-bold">📚 よく見られているナレッジ</h3>
+              <h3 className="mb-7 text-2xl font-bold md:text-3xl">📚 よく見られているナレッジ</h3>
               {props.knowledge.length > 0 ? (
                 <div className="overflow-hidden rounded-lg border">
                   {props.knowledge.map((knowledge) => (
