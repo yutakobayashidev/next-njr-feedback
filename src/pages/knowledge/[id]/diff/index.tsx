@@ -38,18 +38,21 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     <>
       <MyPageSeo
         path={`/knowledge/${id}/diff`}
-        title={title ? title : "無題のナレッジ" + "の履歴"}
+        title={title ? title + "の履歴" : "無題のナレッジ" + "の履歴"}
       />
       <section className="py-12">
         <ContentWrapper>
           <h1 className="mb-7 flex items-center text-3xl font-bold">
             <GrHistory color="#93a5b1" className="mr-4" />
-            {"「" + title + "」" + "の変更履歴"}
+            {title
+              ? title
+              : "「無題のナレッジ」" + "の変更履歴" + "「" + title + "」" + "の変更履歴"}
           </h1>
           <p className="my-4 text-lg">
             {diff.length}
-            件の変更履歴が見つかりました。<Link href={getKnowledgeEditPath(id)}>ナレッジ</Link>
-            を編集してより良いナレッジベースを構築しましょう。
+            件の変更履歴が見つかりました。
+            <Link href={getKnowledgeEditPath(id)}>ナレッジを編集</Link>
+            してより良いナレッジベースを構築しましょう。
           </p>
           <div className="relative min-h-screen border-l-2 py-0.5">
             {diff.map((history) => (

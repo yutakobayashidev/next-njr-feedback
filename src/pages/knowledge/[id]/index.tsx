@@ -19,7 +19,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import Router, { useRouter } from "next/router"
+import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { Fragment, useEffect, useState } from "react"
@@ -42,19 +42,6 @@ import data from "@emoji-mart/data"
 import i18n from "@emoji-mart/data/i18n/ja.json"
 import Picker from "@emoji-mart/react"
 */
-
-async function restorearchivePost(id: string): Promise<void> {
-  await fetch(`/api/knowledge/${id}`, {
-    body: JSON.stringify({
-      archive: false,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: HttpMethod.PUT,
-  })
-  await Router.reload()
-}
 
 const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const {
@@ -138,17 +125,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
       {archive === true && (
         <div className="bg-gray-400">
           <ContentWrapper>
-            <div className="py-4 text-center text-white">
-              <span className="mr-3">🗑 このナレッジはアーカイブされています</span>
-              <span>
-                <button
-                  onClick={() => restorearchivePost(id)}
-                  className="rounded-md border-2 px-3 text-white"
-                >
-                  アーカイブを取り消す
-                </button>
-              </span>
-            </div>
+            <Alert id={id}>🗑 このナレッジはアーカイブされています</Alert>
           </ContentWrapper>
         </div>
       )}
@@ -340,7 +317,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             >
                               {contributor.displayname}
                               {contributor.email === session?.user?.email && " (あなた)"}
-                            </Link> 
+                            </Link>
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
