@@ -41,7 +41,7 @@ export const Knowledge: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledge }
             ))}
             <span className="flex items-center text-gray-500">
               <TfiReload className="mr-1" />
-              {dayjs(knowledge.updatedAt).fromNow()}
+              {dayjs(knowledge.updated_at).fromNow()}
             </span>
           </div>
         </div>

@@ -42,7 +42,7 @@ export const DiscussionCard: React.FC<{ discussion: DiscussionProps }> = ({ disc
             <span className="mr-2 flex items-center text-gray-500">
               {discussion.last_comment_created_at
                 ? dayjs(discussion.last_comment_created_at).fromNow() + "に追加"
-                : dayjs(discussion.updatedAt).fromNow() + "に作成"}
+                : dayjs(discussion.createdAt).fromNow() + "に作成"}
             </span>
           </div>
         </div>

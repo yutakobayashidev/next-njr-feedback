@@ -126,6 +126,7 @@ export async function updateKnowledge(
         contributors: { connect: { id: session.user.id } },
         emoji,
         published,
+        updated_at: new Date(),
         ...(published && !data?.publishedAt && { publishedAt }),
       },
       where: { id },
