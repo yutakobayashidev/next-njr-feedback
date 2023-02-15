@@ -1,7 +1,6 @@
 import { Dialog, Menu, Transition } from "@headlessui/react"
 import { config } from "@site.config"
 import { CommentEditor } from "@src/components/CommentEditor"
-import { Vote } from "@src/components/Vote"
 import { HttpMethod } from "@src/types"
 import { CommentProps } from "@src/types/comment"
 import { getUserpagePath } from "@src/utils/helper"
@@ -9,11 +8,12 @@ import dayjs from "dayjs"
 import Link from "next/link"
 import router from "next/router"
 import { Session } from "next-auth"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { BiChevronDown, BiLinkAlt } from "react-icons/bi"
 import { BsPencil } from "react-icons/bs"
 import { HiOutlineTrash } from "react-icons/hi"
+import { IoTriangle } from "react-icons/io5"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
@@ -25,32 +25,37 @@ function copyTextToClipboard(text: string) {
   toast.success("クリップボードにコピーしました")
 }
 
-export const CommentCard: React.FC<{ comment: CommentProps; session: Session }> = ({
-  comment,
-  session,
-}) => {
+export const CommentCard: React.FC<{
+  comment: CommentProps
+  onDeleteComment: (id: string) => void
+  session: Session
+}> = ({ comment, onDeleteComment, session }) => {
   const [showEditForm, setEditForm] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
-  async function deletecomment(id: string): Promise<void> {
-    try {
-      const response = await fetch(`/api/comments/${id}`, {
-        method: HttpMethod.DELETE,
-      })
+  const [isVoted, setIsVoted] = useState(false)
+  const [voteCount, setVoteCount] = useState(Number(comment._count.votes))
 
-      if (response.ok) {
-        toast.success("コメントを削除しました")
-      } else {
-        const json = await response.json()
-        toast.error(json.error.messsage)
-      }
-    } catch (error) {
-      console.error(error)
-    } finally {
-      router.replace(router.asPath)
+  useEffect(() => {
+    const hasVotes = comment.votes.some((vote) => vote.user.id === session?.user.id)
+    setIsVoted(hasVotes)
+  }, [comment.votes, session?.user.id])
+
+  async function votes(id: string) {
+    const response = await fetch(`/api/votes/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: HttpMethod.POST,
+    })
+
+    if (response.ok) {
+      setIsVoted(!isVoted)
+      setVoteCount(voteCount + (isVoted ? -1 : +1))
+    } else {
+      console.error("投票に失敗しました")
     }
   }
-
-  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -104,7 +109,7 @@ export const CommentCard: React.FC<{ comment: CommentProps; session: Session }> 
                     </button>
                     <button
                       onClick={() => {
-                        deletecomment(comment.id as string)
+                        onDeleteComment(comment.id)
                       }}
                       className="rounded-md border border-gray-200 bg-gray-50 py-2 px-6 text-center font-bold text-red-500 shadow-xl"
                     >
@@ -240,7 +245,21 @@ export const CommentCard: React.FC<{ comment: CommentProps; session: Session }> 
             )}
           </div>
         </div>
-        <Vote comment={comment} />
+        <div>
+          <div className="flex flex-col text-center">
+            <button
+              onClick={async () => {
+                await votes(comment.id as string)
+              }}
+            >
+              <IoTriangle
+                className={` ${isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"}`}
+                aria-hidden="true"
+              />
+            </button>
+            <div className="my-3 text-gray-600">{voteCount}</div>
+          </div>
+        </div>
       </div>
     </>
   )

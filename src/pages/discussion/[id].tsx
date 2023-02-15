@@ -19,7 +19,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
 import { BsPencil } from "react-icons/bs"
@@ -35,7 +35,9 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
 
   const router = useRouter()
 
-  const [commentcontent, setContent] = useState("")
+  const [allcomments, setComments] = useState(comments)
+
+  const [commentcontent, setContent] = useState<string>("")
   const [discussiontitle, setTitle] = useState<string>("")
   const [showtitleEditForm, setTitleEditForm] = useState(false)
 
@@ -44,7 +46,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     if (title) setTitle(title)
   }, [title])
 
-  async function postcomments() {
+  const sendComment = async () => {
     try {
       const response = await fetch(`/api/comments`, {
         body: JSON.stringify({
@@ -57,16 +59,31 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
         method: HttpMethod.POST,
       })
 
-      if (response.status !== 200) {
-        const paas = await response.json()
-
-        toast.error(paas.error.messsage)
-      } else {
+      if (response.status === 201) {
+        const comment = await response.json()
+        setComments([...allcomments, comment])
+        setContent("")
       }
     } catch (error) {
       console.error(error)
-    } finally {
-      router.replace(router.asPath)
+    }
+  }
+
+  const deleteComment = async (commentId: string) => {
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: HttpMethod.DELETE,
+      })
+
+      if (response.ok) {
+        toast.success("コメントを削除しました")
+        setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId))
+      } else {
+        const json = await response.json()
+        toast.error(json.error.messsage)
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -222,11 +239,16 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   </div>
                 </div>
               </div>
-              <h3 className="my-5 text-2xl font-bold">{comments.length}件のコメント</h3>
-              {comments.length > 0 ? (
+              <h3 className="my-5 text-2xl font-bold">{allcomments.length}件のコメント</h3>
+              {allcomments.length > 0 ? (
                 <>
-                  {comments.map((comment) => (
-                    <CommentCard key={comment.id} comment={comment} session={session} />
+                  {allcomments.map((comment) => (
+                    <CommentCard
+                      onDeleteComment={deleteComment}
+                      key={comment.id}
+                      comment={comment}
+                      session={session}
+                    />
                   ))}
                 </>
               ) : (
@@ -256,9 +278,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       <button
                         disabled={!commentcontent}
                         type="submit"
-                        onClick={async () => {
-                          await postcomments()
-                        }}
+                        onClick={sendComment}
                         className="my-4 inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
                       >
                         コメントを投稿
@@ -281,10 +301,13 @@ Page.getLayout = (page) => <Layout>{page}</Layout>
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session) {
-    res.statusCode = 403
-    return { props: { discussion: [] } }
-  }
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const data = await prisma.discussion.findFirst({
     include: {
@@ -295,8 +318,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
               votes: true,
             },
           },
-          user: true,
-          votes: true,
+          user: {
+            select: {
+              id: true,
+              displayname: true,
+              email: true,
+              handle: true,
+              image: true,
+            },
+          },
+          votes: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
         },
         orderBy: [
           {

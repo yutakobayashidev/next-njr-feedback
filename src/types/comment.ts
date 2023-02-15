@@ -16,4 +16,11 @@ export type CommentProps = {
     handle: string
     image: string
   }
+  votes: Votes[]
+}
+
+type Votes = {
+  user: {
+    id: string
+  }
 }
