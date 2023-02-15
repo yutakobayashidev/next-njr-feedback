@@ -55,6 +55,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         _count: {
           select: {
             comments: true,
+            votes: true,
           },
         },
         user: true,

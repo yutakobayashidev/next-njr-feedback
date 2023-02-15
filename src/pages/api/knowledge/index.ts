@@ -76,7 +76,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     }
 
     const { count } = result.data
-
     const { archive, handle } = req.query
 
     const data = await prisma.knowledge.findMany({
@@ -87,9 +86,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             handle: true,
             image: true,
           },
-          where: {
-            ...(handle && { handle: String(handle) }),
-          },
         },
         course: true,
       },
@@ -98,6 +94,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
       take: count,
       where: {
+        ...(handle && { contributors: { some: { handle: String(handle) } } }),
         ...(archive == "false" && { archive: false }),
         published: true,
       },
