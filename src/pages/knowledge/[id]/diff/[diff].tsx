@@ -27,12 +27,10 @@ type Props = {
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
-  const { title, createdAt } = props.diff
-
-  const { data: session } = useSession()
-
+  const { id: diffid, title, createdAt } = props.diff
   const { id } = props.knowledge
 
+  const { data: session } = useSession()
   const router = useRouter()
 
   useEffect(() => {
@@ -43,7 +41,10 @@ const Page: NextPageWithLayout<Props> = (props) => {
 
   return (
     <>
-      <MyPageSeo path={"/"} title={title ? title : "無題のナレッジ"} />
+      <MyPageSeo
+        path={`/knowledge/${id}/diff/${diffid}`}
+        title={title ? title : "無題のナレッジ"}
+      />
       <Alert>
         💡 {dayjs(createdAt).fromNow()}に作成された履歴を表示しています
         {id && (
