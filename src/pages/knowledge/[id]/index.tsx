@@ -28,7 +28,9 @@ import { BiChevronDown } from "react-icons/bi"
 import { BsBookmark, BsFillBookmarkCheckFill, BsPencilFill } from "react-icons/bs"
 import { GrHistory } from "react-icons/gr"
 import { remark } from "remark"
-import html from "remark-html"
+import remarkBreaks from "remark-breaks"
+import remarkGfm from "remark-gfm"
+import remarkHtml from "remark-html"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -82,7 +84,6 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
 
     if (response.ok) {
       bookmark ? setBookmark(false) : setBookmark(true)
-
       bookmark ? setBookmarkCount(bookmarkCount - 1) : setBookmarkCount(bookmarkCount + 1)
     }
   }
@@ -420,9 +421,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
   const knowledge = JSON.parse(JSON.stringify(data))
 
-  const htmlBody = await remark().use(html).process(knowledge.content)
-  const contentHtml = htmlBody.toString()
-  knowledge.content = contentHtml
+  const html = await remark()
+    .use(remarkGfm)
+    .use(remarkBreaks)
+    .use(remarkHtml)
+    .process(knowledge.content)
+
+  knowledge.content = html.toString()
 
   return {
     props: knowledge,
