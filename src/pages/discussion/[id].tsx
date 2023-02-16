@@ -37,6 +37,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     archived_at,
     comments,
     content,
+    course,
     createdAt,
     last_comment_created_at,
     updatedAt,
@@ -252,12 +253,13 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
               )}
               <div className="block text-sm md:flex md:items-center">
                 <div className="flex items-center">
-                  <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                    ネットコース
-                  </span>
-                  <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                    通学コース
-                  </span>
+                  {course.map((post) => (
+                    <>
+                      <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                        {post.name}
+                      </span>
+                    </>
+                  ))}
                   <Link
                     href={getReportPath()}
                     className="flex items-center text-base text-gray-500"
@@ -440,6 +442,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             createdAt: "asc",
           },
         ],
+      },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
       },
       user: {
         select: {

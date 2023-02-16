@@ -11,17 +11,26 @@ const Page: NextPageWithLayout = () => {
   const [content, setContent] = useState("")
   const [isChecked, setIsChecked] = useState(false)
   const [publishing, setPublishing] = useState(false)
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([])
 
   const router = useRouter()
 
   const { data: session } = useSession()
+
+  const handleCourseSelection = (id: string) => {
+    if (selectedCourses.includes(id)) {
+      setSelectedCourses(selectedCourses.filter((courseId) => courseId !== id))
+    } else {
+      setSelectedCourses([...selectedCourses, id])
+    }
+  }
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     setPublishing(true)
     try {
-      const body = { title, content }
+      const body = { title, content, selectedCourses }
       const response = await fetch("/api/discussion", {
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
@@ -74,6 +83,28 @@ const Page: NextPageWithLayout = () => {
               value={title}
               placeholder="タイトル"
             />
+            <label className="my-2 flex items-center text-base font-medium">コースを選択</label>
+            <p className="mt-2 text-sm text-gray-500">
+              この議論に関連するコースを選択してください。
+            </p>
+            <div>
+              <div className="mt-2">
+                <input
+                  type="checkbox"
+                  checked={selectedCourses.includes("1")}
+                  onChange={() => handleCourseSelection("1")}
+                  className="h-4 w-4 rounded border-0 bg-gray-100 text-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-200 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
+                <label className="mx-2 text-sm font-medium text-gray-600">通学コース</label>
+                <input
+                  type="checkbox"
+                  checked={selectedCourses.includes("2")}
+                  onChange={() => handleCourseSelection("2")}
+                  className="h-4 w-4 rounded border-0 bg-gray-100 text-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-200 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
+                <label className="ml-2 text-sm font-medium text-gray-600">ネットコース</label>
+              </div>
+            </div>
             <label className="my-2 flex items-center text-base font-medium">概要</label>
             <TextareaAutosize
               name="title"
@@ -95,7 +126,6 @@ const Page: NextPageWithLayout = () => {
                 重複したディスカッションがないことを確認しました
               </label>
             </div>
-
             <div className="text-center">
               <button
                 disabled={!isChecked || !title || !content}

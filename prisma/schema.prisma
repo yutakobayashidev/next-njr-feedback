@@ -47,6 +47,7 @@ model Session {
 model Discussion {
   id            String      @id @default(cuid())
   title         String
+  course        Course[]
   archive       Boolean @default(false)
   content       String   @db.Text
   totalComments Int      @default(0)
@@ -168,6 +169,7 @@ model Course {
     id      Int      @id @default(autoincrement())
     name    String
     knowledge Knowledge[]
+    discussion  Discussion[]
     diff      Diff[]
 }
 

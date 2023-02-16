@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next"
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
 
-  const { title, content } = req.body
+  const { title, content, selectedCourses } = req.body
 
   if (!session)
     return res.status(401).json({
@@ -34,11 +34,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         error: { code: 401, messsage: "クエリが不足しています" },
       })
 
+    const courses = selectedCourses.map((id: string) => parseInt(id))
+
     try {
       const result = await prisma.discussion.create({
         data: {
           title: title,
           content: content,
+          course: { connect: courses.map((id: number) => ({ id })) },
           user: { connect: { id: session.user.id } },
         },
       })
@@ -58,7 +61,13 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             votes: true,
           },
         },
-        user: true,
+        user: {
+          select: {
+            displayname: true,
+            handle: true,
+            image: true,
+          },
+        },
       },
       orderBy: [
         {

@@ -11,6 +11,7 @@ export type DiscussionProps = {
   archived_at: string
   comments: CommentProps[]
   content: string
+  course: Course[]
   createdAt: string
   last_comment_created_at: string
   updatedAt: string
@@ -23,4 +24,9 @@ export type DiscussionProps = {
     image: string
   }
   views: number
+}
+
+interface Course {
+  id: number
+  name: string
 }
