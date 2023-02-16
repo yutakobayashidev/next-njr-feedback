@@ -102,7 +102,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       take: count,
       where: {
         ...(handle && {
-          contributors1: {
+          contributors: {
             some: {
               user: {
                 handle: String(handle),
