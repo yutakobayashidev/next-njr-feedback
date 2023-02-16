@@ -20,6 +20,11 @@ export type KnowledgeProps = {
   }
   diff: Diff[]
   emoji: string
+  lastEditor: {
+    displayname: string
+    handle: string
+    image: string
+  }
   published: boolean
   publishedAt: string
   updated_at: string

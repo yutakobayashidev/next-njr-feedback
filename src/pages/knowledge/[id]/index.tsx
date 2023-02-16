@@ -57,6 +57,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     course,
     creator,
     emoji,
+    lastEditor,
     published,
     publishedAt,
     updated_at,
@@ -146,13 +147,13 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     <span className="flex items-center">
                       {publishedAt ? (
                         <>
-                          <Link href={getUserpagePath(creator.handle)}>
+                          <Link href={getUserpagePath(lastEditor.handle)}>
                             <img
-                              src={creator.image}
+                              src={lastEditor.image}
                               height={45}
                               width={45}
                               className="mr-2 aspect-square rounded-full object-cover"
-                              alt={creator.displayname}
+                              alt={lastEditor.displayname}
                             ></img>
                           </Link>
                           <time
@@ -397,6 +398,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       creator: {
         select: {
           id: true,
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+      lastEditor: {
+        select: {
           displayname: true,
           handle: true,
           image: true,

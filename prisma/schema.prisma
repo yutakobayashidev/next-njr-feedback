@@ -134,11 +134,14 @@ model Knowledge {
   archive       Boolean @default(false)
   contributors  Contributors[]
   bookmarks     Bookmark[]
+  lastEditor    User          @relation("lastEdit", fields: [lastEditorId], references: [id])
+  lastEditorId             String
   creatorId     String
   creator       User     @relation(fields: [creatorId], references: [id])
   course        Course[]
 
   @@index([creatorId])
+  @@index([lastEditorId])
 }
 
 model Bookmark {
@@ -192,6 +195,7 @@ model User {
   bookmarks     Bookmark[]
   createdAt     DateTime?    @default(now())
   comments      Comment[]
+  lastEditRankings Knowledge[] @relation("lastEdit")
   updatedAt     DateTime?    @updatedAt
   discussion    Discussion[]
   discussionvote    DiscussionVote[]

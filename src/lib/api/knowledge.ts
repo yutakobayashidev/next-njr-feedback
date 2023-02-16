@@ -145,6 +145,7 @@ export async function updateKnowledge(
         archive,
         content,
         emoji,
+        lastEditor: { connect: { id: session.user.id } },
         published,
         updated_at: new Date(),
         ...(published && !data?.publishedAt && { publishedAt }),
