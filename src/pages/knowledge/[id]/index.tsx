@@ -223,7 +223,11 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     }}
                     className="inline-flex items-center justify-center rounded-full border bg-gray-100 p-3"
                   >
-                    {bookmark ? <BsFillBookmarkCheckFill size={25} /> : <BsBookmark size={25} />}
+                    {bookmark ? (
+                      <BsFillBookmarkCheckFill className="text-primary" size={25} />
+                    ) : (
+                      <BsBookmark className="text-gray-400" size={25} />
+                    )}
                   </button>
                   <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
@@ -300,30 +304,32 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                         key={contributor?.id}
                         className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
                       >
-                        <Link href={getUserpagePath(contributor.handle)}>
+                        <Link href={getUserpagePath(contributor.user.handle)}>
                           <img
                             className="aspect-square rounded-full border object-cover"
-                            src={contributor.image}
+                            src={contributor.user.image}
                             height={"65"}
                             width={"65"}
-                            alt={contributor.displayname}
+                            alt={contributor.user.displayname}
                           ></img>
                         </Link>
                         <div className="ml-5">
                           <div>
                             <Link
-                              href={getUserpagePath(contributor.handle)}
+                              href={getUserpagePath(contributor.user.handle)}
                               className="text-xl font-bold text-gray-800 line-clamp-1"
                             >
-                              {contributor.displayname}
-                              {contributor.email === session?.user?.email && " (あなた)"}
+                              {contributor.user.displayname}
+                              {contributor.user.email === session?.user?.email && " (あなた)"}
                             </Link>
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                              {contributor.email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}
+                              {contributor.user.email.endsWith("@n-jr.jp")
+                                ? "生徒"
+                                : "メンター / TA"}
                             </span>
-                            {contributor.id === creator?.id && (
+                            {contributor.user.id === creator?.id && (
                               <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
                                 ページ作成者
                               </span>
@@ -369,12 +375,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         },
       },
       contributors: {
-        select: {
-          id: true,
-          displayname: true,
-          email: true,
-          handle: true,
-          image: true,
+        include: {
+          user: {
+            select: {
+              id: true,
+              displayname: true,
+              email: true,
+              handle: true,
+              image: true,
+            },
+          },
         },
       },
       course: {

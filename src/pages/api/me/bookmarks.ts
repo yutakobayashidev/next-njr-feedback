@@ -30,10 +30,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             id: true,
             title: true,
             contributors: {
-              select: {
-                displayname: true,
-                handle: true,
-                image: true,
+              include: {
+                user: {
+                  select: {
+                    displayname: true,
+                    handle: true,
+                    image: true,
+                  },
+                },
               },
             },
             course: true,

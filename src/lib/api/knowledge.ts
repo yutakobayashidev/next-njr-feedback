@@ -28,11 +28,15 @@ export async function getKnowledge(
     const post = await prisma.knowledge.findFirst({
       include: {
         contributors: {
-          select: {
-            id: true,
-            displayname: true,
-            email: true,
-            image: true,
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayname: true,
+                email: true,
+                image: true,
+              },
+            },
           },
         },
         creator: {
@@ -113,17 +117,33 @@ export async function updateKnowledge(
         title,
         author: { connect: { id: session.user.id } },
         content,
+        course: { connect: { id: 1 } },
         emoji,
         knowledge: { connect: { id: id } },
       },
     })
+
+    const contributors = await prisma.contributors.findFirst({
+      where: {
+        knowledgeId: id,
+        userId: session.user.id,
+      },
+    })
+
+    if (!contributors) {
+      await prisma.contributors.create({
+        data: {
+          knowledge: { connect: { id: id } },
+          user: { connect: { id: session.user.id } },
+        },
+      })
+    }
 
     const post = await prisma.knowledge.update({
       data: {
         title,
         archive,
         content,
-        contributors: { connect: { id: session.user.id } },
         emoji,
         published,
         updated_at: new Date(),
@@ -131,6 +151,7 @@ export async function updateKnowledge(
       },
       where: { id },
     })
+
     return res.status(200).json(post)
   } catch (error) {
     console.error(error)

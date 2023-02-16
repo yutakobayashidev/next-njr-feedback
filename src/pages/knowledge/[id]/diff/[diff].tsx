@@ -91,12 +91,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         },
       },
       contributors: {
-        select: {
-          id: true,
-          displayname: true,
-          email: true,
-          handle: true,
-          image: true,
+        include: {
+          user: {
+            select: {
+              id: true,
+              displayname: true,
+              email: true,
+              handle: true,
+              image: true,
+            },
+          },
         },
       },
       course: {

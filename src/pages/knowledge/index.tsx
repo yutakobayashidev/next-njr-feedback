@@ -92,10 +92,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const views = await prisma.knowledge.findMany({
     include: {
       contributors: {
-        select: {
-          displayname: true,
-          handle: true,
-          image: true,
+        include: {
+          user: {
+            select: {
+              displayname: true,
+              handle: true,
+              image: true,
+            },
+          },
         },
       },
       course: {
@@ -120,10 +124,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const old = await prisma.knowledge.findMany({
     include: {
       contributors: {
-        select: {
-          displayname: true,
-          handle: true,
-          image: true,
+        include: {
+          user: {
+            select: {
+              displayname: true,
+              handle: true,
+              image: true,
+            },
+          },
         },
       },
       course: {

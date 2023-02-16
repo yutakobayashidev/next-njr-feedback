@@ -131,7 +131,7 @@ model Knowledge {
   publishedAt   DateTime?
   published     Boolean @default(false)
   archive       Boolean @default(false)
-  contributors  User[] @relation(name: "Usercontributors")
+  contributors  Contributors[]
   bookmarks     Bookmark[]
   creatorId     String
   creator       User     @relation(fields: [creatorId], references: [id])
@@ -141,6 +141,18 @@ model Knowledge {
 }
 
 model Bookmark {
+  id            String   @id @default(cuid())
+  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
+  createdAt     DateTime @default(now())
+  knowledgeId   String
+  user          User     @relation(fields: [userId], references: [id])
+  userId      String
+  @@unique([userId, knowledgeId])
+  @@index([knowledgeId])
+  @@index([userId])
+}
+
+model Contributors {
   id            String   @id @default(cuid())
   knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
   createdAt     DateTime @default(now())
@@ -171,7 +183,7 @@ model User {
   accounts      Account[]
   diff          Diff[]
   sessions      Session[]
-  knowledge     Knowledge[] @relation(name: "Usercontributors")
+  knowledge    Contributors[]
   admin         Boolean @default(false)
   leave         Boolean @default(false)
   contributor   Boolean @default(false)
