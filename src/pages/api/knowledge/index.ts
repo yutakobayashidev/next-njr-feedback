@@ -36,9 +36,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     try {
       const emoji = pickRandomEmoji()
+
       const result = await prisma.knowledge.create({
         data: {
-          contributors: { connect: { id: session.user.id } },
+          contributors: {
+            create: { user: { connect: { id: session.user.id } } },
+          },
           course: { connect: { id: 1 } },
           creator: { connect: { id: session.user.id } },
           emoji: emoji,
@@ -81,10 +84,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     const data = await prisma.knowledge.findMany({
       include: {
         contributors: {
-          select: {
-            displayname: true,
-            handle: true,
-            image: true,
+          include: {
+            user: {
+              select: {
+                displayname: true,
+                handle: true,
+                image: true,
+              },
+            },
           },
         },
         course: true,
@@ -94,7 +101,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       },
       take: count,
       where: {
-        ...(handle && { contributors: { some: { handle: String(handle) } } }),
+        ...(handle && {
+          contributors1: {
+            some: {
+              user: {
+                handle: String(handle),
+              },
+            },
+          },
+        }),
         ...(archive == "false" && { archive: false }),
         published: true,
       },

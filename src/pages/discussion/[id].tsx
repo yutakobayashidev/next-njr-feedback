@@ -11,7 +11,7 @@ import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, HttpMethod } from "@src/types"
-import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
+import { getDiscussionPath, getReportPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
@@ -224,7 +224,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                     通学コース
                   </span>
                   <Link
-                    href={`/report?path=${router.asPath}`}
+                    href={getReportPath()}
                     className="flex items-center text-base text-gray-500"
                   >
                     <AiOutlineFlag className="mr-1" />

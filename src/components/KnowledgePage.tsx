@@ -1,5 +1,5 @@
 import { Diff, KnowledgeProps } from "@src/types"
-import { getKnowledgeEditPath, getUserpagePath } from "@src/utils/helper"
+import { getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import Link from "next/link"
 
@@ -76,10 +76,7 @@ export const KnowledgePage: React.FC<{ diff: Diff; knowledge: KnowledgeProps }> 
           />
         ) : (
           <div className="text-center text-gray-600">
-            <p>
-              コンテンツがありません。
-              <Link href={getKnowledgeEditPath(knowledge.id)}>ナレッジを編集</Link>してみませんか？
-            </p>
+            <p>コンテンツがありません。</p>
           </div>
         )}
       </div>
