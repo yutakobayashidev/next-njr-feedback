@@ -49,6 +49,10 @@ export const authOptions: NextAuthOptions = {
               ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
               : profile.sub,
           image: profile.picture,
+          role:
+            profile.email.endsWith("@n-jr.jp") && profile.email.split("@")[0].indexOf("njr") != -1
+              ? "student"
+              : "teacher",
         }
       },
     }),

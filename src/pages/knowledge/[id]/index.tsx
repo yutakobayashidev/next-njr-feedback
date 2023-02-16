@@ -51,6 +51,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     title,
     _count,
     archive,
+
     bookmarks,
     content,
     contributors,
@@ -322,14 +323,12 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               className="text-xl font-bold text-gray-800 line-clamp-1"
                             >
                               {contributor.user.displayname}
-                              {contributor.user.email === session?.user?.email && " (あなた)"}
+                              {contributor.user.id === session?.user?.id && " (あなた)"}
                             </Link>
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                              {contributor.user.email.endsWith("@n-jr.jp")
-                                ? "生徒"
-                                : "メンター / TA"}
+                              {contributor.user.role == "student" ? "生徒" : "メンター / TA"}
                             </span>
                             {contributor.user.id === creator?.id && (
                               <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
@@ -382,9 +381,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
+              role: true,
             },
           },
         },

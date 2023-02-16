@@ -128,14 +128,14 @@ export const CommentCard: React.FC<{
             <div className="relative">
               <Link href={getUserpagePath(comment.user.handle)}>
                 <img
-                  className="mr-3 rounded-full object-cover aspect-square"
+                  className="mr-3 aspect-square rounded-full object-cover"
                   height={46}
                   width={46}
                   src={comment.user.image}
                   alt={comment.user.displayname}
                 ></img>
               </Link>
-              {comment.user.email.endsWith("@n-jr.jp") == false && (
+              {comment.user.role == "teacher" && (
                 <span className="absolute -bottom-1  right-3">
                   <img
                     className="h-5 w-5 rounded-md border"
@@ -151,7 +151,7 @@ export const CommentCard: React.FC<{
                 className="mr-2 font-inter font-bold text-gray-800"
               >
                 {comment.user.displayname}{" "}
-                {comment.user.email.endsWith("@n-jr.jp") ? "(生徒)" : "(メンター / TA)"}
+                {comment.user.role == "student" ? "(生徒)" : "(メンター / TA)"}
               </Link>
               <time className="text-sm text-gray-500" dateTime={comment.createdAt}>
                 {comment.updated_at
