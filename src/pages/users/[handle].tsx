@@ -99,7 +99,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
             <div>
               {handle && image && (
                 <img
-                  className="rounded-full object-cover aspect-square"
+                  className="aspect-square rounded-full object-cover"
                   width="120"
                   height="120"
                   alt={displayname}
@@ -199,7 +199,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                                   width="40"
                                   height="40"
                                   src={post.user.image}
-                                  className="mr-2 rounded-full object-cover aspect-square"
+                                  className="mr-2 aspect-square rounded-full object-cover"
                                   alt={post.user.displayname}
                                 ></img>
                               </Link>
@@ -308,7 +308,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       _count: {
         select: {
           discussion: true,
-          knowledge: { where: { published: true } },
+          knowledge: { where: { knowledge: { published: true } } },
         },
       },
     },

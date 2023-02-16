@@ -26,10 +26,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     const data = await prisma.knowledge.findMany({
       include: {
         contributors: {
-          select: {
-            displayname: true,
-            handle: true,
-            image: true,
+          include: {
+            user: {
+              select: {
+                displayname: true,
+                handle: true,
+                image: true,
+              },
+            },
           },
         },
         course: true,

@@ -9,15 +9,15 @@ export const Contributors: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledg
         knowledge.contributors.slice(0, 3).map((contributor, index) => (
           <Link
             key={`contributor-item-${index}`}
-            href={getUserpagePath(contributor.handle)}
+            href={getUserpagePath(contributor.user.handle)}
             style={index === 0 ? { zIndex: 3 } : { marginLeft: -15, zIndex: 3 - index }}
           >
             <img
-              alt={contributor.displayname}
-              className="rounded-full border object-cover aspect-square"
+              alt={contributor.user.displayname}
+              className="aspect-square rounded-full border object-cover"
               height="45"
               width="45"
-              src={contributor.image}
+              src={contributor.user.image}
             ></img>
           </Link>
         ))}

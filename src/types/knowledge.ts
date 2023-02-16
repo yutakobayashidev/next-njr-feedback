@@ -54,9 +54,13 @@ interface Course {
 
 interface Contributor {
   id: string
-  name: string
-  displayname: string
-  email: string
-  handle: string
-  image: string
+  createdAt: string
+  user: {
+    id: string
+    name: string
+    displayname: string
+    email: string
+    handle: string
+    image: string
+  }
 }
