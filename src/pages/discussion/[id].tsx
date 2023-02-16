@@ -255,7 +255,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   {course.map((post) => (
                     <>
                       <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                        {post.name}
+                        {post.name}コース
                       </span>
                     </>
                   ))}
