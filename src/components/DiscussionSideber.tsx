@@ -1,46 +1,21 @@
 import { NotContent } from "@src/components/NotContent"
 import fetcher from "@src/lib/fetcher"
-import { DiscussionProps, HttpMethod } from "@src/types"
+import { DiscussionProps } from "@src/types"
 import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { Session } from "next-auth"
-import toast from "react-hot-toast"
 import { AiOutlineCheck } from "react-icons/ai"
 import { FaRegComment } from "react-icons/fa"
 import useSWR from "swr"
 
 export const CommentSidebar: React.FC<{
+  archived: boolean
+  archived_time?: string
   props: DiscussionProps
   session: Session
-}> = ({ props, session }) => {
-  const router = useRouter()
-
-  async function status(archive: boolean) {
-    try {
-      const response = await fetch(`/api/discussion/${props.id}`, {
-        body: JSON.stringify({
-          archive: archive,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: HttpMethod.PUT,
-      })
-
-      if (response.status !== 200) {
-        const paas = await response.json()
-
-        toast.error(paas.error.messsage)
-      } else {
-        router.replace(router.asPath)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
+  status: (archive: boolean) => void
+}> = ({ archived, archived_time, props, session, status }) => {
   const { data: discussions } = useSWR<Array<DiscussionProps>>(
     session && `/api/discussion?archive=false`,
     fetcher,
@@ -51,17 +26,17 @@ export const CommentSidebar: React.FC<{
       <div className="flex-1 p-4">
         {props.user.id == session.user.id && (
           <>
-            {props.archive ? (
+            {archived ? (
               <div className="mb-4 flex items-center justify-between">
-                {props.archived_at && (
+                {archived_time && (
                   <span className="mr-1">
-                    {dayjs(props.archived_at).format("YYYY/MM/DD")}にアーカイブ
+                    {dayjs(archived_time).format("YYYY/MM/DD")}にアーカイブ
                   </span>
                 )}
                 <button
                   className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-gray-50 py-2 px-4 text-center font-bold shadow-md"
-                  onClick={async () => {
-                    await status(false)
+                  onClick={() => {
+                    status(false)
                   }}
                 >
                   <AiOutlineCheck className="mr-2 text-gray-600" />
@@ -95,7 +70,7 @@ export const CommentSidebar: React.FC<{
                         alt={discussion.user.displayname}
                         height={30}
                         width={30}
-                        className="mr-1 rounded-full object-cover aspect-square"
+                        className="mr-1 aspect-square rounded-full object-cover"
                       />
                     </Link>
                     <Link href={getUserpagePath(discussion.user.handle)}>
