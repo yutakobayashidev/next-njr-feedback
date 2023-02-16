@@ -131,7 +131,6 @@ export async function updateKnowledge(
     })
 
     if (!contributors) {
-      console.log("作成")
       await prisma.contributors.create({
         data: {
           knowledge: { connect: { id: id } },
