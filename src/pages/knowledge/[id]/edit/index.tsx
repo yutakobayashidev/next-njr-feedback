@@ -110,10 +110,11 @@ export default function Post() {
       } else {
         setChanged(false)
         toast.success(`変更を保存しました`)
-        setPublishing(false)
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      setPublishing(false)
     }
   }
 
