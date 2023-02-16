@@ -115,7 +115,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
             </div>
             <div className="mt-7 ml-0 flex-1 md:mt-0 md:ml-7">
               <div className="flex items-center justify-center">
-                <h1 className="flex-1 text-lg font-bold">{displayname}</h1>
+                <h1 className="flex-1 text-xl font-bold">{displayname}</h1>
                 {session && session.user.handle === handle && (
                   <div className="text-right">
                     <Link
