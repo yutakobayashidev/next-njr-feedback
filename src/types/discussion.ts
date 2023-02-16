@@ -24,9 +24,16 @@ export type DiscussionProps = {
     image: string
   }
   views: number
+  votes: Votes[]
 }
 
 interface Course {
   id: number
   name: string
+}
+
+type Votes = {
+  user: {
+    id: string
+  }
 }

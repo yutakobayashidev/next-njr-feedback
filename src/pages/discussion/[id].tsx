@@ -43,6 +43,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     updatedAt,
     user,
     views,
+    votes,
   } = props
   const { data: session } = useSession()
 
@@ -53,13 +54,16 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   const [isVoted, setIsVoted] = useState(false)
   const [voteCount, setVoteCount] = useState(Number(_count.votes))
 
+  const [archived, setArchived] = useState(false)
+  const [archived_time, setArchived_at] = useState("")
+
   useEffect(() => {
     setArchived(archive)
     setArchived_at(archived_at)
-  }, [archive, archived_at])
 
-  const [archived, setArchived] = useState(false)
-  const [archived_time, setArchived_at] = useState("")
+    const hasVotes = votes.some((vote) => vote.user.id === session?.user.id)
+    setIsVoted(hasVotes)
+  }, [archive, archived_at, session?.user.id, votes])
 
   async function status(archive: boolean) {
     try {
@@ -86,12 +90,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     }
   }
 
-  useEffect(() => {
-    setArchived(props.archive)
-    setArchived_at(props.archived_at)
-  }, [props.archive, props.archived_at])
-
-  async function votes(id: string) {
+  async function addvotes(id: string) {
     const response = await fetch(`/api/discussion/${id}/votes`, {
       headers: {
         "Content-Type": "application/json",
@@ -270,7 +269,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 </div>
               </div>
               <div className="py-10">
-                <div className="block items-start md:flex">
+                <div className="flex">
                   <div className="relative">
                     <Link href={getUserpagePath(user.handle)} className="block">
                       <img
@@ -291,7 +290,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       </span>
                     )}
                   </div>
-                  <div className="mt-5 flex-1 md:mt-0">
+                  <div className="flex-1">
                     <Link
                       href={getUserpagePath(user.handle)}
                       className="mr-2 font-inter text-lg font-bold text-gray-800  "
@@ -308,7 +307,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                     <div className="flex flex-col text-center">
                       <button
                         onClick={async () => {
-                          await votes(id as string)
+                          await addvotes(id as string)
                         }}
                       >
                         <IoTriangle
@@ -456,6 +455,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           email: true,
           handle: true,
           image: true,
+        },
+      },
+      votes: {
+        select: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       },
     },
