@@ -145,7 +145,6 @@ export default function Post() {
       }
     } catch (error) {
       console.error(error)
-    } finally {
     }
   }
 

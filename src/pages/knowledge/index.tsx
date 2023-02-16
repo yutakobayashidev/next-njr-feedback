@@ -146,7 +146,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         updated_at: "asc",
       },
     ],
-    take: 10,
+    take: 5,
     where: {
       archive: false,
       published: true,

@@ -2,8 +2,8 @@ import "dayjs/locale/ja"
 
 import Alert from "@src/components/Alert"
 import { CommentCard } from "@src/components/Comment"
-import { CommentSidebar } from "@src/components/CommentSideber"
 import { ContentWrapper } from "@src/components/ContentWrapper"
+import { CommentSidebar } from "@src/components/DiscussionSideber"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
@@ -16,7 +16,6 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
@@ -35,8 +34,10 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     title,
     _count,
     archive,
+    archived_at,
     comments,
     content,
+    course,
     createdAt,
     last_comment_created_at,
     updatedAt,
@@ -45,15 +46,50 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   } = props
   const { data: session } = useSession()
 
-  const router = useRouter()
-
   const [allcomments, setComments] = useState(comments)
-
   const [commentcontent, setContent] = useState<string>("")
   const [discussiontitle, setTitle] = useState<string>("")
   const [showtitleEditForm, setTitleEditForm] = useState(false)
   const [isVoted, setIsVoted] = useState(false)
   const [voteCount, setVoteCount] = useState(Number(_count.votes))
+
+  useEffect(() => {
+    setArchived(archive)
+    setArchived_at(archived_at)
+  }, [archive, archived_at])
+
+  const [archived, setArchived] = useState(false)
+  const [archived_time, setArchived_at] = useState("")
+
+  async function status(archive: boolean) {
+    try {
+      const response = await fetch(`/api/discussion/${props.id}`, {
+        body: JSON.stringify({
+          archive: archive,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: HttpMethod.PUT,
+      })
+
+      const res = await response.json()
+
+      if (response.status !== 200) {
+        toast.error(res.error.messsage)
+      } else {
+        setArchived(res.archive)
+        setArchived_at(res.archived_at)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    setArchived(props.archive)
+    setArchived_at(props.archived_at)
+  }, [props.archive, props.archived_at])
 
   async function votes(id: string) {
     const response = await fetch(`/api/discussion/${id}/votes`, {
@@ -169,10 +205,10 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
               <div className="flex items-center">
                 <div
                   className={`${
-                    archive ? "bg-gray-400" : "bg-primary"
+                    archived ? "bg-gray-400" : "bg-primary"
                   }  mr-2  inline-block rounded-full py-2 px-4 font-inter text-sm font-bold text-white`}
                 >
-                  <span className="flex items-center">{archive ? "Archive" : "Open"}</span>
+                  <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
                 </div>
                 <span className="mr-2 text-gray-600">
                   {last_comment_created_at
@@ -217,12 +253,13 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
               )}
               <div className="block text-sm md:flex md:items-center">
                 <div className="flex items-center">
-                  <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                    ネットコース
-                  </span>
-                  <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                    通学コース
-                  </span>
+                  {course.map((post) => (
+                    <>
+                      <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                        {post.name}
+                      </span>
+                    </>
+                  ))}
                   <Link
                     href={getReportPath()}
                     className="flex items-center text-base text-gray-500"
@@ -335,7 +372,13 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                 </div>
               </div>
             </div>
-            <CommentSidebar props={props} session={session} />
+            <CommentSidebar
+              archived={archived}
+              archived_time={archived_time}
+              status={status}
+              props={props}
+              session={session}
+            />
           </div>
         </ContentWrapper>
       </div>
@@ -399,6 +442,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             createdAt: "asc",
           },
         ],
+      },
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
       },
       user: {
         select: {
