@@ -1,3 +1,5 @@
+import "dayjs/locale/ja"
+
 import { DiscussionCard } from "@src/components/Discussion"
 import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
@@ -12,6 +14,7 @@ import { DiscussionProps, KnowledgeProps } from "@src/types"
 import { CommentProps } from "@src/types/comment"
 import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -22,6 +25,9 @@ import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
 import useSWR from "swr"
 
+dayjs.extend(relativeTime)
+dayjs.locale("ja")
+
 interface TabProps {
   title: string
   href: string
@@ -31,9 +37,9 @@ interface TabProps {
 const Tab = ({ title, href, isSelected }: TabProps) => (
   <Link
     href={href}
-    className={`mr-5 border-gray-700 py-2 font-inter text-base font-bold ${
+    className={`${
       isSelected ? "border-b-2 text-gray-700" : "text-gray-400"
-    }`}
+    } mr-5 border-gray-700 py-2 font-inter text-sm font-bold md:text-base`}
   >
     {title}
   </Link>
@@ -109,7 +115,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
             </div>
             <div className="mt-7 ml-0 flex-1 md:mt-0 md:ml-7">
               <div className="flex items-center justify-center">
-                <h1 className="flex-1 text-2xl font-bold">{displayname}</h1>
+                <h1 className="flex-1 text-xl font-bold">{displayname}</h1>
                 {session && session.user.handle === handle && (
                   <div className="text-right">
                     <Link
@@ -196,8 +202,8 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                             <div className="flex items-center">
                               <Link href={getUserpagePath(post.user.handle)}>
                                 <img
-                                  width="40"
-                                  height="40"
+                                  width="35"
+                                  height="35"
                                   src={post.user.image}
                                   className="mr-2 aspect-square rounded-full object-cover"
                                   alt={post.user.displayname}
@@ -206,19 +212,21 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                               <div>
                                 <Link
                                   href={getUserpagePath(post.user.handle)}
-                                  className="font-bold text-gray-800"
+                                  className="text-sm font-bold text-gray-800"
                                 >
                                   {post.user.displayname}
                                 </Link>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-xs text-gray-500">
                                   <time dateTime={dayjs(post.createdAt).toISOString()}>
-                                    {dayjs(post.createdAt).format("YYYY/MM/DD")}に
+                                    {dayjs(post.createdAt).fromNow()}に
                                   </time>
                                   <Link
                                     href={getDiscussionPath(post.discussion.id)}
                                     className="font-bold text-gray-500 hover:underline"
                                   >
-                                    {post.discussion.title}
+                                    {post.discussion.title.length > 20
+                                      ? post.discussion.title.slice(0, 20) + "..."
+                                      : post.discussion.title}
                                   </Link>
                                   <span>で投稿</span>
                                 </div>

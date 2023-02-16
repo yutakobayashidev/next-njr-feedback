@@ -18,7 +18,9 @@ import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 import { remark } from "remark"
-import html from "remark-html"
+import remarkBreaks from "remark-breaks"
+import remarkGfm from "remark-gfm"
+import remarkHtml from "remark-html"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -153,9 +155,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   const diff = JSON.parse(JSON.stringify(data))
   const knowledge = JSON.parse(JSON.stringify(knowledgedata))
 
-  const htmlBody = await remark().use(html).process(diff.content)
-  const contentHtml = htmlBody.toString()
-  diff.content = contentHtml
+  const html = await remark().use(remarkGfm).use(remarkBreaks).use(remarkHtml).process(diff.content)
+  diff.content = html.toString()
 
   return {
     props: { diff, knowledge },
