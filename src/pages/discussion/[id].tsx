@@ -46,7 +46,6 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   const { data: session } = useSession()
 
   const [allcomments, setComments] = useState(comments)
-
   const [commentcontent, setContent] = useState<string>("")
   const [discussiontitle, setTitle] = useState<string>("")
   const [showtitleEditForm, setTitleEditForm] = useState(false)
@@ -373,7 +372,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
             </div>
             <CommentSidebar
               archived={archived}
-              archived_time={archived_at}
+              archived_time={archived_time}
               status={status}
               props={props}
               session={session}
