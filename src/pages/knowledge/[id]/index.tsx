@@ -223,7 +223,11 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     }}
                     className="inline-flex items-center justify-center rounded-full border bg-gray-100 p-3"
                   >
-                    {bookmark ? <BsFillBookmarkCheckFill size={25} /> : <BsBookmark size={25} />}
+                    {bookmark ? (
+                      <BsFillBookmarkCheckFill className="text-primary" size={25} />
+                    ) : (
+                      <BsBookmark className="text-gray-400" size={25} />
+                    )}
                   </button>
                   <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
