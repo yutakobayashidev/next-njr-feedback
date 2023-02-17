@@ -52,7 +52,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       await prisma.diff.create({
         data: {
           author: { connect: { id: session.user.id } },
-          course: { connect: { id: 1 } },
           emoji: emoji,
           knowledge: { connect: { id: result.id } },
         },
