@@ -152,6 +152,34 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     }
   }
 
+  const updateComment = async (commentId: string, newComment: string) => {
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        body: JSON.stringify({ content: newComment }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+      })
+      if (response.ok) {
+        const updatedComment = await response.json()
+        setComments((comments) =>
+          comments.map((comment) => {
+            if (comment.id === commentId) {
+              return updatedComment
+            }
+            return comment
+          }),
+        )
+      } else {
+        const json = await response.json()
+        toast.error(json.error.message)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   async function handletitle() {
     try {
       const response = await fetch(`/api/discussion/${id}`, {
@@ -327,6 +355,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   {allcomments.map((comment) => (
                     <CommentCard
                       onDeleteComment={deleteComment}
+                      onUpdateComment={updateComment}
                       key={comment.id}
                       comment={comment}
                       session={session}
