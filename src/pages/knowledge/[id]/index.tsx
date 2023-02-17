@@ -327,11 +327,11 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             </Link>
                           </div>
                           <div className="mt-2">
-                            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                            <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 font-bold text-course">
                               {contributor.user.role == "student" ? "生徒" : "メンター / TA"}
                             </span>
                             {contributor.user.id === creator?.id && (
-                              <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 font-bold text-course">
                                 ページ作成者
                               </span>
                             )}
