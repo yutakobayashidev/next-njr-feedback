@@ -12,6 +12,8 @@ Next NJR Feedback のソースコードは GitHub で[MITライセンス](https:
 
 ### 開発者
 
+[![Contributors](https://contrib.rocks/image?repo=yutakobayashidev/next-njr-feedback)](https://github.com/yutakobayashidev/next-njr-feedback/graphs/contributors)
+
 Yuta Kobayashi
 
 ・[GitHub](https://github.com/yutakobayashidev/)
