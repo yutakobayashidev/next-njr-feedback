@@ -309,7 +309,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       />
                     </Link>
                     {user.role == "teacher" && (
-                      <span className="absolute right-7 -bottom-1">
+                      <span className="absolute right-7 top-[50px]">
                         <img
                           className="h-5 w-5 rounded-md border"
                           src="https://nnn.ed.jp/assets/img/touch_icon.png"
