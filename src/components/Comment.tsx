@@ -1,6 +1,5 @@
 import { Dialog, Menu, Transition } from "@headlessui/react"
 import { config } from "@site.config"
-import { CommentEditor } from "@src/components/CommentEditor"
 import { HttpMethod } from "@src/types"
 import { CommentProps } from "@src/types/comment"
 import { getUserpagePath } from "@src/utils/helper"
@@ -14,6 +13,7 @@ import { BiChevronDown, BiLinkAlt } from "react-icons/bi"
 import { BsPencil } from "react-icons/bs"
 import { HiOutlineTrash } from "react-icons/hi"
 import { IoTriangle } from "react-icons/io5"
+import TextareaAutosize from "react-textarea-autosize"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
@@ -28,18 +28,25 @@ function copyTextToClipboard(text: string) {
 export const CommentCard: React.FC<{
   comment: CommentProps
   onDeleteComment: (id: string) => void
+  onUpdateComment: (id: string, text: string) => void
   session: Session
-}> = ({ comment, onDeleteComment, session }) => {
+}> = ({ comment, onDeleteComment, onUpdateComment, session }) => {
   const [showEditForm, setEditForm] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
   const [isVoted, setIsVoted] = useState(false)
   const [voteCount, setVoteCount] = useState(Number(comment._count.votes))
+  const [editedText, setEditedText] = useState(comment.content)
 
   useEffect(() => {
     const hasVotes = comment.votes.some((vote) => vote.user.id === session?.user.id)
     setIsVoted(hasVotes)
   }, [comment.votes, session?.user.id])
+
+  function cancel() {
+    setEditForm(false)
+    setEditedText(comment.content)
+  }
 
   async function votes(id: string) {
     const response = await fetch(`/api/votes/${id}`, {
@@ -239,7 +246,35 @@ export const CommentCard: React.FC<{
           </div>
           <div className="mt-6 font-inter leading-7 text-gray-800">
             {showEditForm ? (
-              <CommentEditor setEditForm={setEditForm} comment={comment} />
+              <>
+                <TextareaAutosize
+                  name="content"
+                  minRows={4}
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                  className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                />
+                <div className="text-right">
+                  <button
+                    onClick={() => {
+                      cancel()
+                    }}
+                    className="mr-6 text-gray-600"
+                  >
+                    キャンセル
+                  </button>
+                  <button
+                    disabled={!editedText}
+                    className="my-4 inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
+                    onClick={async () => {
+                      onUpdateComment(comment.id, editedText)
+                      setEditForm(false)
+                    }}
+                  >
+                    更新する
+                  </button>
+                </div>
+              </>
             ) : (
               <>{comment.content}</>
             )}

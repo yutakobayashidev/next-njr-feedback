@@ -63,6 +63,16 @@ export async function updateComment(
             displayname: true,
             handle: true,
             image: true,
+            role: true,
+          },
+        },
+        votes: {
+          select: {
+            user: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
       },
