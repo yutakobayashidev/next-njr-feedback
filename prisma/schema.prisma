@@ -118,6 +118,7 @@ model DiscussionVote {
   discussion    Discussion @relation(references: [id], fields:[discussionId])
   discussionId  String
 
+  @@unique([userId, discussionId])
   @@index([userId])
   @@index([discussionId])
 }
@@ -147,6 +148,7 @@ model Vote {
   comment       Comment @relation(references: [id], fields:[commentId])
   commentId     String
 
+  @@unique([userId, commentId])
   @@index([userId])
   @@index([commentId])
 }
