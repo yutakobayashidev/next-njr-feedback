@@ -25,7 +25,6 @@ model Account {
   session_state      String?
   createdAt           DateTime?    @default(now())  
   updatedAt           DateTime?    @updatedAt
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -42,6 +41,52 @@ model Session {
   updatedAt    DateTime?    @updatedAt
 
   @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  bio           String?
+  role          String
+  name          String?
+  displayname   String?
+  email         String?   @unique
+  handle        String @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  diff          Diff[]
+  sessions      Session[]
+  knowledge    Contributors[]
+  admin         Boolean @default(false)
+  leave         Boolean @default(false)
+  contributor   Boolean @default(false)
+  bookmarks     Bookmark[]
+  createdAt     DateTime?    @default(now())
+  comments      Comment[]
+  lastEdit       Knowledge[] @relation("lastEdit")
+  updatedAt     DateTime?    @updatedAt
+  discussion    Discussion[]
+  discussionvote    DiscussionVote[]
+  createKnowledge    Knowledge[]
+  votes            Vote[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime?    @default(now())
+  updatedAt  DateTime?    @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model Course {
+    id          Int      @id @default(autoincrement())
+    name        String
+    knowledge   Knowledge[]
+    discussion  Discussion[]
+    diff        Diff[]
 }
 
 model Discussion {
@@ -72,6 +117,8 @@ model DiscussionVote {
   user          User     @relation(fields: [userId], references: [id])
   discussion    Discussion @relation(references: [id], fields:[discussionId])
   discussionId  String
+
+  @@unique([userId, discussionId])
   @@index([userId])
   @@index([discussionId])
 }
@@ -87,6 +134,7 @@ model Comment {
   discussion    Discussion     @relation(fields: [discussionId], references: [id])
   discussionId  String
   votes         Vote[]
+
   @@index([userId])
   @@index([discussionId])
 }
@@ -99,6 +147,8 @@ model Vote {
   user          User     @relation(fields: [userId], references: [id])
   comment       Comment @relation(references: [id], fields:[commentId])
   commentId     String
+
+  @@unique([userId, commentId])
   @@index([userId])
   @@index([commentId])
 }
@@ -134,11 +184,14 @@ model Knowledge {
   archive       Boolean @default(false)
   contributors  Contributors[]
   bookmarks     Bookmark[]
+  lastEditor    User          @relation("lastEdit", fields: [lastEditorId], references: [id])
+  lastEditorId             String
   creatorId     String
   creator       User     @relation(fields: [creatorId], references: [id])
   course        Course[]
 
   @@index([creatorId])
+  @@index([lastEditorId])
 }
 
 model Bookmark {
@@ -148,6 +201,7 @@ model Bookmark {
   knowledgeId   String
   user          User     @relation(fields: [userId], references: [id])
   userId      String
+
   @@unique([userId, knowledgeId])
   @@index([knowledgeId])
   @@index([userId])
@@ -160,51 +214,8 @@ model Contributors {
   knowledgeId   String
   user          User     @relation(fields: [userId], references: [id])
   userId      String
+
   @@unique([userId, knowledgeId])
   @@index([knowledgeId])
   @@index([userId])
-}
-
-model Course {
-    id      Int      @id @default(autoincrement())
-    name    String
-    knowledge Knowledge[]
-    discussion  Discussion[]
-    diff      Diff[]
-}
-
-model User {
-  id            String    @id @default(cuid())
-  bio           String?
-  name          String?
-  displayname   String?
-  email         String?   @unique
-  handle        String @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  diff          Diff[]
-  sessions      Session[]
-  knowledge    Contributors[]
-  admin         Boolean @default(false)
-  leave         Boolean @default(false)
-  contributor   Boolean @default(false)
-  bookmarks     Bookmark[]
-  createdAt     DateTime?    @default(now())
-  comments      Comment[]
-  updatedAt     DateTime?    @updatedAt
-  discussion    Discussion[]
-  discussionvote    DiscussionVote[]
-  createKnowledge    Knowledge[]
-  votes            Vote[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime?    @default(now())
-  updatedAt  DateTime?    @updatedAt
-
-  @@unique([identifier, token])
 }

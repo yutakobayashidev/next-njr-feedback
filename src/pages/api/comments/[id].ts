@@ -9,7 +9,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (req.method === HttpMethod.DELETE) {
@@ -21,7 +21,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }

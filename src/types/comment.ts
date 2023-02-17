@@ -12,9 +12,9 @@ export type CommentProps = {
   user: {
     id: string
     displayname: string
-    email: string
     handle: string
     image: string
+    role: string
   }
   votes: Votes[]
 }

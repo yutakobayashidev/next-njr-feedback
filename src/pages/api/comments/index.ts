@@ -10,18 +10,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (!session.user.id)
     return res.status(500).json({
-      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
   if (req.method === HttpMethod.POST) {
     if (!content)
       return res.status(401).json({
-        error: { code: 401, messsage: "クエリが不足しています" },
+        error: { code: 401, message: "クエリが不足しています" },
       })
 
     try {
@@ -48,7 +48,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
             },
@@ -99,7 +98,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }

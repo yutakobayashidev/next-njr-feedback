@@ -51,7 +51,7 @@ const Page: NextPageWithLayout = () => {
         setSubmitted(true)
       } else {
         const json = await response.json()
-        toast.error(json.error.messsage)
+        toast.error(json.error.message)
       }
     } catch (error) {
       console.error(error)

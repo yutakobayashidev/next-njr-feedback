@@ -54,14 +54,14 @@ export type UserProps = {
   contributor: boolean
   createdAt: string
   displayname: string
-  email: string
   handle: string
   image: string
   knowledge: KnowledgeProps[]
+  role: string
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
-  const { _count, bio, contributor, createdAt, displayname, email, handle, image } = props
+  const { _count, bio, contributor, createdAt, displayname, handle, image, role } = props
 
   const router = useRouter()
   const { data: session } = useSession()
@@ -141,7 +141,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     <MdDateRange size={20} className="mr-1 text-gray-500" />
                     <span>{dayjs(createdAt).format("YYYY年M月")}に参加</span>
                   </span>
-                  {email && (
+                  {role && (
                     <span className="mr-2 flex items-center font-medium">
                       <img
                         src="/n-school.png"
@@ -150,7 +150,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                         height="20"
                         className="mr-1"
                       ></img>
-                      <span>{email.endsWith("@n-jr.jp") ? "生徒" : "メンター / TA"}</span>
+                      <span>{role == "student" ? "生徒" : "メンター / TA"}</span>
                     </span>
                   )}
                   {contributor && (

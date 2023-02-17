@@ -14,12 +14,16 @@ export type KnowledgeProps = {
     id: string
     name: string
     displayname: string
-    email: string
     handle: string
     image: string
   }
   diff: Diff[]
   emoji: string
+  lastEditor: {
+    displayname: string
+    handle: string
+    image: string
+  }
   published: boolean
   publishedAt: string
   updated_at: string
@@ -59,8 +63,8 @@ interface Contributor {
     id: string
     name: string
     displayname: string
-    email: string
     handle: string
     image: string
+    role: string
   }
 }

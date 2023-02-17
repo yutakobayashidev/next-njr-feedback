@@ -11,12 +11,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (!session.user.id)
     return res.status(500).json({
-      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
   if (req.method !== HttpMethod.POST) {
@@ -24,7 +24,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }
@@ -33,11 +33,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!content || !slackname || !url)
     return res.status(400).json({
-      error: { code: 400, messsage: "必須項目が入力されていません" },
+      error: { code: 400, message: "必須項目が入力されていません" },
     })
 
   if (!z.string().url().safeParse(url).success) {
-    return res.status(400).json({ error: { messsage: "httpsから始まるURLを入力してください" } })
+    return res.status(400).json({ error: { message: "httpsから始まるURLを入力してください" } })
   }
 
   const message = `<${config.siteRoot}/users/${session?.user.handle}|${session?.user.displayname}>さん (Slack名: ${slackname})によって違反報告が行われました。\n\n\違反報告者のメールアドレス:\n${session.user.email}\n\n詳細:\n${content}\n\n違反が確認されるURL:\n${url}`

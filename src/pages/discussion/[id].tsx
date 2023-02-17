@@ -80,7 +80,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
       const res = await response.json()
 
       if (response.status !== 200) {
-        toast.error(res.error.messsage)
+        toast.error(res.error.message)
       } else {
         setArchived(res.archive)
         setArchived_at(res.archived_at)
@@ -145,7 +145,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
         setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId))
       } else {
         const json = await response.json()
-        toast.error(json.error.messsage)
+        toast.error(json.error.message)
       }
     } catch (error) {
       console.error(error)
@@ -280,7 +280,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                         alt={user.displayname}
                       />
                     </Link>
-                    {user.email.endsWith("@n-jr.jp") == false && (
+                    {user.role == "teacher" && (
                       <span className="absolute right-7 -bottom-1">
                         <img
                           className="h-5 w-5 rounded-md border"
@@ -295,8 +295,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       href={getUserpagePath(user.handle)}
                       className="mr-2 font-inter text-lg font-bold text-gray-800  "
                     >
-                      {user.displayname}{" "}
-                      {user.email.endsWith("@n-jr.jp") ? "(生徒)" : "(メンター / TA)"}
+                      {user.displayname} {user.role == "student" ? "(生徒)" : "(メンター / TA)"}
                     </Link>
                     <time className="text-sm text-gray-500" dateTime={updatedAt}>
                       {dayjs(createdAt).fromNow()}
@@ -416,9 +415,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
+              role: true,
             },
           },
           votes: {
@@ -452,9 +451,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         select: {
           id: true,
           displayname: true,
-          email: true,
           handle: true,
           image: true,
+          role: true,
         },
       },
       votes: {

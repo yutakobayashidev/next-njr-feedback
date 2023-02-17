@@ -13,7 +13,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+        message: `ナレッジIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -25,7 +25,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(500).json({
         error: {
           code: 500,
-          messsage: `この操作は許可されていません`,
+          message: `この操作は許可されていません`,
         },
       })
     }
@@ -43,7 +43,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }

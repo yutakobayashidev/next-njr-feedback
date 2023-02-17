@@ -51,12 +51,14 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     title,
     _count,
     archive,
+
     bookmarks,
     content,
     contributors,
     course,
     creator,
     emoji,
+    lastEditor,
     published,
     publishedAt,
     updated_at,
@@ -146,13 +148,13 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     <span className="flex items-center">
                       {publishedAt ? (
                         <>
-                          <Link href={getUserpagePath(creator.handle)}>
+                          <Link href={getUserpagePath(lastEditor.handle)}>
                             <img
-                              src={creator.image}
+                              src={lastEditor.image}
                               height={45}
                               width={45}
                               className="mr-2 aspect-square rounded-full object-cover"
-                              alt={creator.displayname}
+                              alt={lastEditor.displayname}
                             ></img>
                           </Link>
                           <time
@@ -321,14 +323,12 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               className="text-xl font-bold text-gray-800 line-clamp-1"
                             >
                               {contributor.user.displayname}
-                              {contributor.user.email === session?.user?.email && " (あなた)"}
+                              {contributor.user.id === session?.user?.id && " (あなた)"}
                             </Link>
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
-                              {contributor.user.email.endsWith("@n-jr.jp")
-                                ? "生徒"
-                                : "メンター / TA"}
+                              {contributor.user.role == "student" ? "生徒" : "メンター / TA"}
                             </span>
                             {contributor.user.id === creator?.id && (
                               <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course">
@@ -381,9 +381,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
+              role: true,
             },
           },
         },
@@ -397,6 +397,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       creator: {
         select: {
           id: true,
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+      lastEditor: {
+        select: {
           displayname: true,
           handle: true,
           image: true,

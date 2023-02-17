@@ -19,7 +19,7 @@ export async function getKnowledge(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+        message: `ナレッジIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -33,7 +33,6 @@ export async function getKnowledge(
               select: {
                 id: true,
                 displayname: true,
-                email: true,
                 image: true,
               },
             },
@@ -54,7 +53,7 @@ export async function getKnowledge(
       return res.status(500).json({
         error: {
           code: 500,
-          messsage: `この操作は許可されていません`,
+          message: `この操作は許可されていません`,
         },
       })
     }
@@ -84,7 +83,7 @@ export async function updateKnowledge(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+        message: `ナレッジIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -93,7 +92,7 @@ export async function updateKnowledge(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `公開するにはタイトルと本文が必要です。`,
+        message: `公開するにはタイトルと本文が必要です。`,
       },
     })
   }
@@ -105,7 +104,7 @@ export async function updateKnowledge(
       return res.status(500).json({
         error: {
           code: 500,
-          messsage: `この操作は許可されていません`,
+          message: `この操作は許可されていません`,
         },
       })
     }
@@ -145,6 +144,7 @@ export async function updateKnowledge(
         archive,
         content,
         emoji,
+        lastEditor: { connect: { id: session.user.id } },
         published,
         updated_at: new Date(),
         ...(published && !data?.publishedAt && { publishedAt }),
@@ -176,7 +176,7 @@ export async function deleteKnowledge(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ナレッジIDまたはセッションが見つかりませんでした`,
+        message: `ナレッジIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -187,7 +187,7 @@ export async function deleteKnowledge(
     return res.status(500).json({
       error: {
         code: 500,
-        messsage: `この操作は許可されていません`,
+        message: `この操作は許可されていません`,
       },
     })
   }
