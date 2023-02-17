@@ -48,7 +48,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
             },

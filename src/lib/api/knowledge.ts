@@ -33,7 +33,6 @@ export async function getKnowledge(
               select: {
                 id: true,
                 displayname: true,
-                email: true,
                 image: true,
               },
             },

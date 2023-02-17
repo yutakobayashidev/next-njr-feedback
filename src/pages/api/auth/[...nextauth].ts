@@ -39,16 +39,22 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       profile: (profile) => {
+        const isNjrStudent =
+          profile.email.endsWith("@n-jr.jp") && profile.email.split("@")[0].indexOf("njr") != -1
+        const isNjrTeacher =
+          !(profile.email.split("@")[0].indexOf("njr") != -1) && profile.email.endsWith("n-jr.jp")
+        const isNnnTeacher = profile.email.endsWith("@nnn.ac.jp")
+
         return {
           id: profile.sub,
           name: profile.name,
           displayname: profile.name,
           email: profile.email,
-          handle:
-            profile.email.endsWith("@n-jr.jp") && profile.email.split("@")[0].indexOf("njr") != -1
-              ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
-              : profile.sub,
+          handle: isNjrStudent
+            ? profile.email.substring(profile.email.indexOf("_") + 1, profile.email.indexOf("@"))
+            : profile.sub,
           image: profile.picture,
+          role: isNjrStudent ? "student" : isNjrTeacher || isNnnTeacher ? "teacher" : "other",
         }
       },
     }),

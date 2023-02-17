@@ -14,7 +14,6 @@ export type KnowledgeProps = {
     id: string
     name: string
     displayname: string
-    email: string
     handle: string
     image: string
   }
@@ -64,8 +63,8 @@ interface Contributor {
     id: string
     name: string
     displayname: string
-    email: string
     handle: string
     image: string
+    role: string
   }
 }

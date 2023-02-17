@@ -98,9 +98,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
             select: {
               id: true,
               displayname: true,
-              email: true,
               handle: true,
               image: true,
+              role: true,
             },
           },
         },

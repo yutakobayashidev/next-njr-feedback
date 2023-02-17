@@ -179,6 +179,7 @@ model Course {
 model User {
   id            String    @id @default(cuid())
   bio           String?
+  role          String
   name          String?
   displayname   String?
   email         String?   @unique
