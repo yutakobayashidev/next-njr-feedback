@@ -2,6 +2,9 @@
 
 ![Next NJR Feedback](https://user-images.githubusercontent.com/91340399/212465713-bf074f3e-b4f7-4baa-a35d-97bf5f4340e8.png)
 
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://choosealicense.com/licenses/mit/)
+![Vercel](https://vercelbadge.vercel.app/api/yutakobayashidev/next-njr-feedback)
+
 Next NJR Feedback は N 中等部の生徒、メンター・TA が使用できる議論&ナレッジ共有プラットフォームです。
 
 https://nextnjrfeedback.net
