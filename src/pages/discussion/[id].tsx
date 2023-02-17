@@ -80,7 +80,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
       const res = await response.json()
 
       if (response.status !== 200) {
-        toast.error(res.error.messsage)
+        toast.error(res.error.message)
       } else {
         setArchived(res.archive)
         setArchived_at(res.archived_at)
@@ -145,7 +145,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
         setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId))
       } else {
         const json = await response.json()
-        toast.error(json.error.messsage)
+        toast.error(json.error.message)
       }
     } catch (error) {
       console.error(error)

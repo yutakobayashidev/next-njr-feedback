@@ -20,7 +20,7 @@ export async function updateComment(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `コメントIDまたはセッションが見つかりませんでした`,
+        message: `コメントIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -29,7 +29,7 @@ export async function updateComment(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `コンテンツが不足しています`,
+        message: `コンテンツが不足しています`,
       },
     })
   }
@@ -40,7 +40,7 @@ export async function updateComment(
     return res.status(500).json({
       error: {
         code: 500,
-        messsage: `この操作は許可されていません`,
+        message: `この操作は許可されていません`,
       },
     })
   }
@@ -92,7 +92,7 @@ export async function deleteComment(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `コメントIDまたはセッションが見つかりませんでした`,
+        message: `コメントIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -103,7 +103,7 @@ export async function deleteComment(
     return res.status(500).json({
       error: {
         code: 500,
-        messsage: `この操作は許可されていません`,
+        message: `この操作は許可されていません`,
       },
     })
   }

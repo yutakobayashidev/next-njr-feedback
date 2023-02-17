@@ -19,7 +19,7 @@ export async function getDiscussion(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ディスカッションIDまたはセッションが見つかりませんでした`,
+        message: `ディスカッションIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -66,7 +66,7 @@ export async function updateDiscussion(
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ディスカッションIDまたはセッションが見つかりませんでした`,
+        message: `ディスカッションIDまたはセッションが見つかりませんでした`,
       },
     })
   }
@@ -79,7 +79,7 @@ export async function updateDiscussion(
     return res.status(500).json({
       error: {
         code: 500,
-        messsage: `この操作は許可されていません`,
+        message: `この操作は許可されていません`,
       },
     })
   }

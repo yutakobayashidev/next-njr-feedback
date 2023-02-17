@@ -17,7 +17,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `必須項目が入力されていません`,
+        message: `必須項目が入力されていません`,
       },
     })
   }
@@ -26,7 +26,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "ハンドルは4文字以上30文字以下で入力してください",
+        message: "ハンドルは4文字以上30文字以下で入力してください",
       },
     })
   }
@@ -35,7 +35,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "表示名は30文字以内で入力してください",
+        message: "表示名は30文字以内で入力してください",
       },
     })
   }
@@ -44,7 +44,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "自己紹介は160文字以内で入力してください",
+        message: "自己紹介は160文字以内で入力してください",
       },
     })
   }
@@ -54,7 +54,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: `ハンドルにはアルファベットと数字のみが使用できます`,
+        message: `ハンドルにはアルファベットと数字のみが使用できます`,
       },
     })
   }
@@ -78,7 +78,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
         return res.status(400).json({
           error: {
             code: 400,
-            messsage: `このハンドルは既に使用されています。`,
+            message: `このハンドルは既に使用されています。`,
           },
         })
       }
@@ -87,7 +87,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(500).json({
       error: {
         code: 500,
-        messsage: `不明なエラーが発生しました`,
+        message: `不明なエラーが発生しました`,
       },
     })
   }

@@ -106,7 +106,7 @@ export default function Post() {
       if (response.status !== 200) {
         const paas = await response.json()
 
-        toast.error(paas.error.messsage)
+        toast.error(paas.error.message)
       } else {
         setChanged(false)
         toast.success(`変更を保存しました`)
@@ -138,7 +138,7 @@ export default function Post() {
       if (response.status !== 200) {
         const paas = await response.json()
 
-        toast.error(paas.error.messsage)
+        toast.error(paas.error.message)
       } else {
         setChanged(false)
         router.push(getKnowledgePath(knowledgeId as string))

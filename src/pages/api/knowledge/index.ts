@@ -17,12 +17,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (!session.user.id)
     return res.status(500).json({
-      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
   if (req.method === HttpMethod.POST) {
@@ -75,7 +75,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     const result = querySchema.safeParse(req.query)
 
     if (!result.success) {
-      return res.status(400).json({ error: { messsage: "クエリが不正です" } })
+      return res.status(400).json({ error: { message: "クエリが不正です" } })
     }
 
     const { count } = result.data
@@ -123,7 +123,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }

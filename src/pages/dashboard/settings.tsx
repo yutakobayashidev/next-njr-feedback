@@ -46,7 +46,7 @@ const Page: NextPageWithLayout = () => {
       setDisabled(false)
       setPublishing(false)
       const paas = await response.json()
-      toast.error(paas.error.messsage)
+      toast.error(paas.error.message)
     } else {
       setDisabled(false)
       setPublishing(false)

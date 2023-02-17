@@ -9,12 +9,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (!session.user.id)
     return res.status(500).json({
-      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
   if (req.method !== HttpMethod.POST) {
@@ -22,7 +22,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }
@@ -31,7 +31,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!id)
     return res.status(400).json({
-      error: { code: 400, messsage: "必須項目が入力されていません" },
+      error: { code: 400, message: "必須項目が入力されていません" },
     })
 
   const vote = await prisma.discussionVote.findFirst({

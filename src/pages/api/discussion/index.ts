@@ -11,27 +11,27 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (!session)
     return res.status(401).json({
-      error: { code: 401, messsage: "ログインしてください" },
+      error: { code: 401, message: "ログインしてください" },
     })
 
   if (title?.length > 160) {
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "タイトルは160文字以内で入力してください",
+        message: "タイトルは160文字以内で入力してください",
       },
     })
   }
 
   if (!session.user.id)
     return res.status(500).json({
-      error: { code: 500, messsage: "サーバーがセッションユーザーIDの取得に失敗しました" },
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
   if (req.method === HttpMethod.POST) {
     if (!title || !content)
       return res.status(401).json({
-        error: { code: 401, messsage: "クエリが不足しています" },
+        error: { code: 401, message: "クエリが不足しています" },
       })
 
     const courses = selectedCourses.map((id: string) => parseInt(id))
@@ -86,7 +86,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return res.status(405).json({
       error: {
         code: 405,
-        messsage: `${req.method}メソッドはサポートされていません。`,
+        message: `${req.method}メソッドはサポートされていません。`,
       },
     })
   }
