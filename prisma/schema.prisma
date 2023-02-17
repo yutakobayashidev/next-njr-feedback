@@ -63,7 +63,7 @@ model User {
   bookmarks     Bookmark[]
   createdAt     DateTime?    @default(now())
   comments      Comment[]
-  lastEditRankings Knowledge[] @relation("lastEdit")
+  lastEdit       Knowledge[] @relation("lastEdit")
   updatedAt     DateTime?    @updatedAt
   discussion    Discussion[]
   discussionvote    DiscussionVote[]
