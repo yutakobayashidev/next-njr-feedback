@@ -57,7 +57,14 @@ export async function updateComment(
             votes: true,
           },
         },
-        user: true,
+        user: {
+          select: {
+            id: true,
+            displayname: true,
+            handle: true,
+            image: true,
+          },
+        },
       },
       where: { id },
     })
