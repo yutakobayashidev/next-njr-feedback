@@ -22,11 +22,11 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     })
   }
 
-  if (handle.length < 4 || handle.length > 15) {
+  if (handle.length < 4 || handle.length > 30) {
     return res.status(400).json({
       error: {
         code: 400,
-        messsage: "ハンドルは4文字以上15文字以下で入力してください",
+        messsage: "ハンドルは4文字以上30文字以下で入力してください",
       },
     })
   }
