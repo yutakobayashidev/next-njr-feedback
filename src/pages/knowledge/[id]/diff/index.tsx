@@ -99,7 +99,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                         {history?.course.map((course) => (
                           <span
                             key={course.id}
-                            className="mr-2 rounded-2xl bg-coursebg px-3 py-1 text-sm font-bold text-course"
+                            className="mr-2 rounded-2xl bg-coursebg px-3 py-1 font-bold text-course"
                           >
                             {course.name}
                           </span>
