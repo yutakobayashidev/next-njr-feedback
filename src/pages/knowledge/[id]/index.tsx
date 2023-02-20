@@ -39,11 +39,13 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-/*
-import data from "@emoji-mart/data"
-import i18n from "@emoji-mart/data/i18n/ja.json"
-import Picker from "@emoji-mart/react"
-*/
+const Badge: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
+      {text}
+    </span>
+  )
+}
 
 const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   const {
@@ -207,15 +209,6 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                   </p>
                 </div>
               )}
-              {/*
-          <Picker
-            i18n={i18n}
-            locale={"ja"}
-            theme={"light"}
-            data={data}
-            onEmojiSelect={console.log}
-          />
-          */}
               <div className="mt-10 flex items-center justify-between">
                 <div className="inline-flex items-center">
                   <button
@@ -326,32 +319,21 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             </Link>
                           </div>
                           <div className="mt-2">
-                            <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                              {contributor.user.role === "student"
-                                ? contributor.user.n_course === "commute"
-                                  ? "通学コース" + "生徒"
-                                  : contributor.user.n_course === "net"
-                                  ? "ネットコース" + "生徒"
-                                  : "生徒"
-                                : "メンター / TA"}
-                            </span>
-                            {contributor.user.contributor && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                コントリビューター
-                              </span>
-                            )}
-                            {contributor.user.id === creator?.id && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                ページ作成者
-                              </span>
-                            )}
+                            <Badge
+                              text={
+                                contributor.user.role === "student"
+                                  ? contributor.user.n_course === "commute"
+                                    ? "通学コース" + "生徒"
+                                    : contributor.user.n_course === "net"
+                                    ? "ネットコース" + "生徒"
+                                    : "生徒"
+                                  : "メンター / TA"
+                              }
+                            />
+                            {contributor.user.contributor && <Badge text="コントリビューター" />}
+                            {contributor.user.id === creator?.id && <Badge text="ページ作成者" />}
                             {contributor.user.badges.map((badge) => (
-                              <span
-                                key={badge.id}
-                                className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course"
-                              >
-                                {badge.name}
-                              </span>
+                              <Badge text={badge.name} key={badge.id} />
                             ))}
                           </div>
                         </div>
