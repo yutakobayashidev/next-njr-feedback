@@ -22,26 +22,9 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
-import {
-  FaApple,
-  FaCode,
-  FaGoogle,
-  FaLinux,
-  FaNetworkWired,
-  FaSchool,
-  FaSlack,
-  FaWindows,
-} from "react-icons/fa"
-import { GrCertificate } from "react-icons/gr"
+import { AiFillTag } from "react-icons/ai"
+import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
-import {
-  SiAdobeillustrator,
-  SiAdobephotoshop,
-  SiAdobepremierepro,
-  SiJavascript,
-  SiMojangstudios,
-  SiWindowsterminal,
-} from "react-icons/si"
 import useSWR from "swr"
 
 dayjs.extend(relativeTime)
@@ -64,23 +47,18 @@ const Tab = ({ title, href, isSelected }: TabProps) => (
   </Link>
 )
 
+export interface Badges {
+  id: string
+  name: string
+  icon?: string
+}
+
 export type UserProps = {
   _count: {
     discussion: number
     knowledge: number
   }
-  badge_gsuite: number
-  badge_illustrator: number
-  badge_js: number
-  badge_linux: number
-  badge_macos: number
-  badge_minecraft: number
-  badge_monopassport: number
-  badge_photoshop: number
-  badge_premierepro: number
-  badge_shell: number
-  badge_slack: number
-  badge_windows: number
+  badges: Badges[]
   bio: string
   contributor: boolean
   createdAt: string
@@ -95,18 +73,7 @@ export type UserProps = {
 const Page: NextPageWithLayout<UserProps> = (props) => {
   const {
     _count,
-    badge_gsuite,
-    badge_illustrator,
-    badge_js,
-    badge_linux,
-    badge_macos,
-    badge_minecraft,
-    badge_monopassport,
-    badge_photoshop,
-    badge_premierepro,
-    badge_shell,
-    badge_slack,
-    badge_windows,
+    badges,
     bio,
     contributor,
     createdAt,
@@ -195,26 +162,6 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     <MdDateRange size={20} className="mr-1 text-gray-500" />
                     <span>{dayjs(createdAt).format("YYYY年M月")}に参加</span>
                   </span>
-                  {n_course && (
-                    <span className="mr-2 flex items-center font-medium">
-                      <span>
-                        {n_course == "commute" ? (
-                          <FaSchool size={20} color="#61bd8d" className="mr-1" />
-                        ) : n_course == "net" ? (
-                          <FaNetworkWired size={20} color="#61bd8d" className="mr-1" />
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                      <span>
-                        {n_course == "commute"
-                          ? "通学コース"
-                          : n_course == "net"
-                          ? "ネットコース"
-                          : ""}
-                      </span>
-                    </span>
-                  )}
                   {role && (
                     <span className="mr-2 flex items-center font-medium">
                       <img
@@ -224,7 +171,15 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                         height="20"
                         className="mr-1"
                       ></img>
-                      <span>{role == "student" ? "生徒" : "メンター / TA"}</span>
+                      <span>
+                        {role === "student"
+                          ? n_course === "commute"
+                            ? "通学コース" + "生徒"
+                            : n_course === "net"
+                            ? "ネットコース" + "生徒"
+                            : "生徒"
+                          : "メンター / TA"}
+                      </span>
                     </span>
                   )}
                   {contributor && (
@@ -236,114 +191,23 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                       </span>
                     </>
                   )}
-                  {badge_macos === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="macOS">
-                          <FaApple size={20} color="#000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_windows === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Windows">
-                          <FaWindows size={20} color="#0078d6" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_linux === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Linux">
-                          <FaLinux size={20} color="#000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_slack === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Slack">
-                          <FaSlack size={20} color="#4a154b" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_monopassport === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="ものづくりパスポート">
-                          <GrCertificate size={20} color="#000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_minecraft === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Minecraft">
-                          <SiMojangstudios size={20} color="#00a8e8" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_premierepro === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Premiere Pro">
-                          <SiAdobepremierepro size={20} color="#ff0000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_photoshop === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Photoshop">
-                          <SiAdobephotoshop size={20} color="#ff0000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_illustrator === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Illustrator">
-                          <SiAdobeillustrator size={20} color="#ff0000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_gsuite === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Google Workspace">
-                          <FaGoogle size={20} color="#4285f4" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_js === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="JavaScript">
-                          <SiJavascript size={20} color="#f7df1e" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
-                  {badge_shell === 1 && (
-                    <>
-                      <span className="mr-1 flex items-center font-medium">
-                        <Tooltip text="Shell">
-                          <SiWindowsterminal size={20} color="#000" className="mr-1" />
-                        </Tooltip>
-                      </span>
-                    </>
-                  )}
+                  {badges.map((badge) => (
+                    <span key={badge.id} className="mr-1 flex items-center font-medium">
+                      <Tooltip text={badge.name}>
+                        {badge.icon ? (
+                          <img
+                            width="20"
+                            className="mr-1"
+                            height="20"
+                            src={badge.icon}
+                            alt={badge.name}
+                          ></img>
+                        ) : (
+                          <AiFillTag size={20} color="#ee7800" className="mr-1" />
+                        )}
+                      </Tooltip>
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -501,6 +365,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         select: {
           discussion: true,
           knowledge: { where: { knowledge: { published: true } } },
+        },
+      },
+      badges: {
+        select: {
+          id: true,
+          name: true,
+          icon: true,
         },
       },
     },

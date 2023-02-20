@@ -69,19 +69,17 @@ model User {
   discussionvote    DiscussionVote[]
   createKnowledge    Knowledge[]
   votes            Vote[]
-  badge_macos       Int @default(0)
-  badge_linux       Int @default(0)
-  badge_windows     Int @default(0)
-  badge_slack       Int @default(0)
-  badge_monopassport Int @default(0)
-  badge_minecraft    Int @default(0)
-  badge_premierepro  Int @default(0)
-  badge_photoshop    Int @default(0)
-  badge_illustrator  Int @default(0)
-  badge_gsuite Int @default(0)
-  badge_js Int @default(0)
-  badge_shell Int @default(0)
+  badges            Tag[]
   n_course String @default("nodata")
+}
+
+model Tag {
+    id            String    @id @default(cuid())
+    name          String
+    icon          String?
+    users         User[]
+    knowledge     Knowledge[]
+
 }
 
 model VerificationToken {
@@ -189,6 +187,7 @@ model Knowledge {
   views         Int      @default(0)
   emoji         String
   diff          Diff[]
+  tags          Tag[]
   content       String?   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

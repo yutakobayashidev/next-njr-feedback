@@ -327,15 +327,14 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                           </div>
                           <div className="mt-2">
                             <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                              {contributor.user.role == "student" ? "生徒" : "メンター / TA"}
+                              {contributor.user.role === "student"
+                                ? contributor.user.n_course === "commute"
+                                  ? "通学コース" + "生徒"
+                                  : contributor.user.n_course === "net"
+                                  ? "ネットコース" + "生徒"
+                                  : "生徒"
+                                : "メンター / TA"}
                             </span>
-                            {contributor.user.n_course !== "nodata" && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                {contributor.user.n_course == "commute"
-                                  ? "通学コース"
-                                  : "ネットコース"}
-                              </span>
-                            )}
                             {contributor.user.contributor && (
                               <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 コントリビューター
@@ -346,66 +345,14 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                                 ページ作成者
                               </span>
                             )}
-                            {contributor.user.badge_macos === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                macOS
+                            {contributor.user.badges.map((badge) => (
+                              <span
+                                key={badge.id}
+                                className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course"
+                              >
+                                {badge.name}
                               </span>
-                            )}
-                            {contributor.user.badge_windows === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Windows
-                              </span>
-                            )}
-                            {contributor.user.badge_linux === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Linux
-                              </span>
-                            )}
-                            {contributor.user.badge_slack === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Slack
-                              </span>
-                            )}
-                            {contributor.user.badge_minecraft === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Minecraft
-                              </span>
-                            )}
-                            {contributor.user.badge_shell === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Shell
-                              </span>
-                            )}
-                            {contributor.user.badge_photoshop === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Photoshop
-                              </span>
-                            )}
-                            {contributor.user.badge_illustrator === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Illustrator
-                              </span>
-                            )}
-                            {contributor.user.badge_js === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                JavaScript
-                              </span>
-                            )}
-                            {contributor.user.badge_gsuite === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Google Workspace
-                              </span>
-                            )}
-                            {contributor.user.badge_premierepro === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                Premiere Pro
-                              </span>
-                            )}
-                            {contributor.user.badge_monopassport === 1 && (
-                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
-                                ものづくりパスポート
-                              </span>
-                            )}
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -451,19 +398,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           user: {
             select: {
               id: true,
-              badge_gsuite: true,
-              badge_illustrator: true,
-              badge_js: true,
-              badge_linux: true,
-              badge_macos: true,
-              badge_minecraft: true,
-              badge_monopassport: true,
-              badge_photoshop: true,
-              badge_premierepro: true,
-              badge_shell: true,
-              badge_slack: true,
-              badge_windows: true,
-              contributor: true,
+              badges: {
+                select: {
+                  id: true,
+                  name: true,
+                  icon: true,
+                },
+              },
               displayname: true,
               handle: true,
               image: true,
