@@ -79,7 +79,6 @@ model Tag {
     icon          String?
     users         User[]
     knowledge     Knowledge[]
-
 }
 
 model VerificationToken {
