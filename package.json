@@ -17,7 +17,7 @@
     "@headlessui/react": "^1.7.10",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@next/font": "^13.1.6",
-    "@prisma/client": "^4.9.0",
+    "@prisma/client": "^4.10.1",
     "@slack/webhook": "^6.1.0",
     "@types/node": "18.11.19",
     "@types/react": "18.0.28",
