@@ -6,6 +6,7 @@ import { Layout } from "@src/components/Layout"
 import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
+import { Tooltip } from "@src/components/Tooltip"
 import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
@@ -21,8 +22,26 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
-import { FaCode } from "react-icons/fa"
+import {
+  FaApple,
+  FaCode,
+  FaGoogle,
+  FaLinux,
+  FaNetworkWired,
+  FaSchool,
+  FaSlack,
+  FaWindows,
+} from "react-icons/fa"
+import { GrCertificate } from "react-icons/gr"
 import { MdDateRange } from "react-icons/md"
+import {
+  SiAdobeillustrator,
+  SiAdobephotoshop,
+  SiAdobepremierepro,
+  SiJavascript,
+  SiMojangstudios,
+  SiWindowsterminal,
+} from "react-icons/si"
 import useSWR from "swr"
 
 dayjs.extend(relativeTime)
@@ -50,6 +69,18 @@ export type UserProps = {
     discussion: number
     knowledge: number
   }
+  badge_gsuite: number
+  badge_illustrator: number
+  badge_js: number
+  badge_linux: number
+  badge_macos: number
+  badge_minecraft: number
+  badge_monopassport: number
+  badge_photoshop: number
+  badge_premierepro: number
+  badge_shell: number
+  badge_slack: number
+  badge_windows: number
   bio: string
   contributor: boolean
   createdAt: string
@@ -57,11 +88,34 @@ export type UserProps = {
   handle: string
   image: string
   knowledge: KnowledgeProps[]
+  n_course: string
   role: string
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
-  const { _count, bio, contributor, createdAt, displayname, handle, image, role } = props
+  const {
+    _count,
+    badge_gsuite,
+    badge_illustrator,
+    badge_js,
+    badge_linux,
+    badge_macos,
+    badge_minecraft,
+    badge_monopassport,
+    badge_photoshop,
+    badge_premierepro,
+    badge_shell,
+    badge_slack,
+    badge_windows,
+    bio,
+    contributor,
+    createdAt,
+    displayname,
+    handle,
+    image,
+    n_course,
+    role,
+  } = props
 
   const router = useRouter()
   const { data: session } = useSession()
@@ -141,6 +195,26 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     <MdDateRange size={20} className="mr-1 text-gray-500" />
                     <span>{dayjs(createdAt).format("YYYY年M月")}に参加</span>
                   </span>
+                  {n_course && (
+                    <span className="mr-2 flex items-center font-medium">
+                      <span>
+                        {n_course == "commute" ? (
+                          <FaSchool size={20} color="#61bd8d" className="mr-1" />
+                        ) : n_course == "net" ? (
+                          <FaNetworkWired size={20} color="#61bd8d" className="mr-1" />
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                      <span>
+                        {n_course == "commute"
+                          ? "通学コース"
+                          : n_course == "net"
+                          ? "ネットコース"
+                          : ""}
+                      </span>
+                    </span>
+                  )}
                   {role && (
                     <span className="mr-2 flex items-center font-medium">
                       <img
@@ -156,7 +230,117 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   {contributor && (
                     <>
                       <span className="mr-1 flex items-center font-medium">
-                        <FaCode size={20} color="#61bd8d" className="mr-1" />
+                        <Tooltip text="コントリビューター">
+                          <FaCode size={20} color="#61bd8d" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_macos === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="macOS">
+                          <FaApple size={20} color="#000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_windows === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Windows">
+                          <FaWindows size={20} color="#0078d6" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_linux === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Linux">
+                          <FaLinux size={20} color="#000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_slack === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Slack">
+                          <FaSlack size={20} color="#4a154b" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_monopassport === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="ものづくりパスポート">
+                          <GrCertificate size={20} color="#000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_minecraft === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Minecraft">
+                          <SiMojangstudios size={20} color="#00a8e8" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_premierepro === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Premiere Pro">
+                          <SiAdobepremierepro size={20} color="#ff0000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_photoshop === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Photoshop">
+                          <SiAdobephotoshop size={20} color="#ff0000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_illustrator === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Illustrator">
+                          <SiAdobeillustrator size={20} color="#ff0000" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_gsuite === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Google Workspace">
+                          <FaGoogle size={20} color="#4285f4" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_js === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="JavaScript">
+                          <SiJavascript size={20} color="#f7df1e" className="mr-1" />
+                        </Tooltip>
+                      </span>
+                    </>
+                  )}
+                  {badge_shell === 1 && (
+                    <>
+                      <span className="mr-1 flex items-center font-medium">
+                        <Tooltip text="Shell">
+                          <SiWindowsterminal size={20} color="#000" className="mr-1" />
+                        </Tooltip>
                       </span>
                     </>
                   )}

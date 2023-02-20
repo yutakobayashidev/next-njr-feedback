@@ -69,6 +69,19 @@ model User {
   discussionvote    DiscussionVote[]
   createKnowledge    Knowledge[]
   votes            Vote[]
+  badge_macos       Int @default(0)
+  badge_linux       Int @default(0)
+  badge_windows     Int @default(0)
+  badge_slack       Int @default(0)
+  badge_monopassport Int @default(0)
+  badge_minecraft    Int @default(0)
+  badge_premierepro  Int @default(0)
+  badge_photoshop    Int @default(0)
+  badge_illustrator  Int @default(0)
+  badge_gsuite Int @default(0)
+  badge_js Int @default(0)
+  badge_shell Int @default(0)
+  n_course String @default("nodata")
 }
 
 model VerificationToken {
