@@ -47,7 +47,7 @@ const Tab = ({ title, href, isSelected }: TabProps) => (
   </Link>
 )
 
-export interface Badges {
+export interface Badge {
   id: string
   name: string
   icon?: string
@@ -58,7 +58,7 @@ export type UserProps = {
     discussion: number
     knowledge: number
   }
-  badges: Badges[]
+  badges: Badge[]
   bio: string
   contributor: boolean
   createdAt: string
