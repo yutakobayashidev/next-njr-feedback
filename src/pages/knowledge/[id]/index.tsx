@@ -326,83 +326,83 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             </Link>
                           </div>
                           <div className="mt-2">
-                            <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                            <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                               {contributor.user.role == "student" ? "生徒" : "メンター / TA"}
                             </span>
                             {contributor.user.n_course !== "nodata" && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 {contributor.user.n_course == "commute"
                                   ? "通学コース"
                                   : "ネットコース"}
                               </span>
                             )}
                             {contributor.user.contributor && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 コントリビューター
                               </span>
                             )}
                             {contributor.user.id === creator?.id && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 ページ作成者
                               </span>
                             )}
                             {contributor.user.badge_macos === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 macOS
                               </span>
                             )}
                             {contributor.user.badge_windows === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Windows
                               </span>
                             )}
                             {contributor.user.badge_linux === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Linux
                               </span>
                             )}
                             {contributor.user.badge_slack === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Slack
                               </span>
                             )}
                             {contributor.user.badge_minecraft === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Minecraft
                               </span>
                             )}
                             {contributor.user.badge_shell === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Shell
                               </span>
                             )}
                             {contributor.user.badge_photoshop === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Photoshop
                               </span>
                             )}
                             {contributor.user.badge_illustrator === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Illustrator
                               </span>
                             )}
                             {contributor.user.badge_js === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 JavaScript
                               </span>
                             )}
                             {contributor.user.badge_gsuite === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Google Workspace
                               </span>
                             )}
                             {contributor.user.badge_premierepro === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 Premiere Pro
                               </span>
                             )}
                             {contributor.user.badge_monopassport === 1 && (
-                              <span className="py-0.7 mr-2 rounded-2xl bg-coursebg px-3 font-bold text-course">
+                              <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
                                 ものづくりパスポート
                               </span>
                             )}
