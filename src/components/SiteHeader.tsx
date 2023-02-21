@@ -60,6 +60,22 @@ const New: React.FC<{ session: Session }> = ({ session }) => {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="absolute right-0 z-10 my-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href="/question/new"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "flex w-full border-gray-100 items-center px-4 py-2 text-base text-gray-700",
+                    )}
+                  >
+                    <span className="mr-1">
+                      <FaRegCommentDots color="#93a5b1" />
+                    </span>
+                    質問を作成
+                  </Link>
+                )}
+              </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -69,7 +85,7 @@ const New: React.FC<{ session: Session }> = ({ session }) => {
                     disabled={knowledge}
                     className={classNames(
                       active ? "bg-gray-100" : "",
-                      "flex w-full items-center px-4 py-2 text-base text-gray-700",
+                      "flex w-full items-center border-t-2 border-gray-100 px-4 py-2 text-base text-gray-700",
                     )}
                   >
                     <span className="mr-1">
@@ -111,7 +127,7 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
           <div>
             <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <img
-                className="h-10 w-10 rounded-full object-cover aspect-square"
+                className="aspect-square h-10 w-10 rounded-full object-cover"
                 src={session.user.image}
                 alt="メニューを開く"
               />

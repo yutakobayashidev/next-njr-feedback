@@ -6,10 +6,12 @@ import { Knowledge } from "@src/components/Knowledge"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
+import { QuestionCard } from "@src/components/Question"
 import prisma from "@src/lib/prisma"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { DiscussionProps, KnowledgeProps} from "@src/types"
+import { QuestionProps } from "@src/types/question"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
@@ -18,6 +20,8 @@ import { signIn, useSession } from "next-auth/react"
 type Props = {
   discussion: DiscussionProps[]
   knowledge: KnowledgeProps[]
+  latest: QuestionProps[]
+  open: QuestionProps[]
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
@@ -66,6 +70,22 @@ const Page: NextPageWithLayout<Props> = (props) => {
       ) : (
         <>
           <section className="bg-gray-50 py-12">
+          <ContentWrapper>
+          <h3 className="mb-7 text-2xl font-bold md:text-3xl">❓ 最近作成された質問</h3>
+          {props.discussion.length > 0 ? (
+                <div className="overflow-hidden rounded-lg border">
+                  {props.latest.map((question) => (
+                    <QuestionCard key={question.id} question={question} />
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <NotContent />
+                </>
+              )}
+            </ContentWrapper>
+          </section>
+          <section className="bg-white py-12">
             <ContentWrapper>
               <h3 className="mb-7 text-2xl font-bold md:text-3xl">🚀 話題のディスカッション</h3>
               {props.discussion.length > 0 ? (
@@ -84,7 +104,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               </div>
             </ContentWrapper>
           </section>
-          <section className="bg-white py-12 ">
+          <section className="bg-gray-50 py-12 ">
             <ContentWrapper>
               <h3 className="mb-7 text-2xl font-bold md:text-3xl">📚 よく見られているナレッジ</h3>
               {props.knowledge.length > 0 ? (
@@ -103,7 +123,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
           </section>
         </>
       )}
-      <section className="bg-gray-50 py-12">
+      <section className="bg-white py-12">
         <ContentWrapper>
           <h2 className="mb-5 text-center font-inter text-4xl font-bold">See more.</h2>
           <p className="mx-auto mb-5 table text-lg text-gray-600">
@@ -133,6 +153,60 @@ const Page: NextPageWithLayout<Props> = (props) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const open = await prisma.question.findMany({
+    include: {
+      _count: {
+        select: {
+          comments: true,
+          votes: true,
+        },
+      },
+      user: {
+        select: {
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        views: "desc",
+      },
+    ],
+    take: 5,
+    where: {
+      archive: false,
+    },
+  })
+
+  const latest = await prisma.question.findMany({
+    include: {
+      _count: {
+        select: {
+          comments: true,
+          votes: true,
+          },
+      },
+      user: {
+        select: {
+          displayname: true,
+          handle: true,
+          image: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+    ],
+    take: 10,
+    where: {
+      archive: false,
+    },
+  })
+
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
     return { props: { discussion: [], knowledge: [] } }
@@ -202,7 +276,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const knowledge = JSON.parse(JSON.stringify(knowledgedata))
 
   return {
-    props: { discussion, knowledge },
+    props: { discussion, knowledge , latest: JSON.parse(JSON.stringify(latest)) , open: JSON.parse(JSON.stringify(open))},
   }
 }
 
