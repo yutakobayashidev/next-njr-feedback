@@ -6,6 +6,7 @@ import { Layout } from "@src/components/Layout"
 import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
+import { Tooltip } from "@src/components/Tooltip"
 import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
@@ -21,6 +22,7 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
+import { AiFillTag } from "react-icons/ai"
 import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
 import useSWR from "swr"
@@ -45,11 +47,18 @@ const Tab = ({ title, href, isSelected }: TabProps) => (
   </Link>
 )
 
+export interface Badge {
+  id: string
+  name: string
+  icon?: string
+}
+
 export type UserProps = {
   _count: {
     discussion: number
     knowledge: number
   }
+  badges: Badge[]
   bio: string
   contributor: boolean
   createdAt: string
@@ -57,11 +66,23 @@ export type UserProps = {
   handle: string
   image: string
   knowledge: KnowledgeProps[]
+  n_course: string
   role: string
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
-  const { _count, bio, contributor, createdAt, displayname, handle, image, role } = props
+  const {
+    _count,
+    badges,
+    bio,
+    contributor,
+    createdAt,
+    displayname,
+    handle,
+    image,
+    n_course,
+    role,
+  } = props
 
   const router = useRouter()
   const { data: session } = useSession()
@@ -88,11 +109,9 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
   )
 
   const title =
-    router.query.tab == "Knowledge"
+    router.query.tab === "knowledge"
       ? "ナレッジ"
-      : router.query.tab == "knowledge"
-      ? "ナレッジ"
-      : router.query.tab == "comment"
+      : router.query.tab === "comment"
       ? "コメント"
       : "ディスカッション"
 
@@ -150,16 +169,43 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                         height="20"
                         className="mr-1"
                       ></img>
-                      <span>{role == "student" ? "生徒" : "メンター / TA"}</span>
+                      <span>
+                        {role === "student"
+                          ? n_course === "commute"
+                            ? "通学コース" + "生徒"
+                            : n_course === "net"
+                            ? "ネットコース" + "生徒"
+                            : "生徒"
+                          : "メンター / TA"}
+                      </span>
                     </span>
                   )}
                   {contributor && (
                     <>
                       <span className="mr-1 flex items-center font-medium">
-                        <FaCode size={20} color="#61bd8d" className="mr-1" />
+                        <Tooltip text="コントリビューター">
+                          <FaCode size={20} color="#61bd8d" className="mr-1" />
+                        </Tooltip>
                       </span>
                     </>
                   )}
+                  {badges.map((badge) => (
+                    <span key={badge.id} className="mr-1 flex items-center font-medium">
+                      <Tooltip text={badge.name}>
+                        {badge.icon ? (
+                          <img
+                            width="20"
+                            className="mr-1"
+                            height="20"
+                            src={badge.icon}
+                            alt={badge.name}
+                          ></img>
+                        ) : (
+                          <AiFillTag size={20} color="#ee7800" className="mr-1" />
+                        )}
+                      </Tooltip>
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -311,12 +357,19 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
     return { props: { profile: [] } }
   }
 
-  const data = await prisma.user.findUnique({
+  const profile = await prisma.user.findUnique({
     include: {
       _count: {
         select: {
           discussion: true,
           knowledge: { where: { knowledge: { published: true } } },
+        },
+      },
+      badges: {
+        select: {
+          id: true,
+          name: true,
+          icon: true,
         },
       },
     },
@@ -325,16 +378,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
     },
   })
 
-  if (!data) {
+  if (!profile) {
     return {
       notFound: true,
     }
   }
 
-  const profile = JSON.parse(JSON.stringify(data))
-
   return {
-    props: profile,
+    props: JSON.parse(JSON.stringify(profile)),
   }
 }
 

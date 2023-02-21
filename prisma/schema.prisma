@@ -69,6 +69,17 @@ model User {
   discussionvote    DiscussionVote[]
   createKnowledge    Knowledge[]
   votes            Vote[]
+  badges            Tag[]
+  n_course String @default("nodata")
+}
+
+model Tag {
+    id            String    @id @default(cuid())
+    name          String
+    icon          String?
+    exam          String?
+    users         User[]
+    knowledge     Knowledge[]
 }
 
 model VerificationToken {
@@ -176,6 +187,7 @@ model Knowledge {
   views         Int      @default(0)
   emoji         String
   diff          Diff[]
+  tags          Tag[]
   content       String?   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
