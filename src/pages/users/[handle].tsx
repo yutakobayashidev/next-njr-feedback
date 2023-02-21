@@ -109,11 +109,9 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
   )
 
   const title =
-    router.query.tab == "Knowledge"
+    router.query.tab === "knowledge"
       ? "ナレッジ"
-      : router.query.tab == "knowledge"
-      ? "ナレッジ"
-      : router.query.tab == "comment"
+      : router.query.tab === "comment"
       ? "コメント"
       : "ディスカッション"
 
@@ -359,7 +357,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
     return { props: { profile: [] } }
   }
 
-  const data = await prisma.user.findUnique({
+  const profile = await prisma.user.findUnique({
     include: {
       _count: {
         select: {
@@ -380,16 +378,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
     },
   })
 
-  if (!data) {
+  if (!profile) {
     return {
       notFound: true,
     }
   }
 
-  const profile = JSON.parse(JSON.stringify(data))
-
   return {
-    props: profile,
+    props: JSON.parse(JSON.stringify(profile)),
   }
 }
 
