@@ -1,8 +1,10 @@
+import { config } from "@site.config"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { getAllPostIds, getPostData } from "@src/lib/docs"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { FaGithub } from "react-icons/fa"
 
 type Props = {
   postData: {
@@ -23,6 +25,13 @@ const Page: NextPageWithLayout<Props> = ({ postData }) => {
             className="prose max-w-none prose-a:font-medium prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
             dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
           />
+          <a
+            href={`${config.siteMeta.repository}/edit/main/docs/${postData.id}.md`}
+            className="mt-5 flex items-center text-base text-gray-500 hover:text-gray-600"
+          >
+            <FaGithub className="mr-2" />
+            GitHubで編集を提案
+          </a>
         </article>
       </div>
     </>

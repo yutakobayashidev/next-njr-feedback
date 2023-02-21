@@ -68,4 +68,4 @@ title: "プライバシーポリシー"
 
 本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。
 
-E-mail：[yuta_21njr239013@n-jr.jp](mailto:yuta_21njr239013@n-jr.jp)
+E-mail：[support@nextnjrfeedback.net](mailto:support@nextnjrfeedback.net)

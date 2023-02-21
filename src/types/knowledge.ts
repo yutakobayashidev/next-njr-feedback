@@ -56,15 +56,24 @@ interface Course {
   name: string
 }
 
+interface Badge {
+  id: string
+  name: string
+  icon?: string
+}
+
 interface Contributor {
   id: string
   createdAt: string
   user: {
     id: string
     name: string
+    badges: Badge[]
+    contributor: boolean
     displayname: string
     handle: string
     image: string
+    n_course: string
     role: string
   }
 }
