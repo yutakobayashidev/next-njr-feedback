@@ -6,6 +6,7 @@ import { Layout } from "@src/components/Layout"
 import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
+import Tab from "@src/components/Tab"
 import { Tooltip } from "@src/components/Tooltip"
 import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
@@ -13,7 +14,7 @@ import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, KnowledgeProps } from "@src/types"
 import { CommentProps } from "@src/types/comment"
-import { getDiscussionPath, getUserpagePath } from "@src/utils/helper"
+import { getDiscussionPath, getTagPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
@@ -29,23 +30,6 @@ import useSWR from "swr"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
-
-interface TabProps {
-  title: string
-  href: string
-  isSelected: boolean
-}
-
-const Tab = ({ title, href, isSelected }: TabProps) => (
-  <Link
-    href={href}
-    className={`${
-      isSelected ? "border-b-2 text-gray-700" : "text-gray-400"
-    } mr-5 border-gray-700 py-2 font-inter text-sm font-bold md:text-base`}
-  >
-    {title}
-  </Link>
-)
 
 export interface Badge {
   id: string
@@ -93,8 +77,12 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
     }
   }, [session, router])
 
-  const { data: discussions, isValidating } = useSWR<Array<DiscussionProps>>(
-    session && !router.query.tab && `/api/discussion?handle=${handle}`,
+  const { data: discussions, isValidating: isDiscussionValidating } = useSWR<
+    Array<DiscussionProps>
+  >(
+    session &&
+      (!router.query.tab || (router.query.tab !== "knowledge" && router.query.tab !== "comment")) &&
+      `/api/discussion?handle=${handle}`,
     fetcher,
   )
 
@@ -190,7 +178,11 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     </>
                   )}
                   {badges.map((badge) => (
-                    <span key={badge.id} className="mr-1 flex items-center font-medium">
+                    <Link
+                      href={getTagPath(badge.id)}
+                      key={badge.id}
+                      className="mr-1 flex items-center font-medium"
+                    >
                       <Tooltip text={badge.name}>
                         {badge.icon ? (
                           <img
@@ -204,7 +196,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                           <AiFillTag size={20} color="#ee7800" className="mr-1" />
                         )}
                       </Tooltip>
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -216,7 +208,10 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
         <Tab
           href={`/users/${handle}/`}
           title={"Discussion " + _count.discussion}
-          isSelected={!router.query.tab}
+          isSelected={
+            !router.query.tab ||
+            (router.query.tab !== "knowledge" && router.query.tab !== "comment")
+          }
         />
         <Tab
           href={`/users/${handle}?tab=knowledge`}
@@ -231,6 +226,51 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
       </div>
       <div className="min-h-screen bg-gray-100 pt-16 pb-20">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
+          {isDiscussionValidating ? (
+            <UserLoader />
+          ) : (
+            <>
+              {(!router.query.tab ||
+                (router.query.tab !== "knowledge" && router.query.tab !== "comment")) && (
+                <>
+                  {discussions && discussions.length > 0 ? (
+                    <>
+                      <div className="overflow-hidden rounded-lg border">
+                        {discussions?.map((discussion) => (
+                          <DiscussionCard key={discussion.id} discussion={discussion} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <NotContent message="アクティビティが存在しません" />
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {isKnowledgeValidating ? (
+            <UserLoader />
+          ) : (
+            <>
+              {router.query.tab == "knowledge" && (
+                <>
+                  {knowledge && knowledge.length > 0 ? (
+                    <>
+                      <div className="overflow-hidden rounded-lg border">
+                        {knowledge.map((post) => (
+                          <Knowledge knowledge={post} key={post.id} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <NotContent message="アクティビティが存在しません" />
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
           {isCommentsValidating ? (
             <UserLoader />
           ) : (
@@ -292,50 +332,6 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     <>
                       <NotContent message="アクティビティが存在しません" />
                     </>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          {isKnowledgeValidating ? (
-            <UserLoader />
-          ) : (
-            <>
-              {router.query.tab == "knowledge" && (
-                <>
-                  {knowledge && knowledge.length > 0 ? (
-                    <>
-                      <div className="overflow-hidden rounded-lg border">
-                        {knowledge.map((post) => (
-                          <Knowledge knowledge={post} key={post.id} />
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <NotContent message="アクティビティが存在しません" />
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          {isValidating ? (
-            <UserLoader />
-          ) : (
-            <>
-              {!router.query.tab && (
-                <>
-                  {discussions && discussions.length > 0 ? (
-                    <>
-                      <div className="overflow-hidden rounded-lg border">
-                        {discussions?.map((discussion) => (
-                          <DiscussionCard key={discussion.id} discussion={discussion} />
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <NotContent message="アクティビティが存在しません" />
                   )}
                 </>
               )}

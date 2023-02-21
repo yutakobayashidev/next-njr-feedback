@@ -8,6 +8,10 @@ export function getKnowledgePath(id: string) {
   return `/knowledge/${encodeURIComponent(id)}`
 }
 
+export function getTagPath(id: string) {
+  return `/tags/${encodeURIComponent(id)}`
+}
+
 export function getReportPath() {
   return `/report?path=${router.asPath}`
 }
