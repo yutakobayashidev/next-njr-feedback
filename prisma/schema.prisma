@@ -76,12 +76,13 @@ model User {
 }
 
 model Tag {
-  id        String      @id @default(cuid())
-  name      String
-  icon      String?
-  exam      String?
-  users     User[]
-  knowledge Knowledge[]
+  id            String    @id @default(cuid())
+  name          String
+  icon          String?
+  description   String?
+  exam          String?
+  users         User[]
+  knowledge     Knowledge[]
 }
 
 model VerificationToken {
