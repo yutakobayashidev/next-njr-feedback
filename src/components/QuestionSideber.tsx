@@ -30,7 +30,7 @@ export const CommentSidebar: React.FC<{
               <div className="mb-4 flex items-center justify-between">
                 {archived_time && (
                   <span className="mr-1">
-                    {dayjs(archived_time).format("YYYY/MM/DD")}にアーカイブ
+                    {dayjs(archived_time).format("YYYY/MM/DD")}に解決
                   </span>
                 )}
                 <button
@@ -51,13 +51,13 @@ export const CommentSidebar: React.FC<{
                 }}
               >
                 <AiOutlineCheck className="mr-2 text-gray-600" />
-                アーカイブする
+                解決済にする
               </button>
             )}
           </>
         )}
         <h4 className="text-2xl font-bold">新しく作成された質問</h4>
-        <p className="my-2 text-gray-500">最近作成されたアーカイブされていない質問の一覧</p>
+        <p className="my-2 text-gray-500">最近作成された解決していない質問の一覧</p>
         <div className="my-4">
           {questions && questions.length > 0 ? (
             <>
@@ -88,7 +88,7 @@ export const CommentSidebar: React.FC<{
                   </Link>
                   <span className="mt-2 flex items-center text-gray-600">
                     <FaRegComment className="mr-1" size={17} />
-                    {question._count.comments} comments
+                    {question._count.comments} answers
                   </span>
                 </div>
               ))}
