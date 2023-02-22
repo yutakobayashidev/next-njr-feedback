@@ -106,7 +106,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
-    return { props: { discussion: [], knowledge: [] } }
+    return { props: { tags: [] } }
   }
 
   const tags = await prisma.tag.findUnique({
