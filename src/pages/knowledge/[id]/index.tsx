@@ -41,7 +41,7 @@ function classNames(...classes: string[]) {
 
 const Badge: React.FC<{ text: string }> = ({ text }) => {
   return (
-    <span className="mr-2 rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course">
+    <span className="mr-2 mb-2 inline-block rounded-2xl bg-coursebg py-1 px-3 text-sm font-bold text-course md:mb-0">
       {text}
     </span>
   )
@@ -285,10 +285,10 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
               </div>
               <div className="my-5 border-t pt-5">
                 <h2 className="mb-5 text-2xl font-bold">
-                  🎉 このナレッジの貢献者 ({contributors.length}人)
+                  ✨ このナレッジの貢献者 ({contributors.length}人)
                 </h2>
                 <p className="mb-4 text-base text-gray-600">
-                  ✨ 情報が古い場合や問題点を見つけた場合は
+                  情報が古い場合や問題点を見つけた場合は
                   <Link href={getKnowledgeEditPath(id)}>編集</Link>
                   してみましょう。より良いナレッジを作成するための助けになります。
                 </p>
@@ -297,7 +297,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                     contributors.map((contributor) => (
                       <div
                         key={contributor?.id}
-                        className="flex items-start p-4 [&:not(:first-child)]:border-t-2"
+                        className="flex flex-1 items-start p-4 [&:not(:first-child)]:border-t-2"
                       >
                         <Link href={getUserpagePath(contributor.user.handle)}>
                           <img
@@ -308,7 +308,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             alt={contributor.user.displayname}
                           ></img>
                         </Link>
-                        <div className="ml-5">
+                        <div className="ml-5 flex-1">
                           <div>
                             <Link
                               href={getUserpagePath(contributor.user.handle)}
@@ -330,8 +330,8 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                                   : "メンター / TA"
                               }
                             />
-                            {contributor.user.contributor && <Badge text="コントリビューター" />}
                             {contributor.user.id === creator?.id && <Badge text="ページ作成者" />}
+                            {contributor.user.contributor && <Badge text="コントリビューター" />}
                             {contributor.user.badges.map((badge) => (
                               <Badge text={badge.name} key={badge.id} />
                             ))}
@@ -387,6 +387,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
                   icon: true,
                 },
               },
+              contributor: true,
               displayname: true,
               handle: true,
               image: true,
