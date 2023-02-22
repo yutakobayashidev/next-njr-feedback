@@ -236,7 +236,7 @@ const Page: NextPageWithLayout<QuestionProps> = (props) => {
                     archived ? "bg-gray-400" : "bg-primary"
                   }  mr-2  inline-block rounded-full py-2 px-4 font-inter text-sm font-bold text-white`}
                 >
-                  <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
+                  <span className="flex items-center">{archived ? "Resolved" : "Open"}</span>
                 </div>
                 <span className="mr-2 text-gray-600">
                   {last_comment_created_at
