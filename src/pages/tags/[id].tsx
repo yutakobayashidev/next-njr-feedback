@@ -5,7 +5,7 @@ import Tab from "@src/components/Tab"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { getUserpagePath } from "@src/utils/helper"
+import { getTagPath, getUserpagePath } from "@src/utils/helper"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -37,7 +37,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
 
   return (
     <>
-      <MyPageSeo path={"/tag/" + id} title={name} />
+      <MyPageSeo path={getTagPath(id)} title={name + "の試験に合格したユーザー"} />
       <header>
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <div className="items-center justify-between py-10 md:flex">
@@ -64,7 +64,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
         </div>
       </header>
       <div className="mx-auto flex max-w-screen-lg items-center px-4 md:px-8">
-        <Tab href={`/tag/${id}`} title={"Users " + _count.users} isSelected={!router.query.tab} />
+        <Tab href={getTagPath(id)} title={"Users " + _count.users} isSelected={!router.query.tab} />
       </div>
       <div className="min-h-screen bg-gray-100 pt-16 pb-20">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
