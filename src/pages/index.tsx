@@ -83,6 +83,9 @@ const Page: NextPageWithLayout<Props> = (props) => {
                   <NotContent />
                 </>
               )}
+              <div className="mt-6 text-center text-lg">
+                <Link href="/question">質問をもっと見る →</Link>
+              </div>
             </ContentWrapper>
           </section>
           <section className="bg-white py-12">
