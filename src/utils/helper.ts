@@ -23,3 +23,7 @@ export function getKnowledgeEditPath(id: string) {
 export function getDiscussionPath(id: string) {
   return `/discussion/${encodeURIComponent(id)}`
 }
+
+export function getQuestionPath(id: string) {
+  return `/question/${encodeURIComponent(id)}`
+}

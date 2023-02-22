@@ -1,7 +1,6 @@
-
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -11,154 +10,214 @@ generator client {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-  createdAt           DateTime?    @default(now())  
-  updatedAt           DateTime?    @updatedAt
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String    @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?   @db.Text
+  access_token      String?   @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?   @db.Text
+  session_state     String?
+  createdAt         DateTime? @default(now())
+  updatedAt         DateTime? @updatedAt
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
+  id           String    @id @default(cuid())
+  sessionToken String    @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt    DateTime?    @default(now())
-  updatedAt    DateTime?    @updatedAt
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
 
   @@index([userId])
 }
 
 model User {
-  id            String    @id @default(cuid())
-  bio           String?
-  role          String
-  name          String?
-  displayname   String?
-  email         String?   @unique
-  handle        String @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  diff          Diff[]
-  sessions      Session[]
-  knowledge    Contributors[]
-  admin         Boolean @default(false)
-  leave         Boolean @default(false)
-  contributor   Boolean @default(false)
-  bookmarks     Bookmark[]
-  createdAt     DateTime?    @default(now())
-  comments      Comment[]
-  lastEdit       Knowledge[] @relation("lastEdit")
-  updatedAt     DateTime?    @updatedAt
-  discussion    Discussion[]
-  discussionvote    DiscussionVote[]
-  createKnowledge    Knowledge[]
-  votes            Vote[]
-  badges            Tag[]
-  n_course String @default("nodata")
+  id              String           @id @default(cuid())
+  bio             String?
+  role            String
+  name            String?
+  displayname     String?
+  email           String?          @unique
+  handle          String           @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  diff            Diff[]
+  sessions        Session[]
+  knowledge       Contributors[]
+  admin           Boolean          @default(false)
+  leave           Boolean          @default(false)
+  contributor     Boolean          @default(false)
+  bookmarks       Bookmark[]
+  createdAt       DateTime?        @default(now())
+  comments        Comment[]
+  lastEdit        Knowledge[]      @relation("lastEdit")
+  updatedAt       DateTime?        @updatedAt
+  discussion      Discussion[]
+  discussionvote  DiscussionVote[]
+  createKnowledge Knowledge[]
+  votes           Vote[]
+  badges          Tag[]
+  n_course        String           @default("nodata")
+  Question        Question[]
+  QuestionVote    QuestionVote[]
+  Answer          Answer[]
 }
 
 model Tag {
-    id            String    @id @default(cuid())
-    name          String
-    icon          String?
-    description   String?
-    exam          String?
-    users         User[]
-    knowledge     Knowledge[]
+  id            String    @id @default(cuid())
+  name          String
+  icon          String?
+  description   String?
+  exam          String?
+  users         User[]
+  knowledge     Knowledge[]
 }
 
 model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String    @unique
   expires    DateTime
-  createdAt  DateTime?    @default(now())
-  updatedAt  DateTime?    @updatedAt
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
 
   @@unique([identifier, token])
 }
 
 model Course {
-    id          Int      @id @default(autoincrement())
-    name        String
-    knowledge   Knowledge[]
-    discussion  Discussion[]
-    diff        Diff[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  knowledge  Knowledge[]
+  discussion Discussion[]
+  diff       Diff[]
+  Question   Question?    @relation(fields: [questionId], references: [id])
+  questionId String?
 }
 
 model Discussion {
-  id            String      @id @default(cuid())
-  title         String
-  course        Course[]
-  archive       Boolean @default(false)
-  content       String   @db.Text
-  totalComments Int      @default(0)
-  votes         DiscussionVote[]
-  views         Int      @default(0)
-  createdAt     DateTime @default(now())
-  archived_at   DateTime?
-  last_comment_created_at   DateTime?
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  comments      Comment[]
+  id                      String           @id @default(cuid())
+  title                   String
+  course                  Course[]
+  archive                 Boolean          @default(false)
+  content                 String           @db.Text
+  totalComments           Int              @default(0)
+  votes                   DiscussionVote[]
+  views                   Int              @default(0)
+  createdAt               DateTime         @default(now())
+  archived_at             DateTime?
+  last_comment_created_at DateTime?
+  updatedAt               DateTime         @updatedAt
+  userId                  String
+  user                    User             @relation(fields: [userId], references: [id])
+  comments                Comment[]
 
   @@index([userId])
 }
 
 model DiscussionVote {
-  id            String     @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  discussion    Discussion @relation(references: [id], fields:[discussionId])
-  discussionId  String
+  id           String     @id @default(cuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  discussion   Discussion @relation(references: [id], fields: [discussionId])
+  discussionId String
 
   @@unique([userId, discussionId])
   @@index([userId])
   @@index([discussionId])
 }
 
+model Question {
+  id                      String         @id @default(cuid())
+  title                   String
+  course                  Course[]
+  archive                 Boolean        @default(false)
+  content                 String         @db.Text
+  totalComments           Int            @default(0)
+  votes                   QuestionVote[]
+  views                   Int            @default(0)
+  createdAt               DateTime       @default(now())
+  archived_at             DateTime?
+  last_comment_created_at DateTime?
+  updatedAt               DateTime       @updatedAt
+  userId                  String
+  user                    User           @relation(fields: [userId], references: [id])
+  comments                Answer[]
+  Comment                 Comment[]
+
+  @@index([userId])
+}
+
+model QuestionVote {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  question   Question @relation(references: [id], fields: [questionId])
+  questionId String
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@index([questionId])
+}
+
 model Comment {
-  id            String     @id @default(cuid())
-  content       String     @db.Text
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  updated_at    DateTime?
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  discussion    Discussion     @relation(fields: [discussionId], references: [id])
-  discussionId  String
-  votes         Vote[]
+  id           String     @id @default(cuid())
+  content      String     @db.Text
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  updated_at   DateTime?
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  discussionId String
+  votes        Vote[]
+  Question     Question?  @relation(fields: [questionId], references: [id])
+  questionId   String?
 
   @@index([userId])
   @@index([discussionId])
 }
 
+model Answer {
+  id         String    @id @default(cuid())
+  content    String    @db.Text
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  updated_at DateTime?
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  questionId String?
+  votes      Vote[]
+  Question   Question? @relation(fields: [questionId], references: [id])
+
+  @@index([userId])
+  @@index([questionId])
+}
+
 model Vote {
-  id            String     @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  comment       Comment @relation(references: [id], fields:[commentId])
-  commentId     String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  comment   Comment  @relation(references: [id], fields: [commentId])
+  commentId String
+  Answer    Answer?  @relation(fields: [answerId], references: [id])
+  answerId  String?
 
   @@unique([userId, commentId])
   @@index([userId])
@@ -166,53 +225,53 @@ model Vote {
 }
 
 model Diff {
-    id            Int     @id @default(autoincrement())
-    title         String?
-    emoji         String
-    author        User     @relation(fields: [authorId], references: [id])
-    authorId      String
-    content       String?   @db.Text
-    createdAt     DateTime @default(now())
-    knowledge     Knowledge      @relation(fields: [knowledgeId], references: [id], onDelete: Cascade)
-    knowledgeId   String
-    course        Course[]
+  id          Int       @id @default(autoincrement())
+  title       String?
+  emoji       String
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  content     String?   @db.Text
+  createdAt   DateTime  @default(now())
+  knowledge   Knowledge @relation(fields: [knowledgeId], references: [id], onDelete: Cascade)
+  knowledgeId String
+  course      Course[]
 
-    @@index([authorId])
-    @@index([knowledgeId])
+  @@index([authorId])
+  @@index([knowledgeId])
 }
 
 model Knowledge {
-  id            String     @id @default(cuid())
-  title         String?
-  updated_at    DateTime
-  views         Int      @default(0)
-  emoji         String
-  diff          Diff[]
-  tags          Tag[]
-  content       String?   @db.Text
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  publishedAt   DateTime?
-  published     Boolean @default(false)
-  archive       Boolean @default(false)
-  contributors  Contributors[]
-  bookmarks     Bookmark[]
-  lastEditor    User          @relation("lastEdit", fields: [lastEditorId], references: [id])
-  lastEditorId             String
-  creatorId     String
-  creator       User     @relation(fields: [creatorId], references: [id])
-  course        Course[]
+  id           String         @id @default(cuid())
+  title        String?
+  updated_at   DateTime
+  views        Int            @default(0)
+  emoji        String
+  diff         Diff[]
+  tags         Tag[]
+  content      String?        @db.Text
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  publishedAt  DateTime?
+  published    Boolean        @default(false)
+  archive      Boolean        @default(false)
+  contributors Contributors[]
+  bookmarks    Bookmark[]
+  lastEditor   User           @relation("lastEdit", fields: [lastEditorId], references: [id])
+  lastEditorId String
+  creatorId    String
+  creator      User           @relation(fields: [creatorId], references: [id])
+  course       Course[]
 
   @@index([creatorId])
   @@index([lastEditorId])
 }
 
 model Bookmark {
-  id            String   @id @default(cuid())
-  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
-  createdAt     DateTime @default(now())
-  knowledgeId   String
-  user          User     @relation(fields: [userId], references: [id])
+  id          String    @id @default(cuid())
+  knowledge   Knowledge @relation(fields: [knowledgeId], references: [id])
+  createdAt   DateTime  @default(now())
+  knowledgeId String
+  user        User      @relation(fields: [userId], references: [id])
   userId      String
 
   @@unique([userId, knowledgeId])
@@ -221,11 +280,11 @@ model Bookmark {
 }
 
 model Contributors {
-  id            String   @id @default(cuid())
-  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
-  createdAt     DateTime @default(now())
-  knowledgeId   String
-  user          User     @relation(fields: [userId], references: [id])
+  id          String    @id @default(cuid())
+  knowledge   Knowledge @relation(fields: [knowledgeId], references: [id])
+  createdAt   DateTime  @default(now())
+  knowledgeId String
+  user        User      @relation(fields: [userId], references: [id])
   userId      String
 
   @@unique([userId, knowledgeId])
