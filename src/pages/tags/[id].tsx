@@ -73,7 +73,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
               {users.map((user) => (
                 <Link
                   key={user.id}
-                  className="flex bg-white p-3"
+                  className="flex bg-white p-3 [&:not(:first-child)]:border-t"
                   href={getUserpagePath(user.handle)}
                 >
                   <div className="flex text-gray-800">
@@ -106,7 +106,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
-    return { props: { discussion: [], knowledge: [] } }
+    return { props: { tags: [] } }
   }
 
   const tags = await prisma.tag.findUnique({
