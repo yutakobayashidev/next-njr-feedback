@@ -26,6 +26,7 @@ export type KnowledgeProps = {
   }
   published: boolean
   publishedAt: string
+  tags: Tag[]
   updated_at: string
   updatedAt: string
 }
@@ -43,6 +44,12 @@ export type Diff = {
   course: Course[]
   createdAt: string
   emoji: string
+}
+
+interface Tag {
+  id: string
+  name: string
+  icon?: string
 }
 
 interface Bookmark {

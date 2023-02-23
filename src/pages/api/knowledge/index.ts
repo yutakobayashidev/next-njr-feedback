@@ -4,7 +4,6 @@ import { HttpMethod } from "@src/types"
 import initEmojiRegex from "emoji-regex"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth/next"
-import { z } from "zod"
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -62,26 +61,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(500).end(error)
     }
   } else if (req.method === HttpMethod.GET) {
-    const querySchema = z.object({
-      count: z
-        .string()
-        .refine((v) => {
-          return !isNaN(Number(v))
-        })
-        .transform((v) => Number(v)),
-    })
-
-    const result = querySchema.safeParse(req.query)
-
-    if (!result.success) {
-      return res.status(400).json({ error: { message: "クエリが不正です" } })
-    }
-
-    const { count } = result.data
-    const { archive, handle } = req.query
+    const { archive, handle, knowledge } = req.query
 
     const data = await prisma.knowledge.findMany({
-      include: {
+      orderBy: {
+        publishedAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
         contributors: {
           include: {
             user: {
@@ -94,11 +82,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           },
         },
         course: true,
+        emoji: true,
+        published: true,
+        updated_at: true,
       },
-      orderBy: {
-        publishedAt: "desc",
-      },
-      take: count,
       where: {
         ...(handle && {
           contributors: {
@@ -109,14 +96,19 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             },
           },
         }),
-        ...(archive == "false" && { archive: false }),
         published: true,
+        ...(archive == "false" && { archive: false }),
+        ...(knowledge && {
+          tags: {
+            some: {
+              id: String(knowledge),
+            },
+          },
+        }),
       },
     })
 
-    const knowledge = JSON.parse(JSON.stringify(data))
-
-    res.status(201).json(knowledge)
+    res.status(201).json(JSON.parse(JSON.stringify(data)))
   } else {
     res.setHeader("Allow", [HttpMethod.POST, HttpMethod.GET])
     return res.status(405).json({

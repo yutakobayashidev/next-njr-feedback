@@ -1,4 +1,4 @@
-import { Dialog, Switch, Transition } from "@headlessui/react"
+import { Combobox, Dialog, Switch, Transition } from "@headlessui/react"
 import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
@@ -9,23 +9,17 @@ import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
-import { AiOutlineCheck } from "react-icons/ai"
+import { AiFillTag, AiOutlineCheck } from "react-icons/ai"
+import { BiChevronDown } from "react-icons/bi"
 import { HiTrash } from "react-icons/hi"
+import { IoMdClose } from "react-icons/io"
 import { IoArrowBackOutline } from "react-icons/io5"
 import { MdOutlineInfo } from "react-icons/md"
 import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
 
-type Knowledge = {
-  id: string
-  title: string
-  archive: boolean
-  content: string
-  creator: {
-    id: string
-  }
-  emoji: string
-  published: boolean
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ")
 }
 
 export default function Post() {
@@ -40,6 +34,27 @@ export default function Post() {
   const [disabled, setDisabled] = useState(true)
   const cancelButtonRef = useRef(null)
 
+  let [query, setQuery] = useState("")
+
+  type Tag = {
+    id: string
+    name: string
+    icon?: string
+  }
+
+  type Knowledge = {
+    id: string
+    title: string
+    archive: boolean
+    content: string
+    creator: {
+      id: string
+    }
+    emoji: string
+    published: boolean
+    tags: Tag[]
+  }
+
   useEffect(() => {
     if (!session && typeof session != "undefined") {
       router.push(`/`)
@@ -49,7 +64,7 @@ export default function Post() {
   const { id: knowledgeId } = router.query
 
   const { data: knowledge, isValidating } = useSWR<Knowledge>(
-    router.isReady && `/api/knowledge/${knowledgeId}`,
+    session && router.isReady && `/api/knowledge/${knowledgeId}`,
     fetcher,
     {
       dedupingInterval: 1000,
@@ -68,6 +83,7 @@ export default function Post() {
     },
     emoji: "",
     published: false,
+    tags: [],
   })
 
   useEffect(() => {
@@ -82,8 +98,19 @@ export default function Post() {
         },
         emoji: knowledge.emoji ?? "",
         published: knowledge.published ?? false,
+        tags: knowledge.tags ?? [],
       })
   }, [knowledge])
+
+  const { data: autocompletes } = useSWR<Array<Tag>>(`/api/autocompletes`, fetcher, {
+    dedupingInterval: 1000,
+    onError: () => router.push("/"),
+    revalidateOnFocus: false,
+  })
+
+  const existingTagIds = data.tags.map((tag) => tag.id)
+  const filteredAutocompletes =
+    autocompletes && autocompletes.filter((tag) => !existingTagIds.includes(tag.id))
 
   async function save() {
     setPublishing(true)
@@ -96,6 +123,7 @@ export default function Post() {
           archive: data.archive,
           content: data.content,
           emoji: data.emoji,
+          tags: data.tags,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -128,6 +156,7 @@ export default function Post() {
           content: data.content,
           emoji: data.emoji,
           published: true,
+          tags: data.tags,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -194,7 +223,6 @@ export default function Post() {
           >
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
           </Transition.Child>
-
           <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
@@ -286,6 +314,120 @@ export default function Post() {
             >
               <div className="relative my-8 inline-block w-full max-w-md overflow-hidden rounded-xl bg-white p-6 align-middle shadow-xl transition-all">
                 <h3 className="mb-6 text-center text-2xl font-bold">公開設定</h3>
+                <Combobox
+                  value={data.tags}
+                  onChange={(autocompletes) => {
+                    const uniqueAutocompletes = autocompletes.filter(
+                      (tag) => !existingTagIds.includes(tag.id),
+                    )
+                    setData({ ...data, tags: [...data.tags, ...uniqueAutocompletes] })
+                  }}
+                  name="people"
+                  multiple
+                >
+                  <Combobox.Label className="my-2 block text-lg font-bold">
+                    タグを選択
+                  </Combobox.Label>
+                  <div className="relative">
+                    <span className="inline-block w-full rounded-md shadow-sm">
+                      <div className="relative w-full cursor-default rounded-md border-2 border-gray-100 bg-gray-100 p-2 pr-10 text-left transition duration-150 ease-in-out focus-within:border-blue-700 focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-700 sm:text-sm sm:leading-5">
+                        <span className="flex flex-wrap gap-2">
+                          {data.tags.map((tag) => (
+                            <div
+                              key={tag.id}
+                              className="flex items-center gap-1 rounded bg-white px-2 py-1"
+                            >
+                              <div className="flex items-center">
+                                {tag.icon ? (
+                                  <img
+                                    height={15}
+                                    width={15}
+                                    className="mr-2 rounded-full"
+                                    src={tag.icon}
+                                    alt={tag.name}
+                                  />
+                                ) : (
+                                  <AiFillTag className="mr-2" size={15} color="#ee7800" />
+                                )}
+                                {tag.name}
+                              </div>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  e.preventDefault()
+                                  setData((existing) => {
+                                    return {
+                                      ...existing,
+                                      tags: existing.tags.filter((p) => p !== tag),
+                                    }
+                                  })
+                                }}
+                              >
+                                <IoMdClose size={15} className="text-gray-400" />
+                              </button>
+                            </div>
+                          ))}
+                          <Combobox.Input
+                            onChange={(event) => setQuery(event.target.value)}
+                            onFocus={() => query != "" && setQuery("")}
+                            className="border-none bg-gray-100 p-0 focus:ring-0"
+                            placeholder="タグを入力..."
+                          />
+                        </span>
+                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                          <BiChevronDown
+                            className="mr-2 text-gray-400"
+                            size={25}
+                            aria-hidden="true"
+                          />
+                        </Combobox.Button>
+                      </div>
+                    </span>
+                    <div className="absolute z-20 mt-1 w-full rounded-md bg-white shadow-lg">
+                      <Combobox.Options className="shadow-xs max-h-60 overflow-auto rounded-md text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
+                        {filteredAutocompletes &&
+                          filteredAutocompletes
+                            .filter((tag) => tag.name.toLowerCase().includes(query.toLowerCase()))
+                            .map((tag) => (
+                              <Combobox.Option
+                                key={tag.id}
+                                value={tag}
+                                className={({ active }) => {
+                                  return classNames(
+                                    "relative cursor-default select-none py-2 pl-3 pr-9 focus:outline-none",
+                                    active ? "bg-indigo-600 text-white" : "text-gray-900",
+                                  )
+                                }}
+                              >
+                                {({ active, selected }) => (
+                                  <>
+                                    <span
+                                      className={classNames(
+                                        "flex items-center truncate",
+                                        selected ? "font-semibold" : "font-normal",
+                                      )}
+                                    >
+                                      {tag.icon ? (
+                                        <img
+                                          height={20}
+                                          width={20}
+                                          className="mr-2 rounded-full"
+                                          src={tag.icon}
+                                          alt={tag.name}
+                                        />
+                                      ) : (
+                                        <AiFillTag className="mr-2" size={20} color="#ee7800" />
+                                      )}
+                                      {tag.name}
+                                    </span>
+                                  </>
+                                )}
+                              </Combobox.Option>
+                            ))}
+                      </Combobox.Options>
+                    </div>
+                  </div>
+                </Combobox>
                 {/*
                 <div>
                   <button className="mt-2 flex w-full items-center overflow-hidden rounded-xl border-2">
@@ -296,8 +438,8 @@ export default function Post() {
                   </button>
                 </div>
                 */}
-                <div className="mx-auto">
-                  {knowledge?.published && (
+                {knowledge?.published && (
+                  <div className="mx-auto">
                     <>
                       <h2 className="mt-2 text-lg font-bold">アーカイブとしてマーク</h2>
                       <p className="mt-2 text-base text-gray-500">
@@ -323,8 +465,8 @@ export default function Post() {
                         </Switch>
                       </div>
                     </>
-                  )}
-                </div>
+                  </div>
+                )}
                 {!knowledge?.published && knowledge?.creator?.id == session?.user?.id && (
                   <>
                     <div>

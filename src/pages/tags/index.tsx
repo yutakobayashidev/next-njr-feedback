@@ -25,8 +25,8 @@ const Page: NextPageWithLayout<Props> = (props) => {
       <MyPageSeo path="/" title="タグ" />
       <section className="min-h-screen py-12">
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-          <h1 className="text-center font-inter text-4xl font-bold">Popular tag</h1>
-          <div className="mt-10 grid grid-cols-3 gap-x-3 md:grid-cols-6	md:gap-x-6">
+          <h1 className="text-center font-inter text-4xl font-bold">Popular tags</h1>
+          <div className="mt-10 grid grid-cols-3 gap-3 md:grid-cols-6	md:gap-6">
             {props.tags.map((tag) => (
               <Link
                 href={getTagPath(tag.id)}
@@ -36,7 +36,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
                 {tag.icon ? (
                   <div>
                     <img
-                      className="text-center"
+                      className="rounded-full text-center"
                       src={tag.icon}
                       height={40}
                       width={40}
@@ -65,13 +65,22 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   const tags = await prisma.tag.findMany({
-    include: {
-      _count: {
-        select: {
-          knowledge: true,
-          users: true,
+    orderBy: [
+      {
+        knowledge: {
+          _count: "desc",
         },
       },
+      {
+        users: {
+          _count: "desc",
+        },
+      },
+    ],
+    select: {
+      id: true,
+      name: true,
+      icon: true,
     },
   })
 
