@@ -47,9 +47,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
   const { data: session } = useSession()
 
   const { data: knowledge, isValidating: isKnowledgeValidating } = useSWR<Array<KnowledgeProps>>(
-    session &&
-      (!router.query.tab || router.query.tab !== "users") &&
-      `/api/knowledge?knowledge=${id}`,
+    session && (!router.query.tab || router.query.tab !== "users") && `/api/knowledge?tag=${id}`,
     fetcher,
   )
 
