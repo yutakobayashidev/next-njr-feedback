@@ -4,7 +4,6 @@ import { HttpMethod } from "@src/types"
 import initEmojiRegex from "emoji-regex"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth/next"
-import { z } from "zod"
 
 const pickRandomEmoji = () => {
   // prettier-ignore
@@ -25,7 +24,56 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
     })
 
-  if (req.method === HttpMethod.POST) {
+  if (req.method === HttpMethod.GET) {
+    const { archive, handle, tag } = req.query
+
+    const data = await prisma.knowledge.findMany({
+      orderBy: {
+        publishedAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        contributors: {
+          include: {
+            user: {
+              select: {
+                displayname: true,
+                handle: true,
+                image: true,
+              },
+            },
+          },
+        },
+        course: true,
+        emoji: true,
+        published: true,
+        updated_at: true,
+      },
+      where: {
+        ...(handle && {
+          contributors: {
+            some: {
+              user: {
+                handle: String(handle),
+              },
+            },
+          },
+        }),
+        published: true,
+        ...(archive == "false" && { archive: false }),
+        ...(tag && {
+          tags: {
+            some: {
+              id: String(tag),
+            },
+          },
+        }),
+      },
+    })
+
+    res.status(201).json(JSON.parse(JSON.stringify(data)))
+  } else if (req.method === HttpMethod.POST) {
     const emojiRegex = initEmojiRegex()
     const matches = pickRandomEmoji().match(emojiRegex)
 
@@ -61,64 +109,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       console.error(error)
       return res.status(500).end(error)
     }
-  } else if (req.method === HttpMethod.GET) {
-    const querySchema = z.object({
-      count: z
-        .string()
-        .refine((v) => {
-          return !isNaN(Number(v))
-        })
-        .transform((v) => Number(v)),
-    })
-
-    const result = querySchema.safeParse(req.query)
-
-    if (!result.success) {
-      return res.status(400).json({ error: { message: "クエリが不正です" } })
-    }
-
-    const { count } = result.data
-    const { archive, handle } = req.query
-
-    const data = await prisma.knowledge.findMany({
-      include: {
-        contributors: {
-          include: {
-            user: {
-              select: {
-                displayname: true,
-                handle: true,
-                image: true,
-              },
-            },
-          },
-        },
-        course: true,
-      },
-      orderBy: {
-        publishedAt: "desc",
-      },
-      take: count,
-      where: {
-        ...(handle && {
-          contributors: {
-            some: {
-              user: {
-                handle: String(handle),
-              },
-            },
-          },
-        }),
-        ...(archive == "false" && { archive: false }),
-        published: true,
-      },
-    })
-
-    const knowledge = JSON.parse(JSON.stringify(data))
-
-    res.status(201).json(knowledge)
   } else {
-    res.setHeader("Allow", [HttpMethod.POST, HttpMethod.GET])
+    res.setHeader("Allow", [HttpMethod.GET, HttpMethod.POST])
     return res.status(405).json({
       error: {
         code: 405,

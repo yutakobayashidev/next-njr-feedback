@@ -87,7 +87,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
   )
 
   const { data: knowledge, isValidating: isKnowledgeValidating } = useSWR<Array<KnowledgeProps>>(
-    session && router.query.tab == "knowledge" && `/api/knowledge?count=10&handle=${handle}`,
+    session && router.query.tab == "knowledge" && `/api/knowledge?handle=${handle}`,
     fetcher,
   )
 
