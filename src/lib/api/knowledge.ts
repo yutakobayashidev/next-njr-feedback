@@ -43,6 +43,13 @@ export async function getKnowledge(
             id: true,
           },
         },
+        tags: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
       },
       where: {
         id: id,
@@ -77,7 +84,13 @@ export async function updateKnowledge(
   session: Session,
 ): Promise<void | NextApiResponse> {
   const { id } = req.query
-  const { title, archive, content, emoji, published } = req.body
+  const { title, archive, content, emoji, published, tags } = req.body
+
+  interface Tag {
+    id: string
+    name: string
+    icon?: string
+  }
 
   if (!id || typeof id !== "string" || !session?.user?.id) {
     return res.status(400).json({
@@ -137,6 +150,9 @@ export async function updateKnowledge(
       })
     }
 
+    const existingTags = await prisma.tag.findMany()
+    const existingTagIds = existingTags.map((tag) => tag.id)
+
     const post = await prisma.knowledge.update({
       data: {
         title,
@@ -145,6 +161,14 @@ export async function updateKnowledge(
         emoji,
         lastEditor: { connect: { id: session.user.id } },
         published,
+        tags: {
+          connect: tags
+            .filter((tag: Tag) => existingTagIds.includes(tag.id))
+            .map((tag: Tag) => ({ id: tag.id })),
+          disconnect: existingTags
+            .filter((tag) => !tags.some((newTag: Tag) => newTag.id === tag.id))
+            .map((tag) => ({ id: tag.id })),
+        },
         updated_at: new Date(),
         ...(published && !data?.publishedAt && { publishedAt }),
       },

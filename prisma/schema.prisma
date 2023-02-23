@@ -79,6 +79,7 @@ model Tag {
     icon          String?
     description   String?
     exam          String?
+    official      String?
     users         User[]
     knowledge     Knowledge[]
 }

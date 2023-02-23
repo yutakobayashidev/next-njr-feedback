@@ -13,6 +13,7 @@ import {
   getKnowledgeEditPath,
   getKnowledgePath,
   getReportPath,
+  getTagPath,
   getUserpagePath,
 } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -23,7 +24,7 @@ import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 import { Fragment, useEffect, useState } from "react"
-import { AiOutlineFlag } from "react-icons/ai"
+import { AiFillTag, AiOutlineFlag } from "react-icons/ai"
 import { BiChevronDown } from "react-icons/bi"
 import { BsBookmark, BsFillBookmarkCheckFill, BsPencilFill } from "react-icons/bs"
 import { GrHistory } from "react-icons/gr"
@@ -62,6 +63,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     lastEditor,
     published,
     publishedAt,
+    tags,
     updated_at,
   } = props
 
@@ -136,7 +138,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
       <div>
         <div className="mx-auto max-w-screen-lg px-4 md:px-8">
           <article className="py-16">
-            <header className="mb-8">
+            <header className="mb-16">
               <div>
                 <div className="flex justify-center text-8xl">
                   <span>{emoji}</span>
@@ -194,6 +196,29 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
               </div>
             </header>
             <div>
+              {tags.map((tag) => (
+                <>
+                  <Link
+                    href={getTagPath(tag.id)}
+                    className="mb-2 mr-2 inline-flex items-center rounded-full border border-gray-100 px-2 py-1 text-gray-800 hover:bg-gray-100"
+                  >
+                    <div className="mr-2">
+                      {tag.icon ? (
+                        <img
+                          className="block rounded-full"
+                          width={20}
+                          height={20}
+                          src={tag.icon}
+                          alt={tag.name}
+                        />
+                      ) : (
+                        <AiFillTag size={20} color="#ee7800" className="block" />
+                      )}
+                    </div>
+                    <div className="text-sm">{tag.name}</div>
+                  </Link>
+                </>
+              ))}
               {content ? (
                 <div
                   className="prose max-w-none break-words prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline"
@@ -416,6 +441,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           displayname: true,
           handle: true,
           image: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          icon: true,
         },
       },
     },

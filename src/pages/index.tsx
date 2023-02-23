@@ -10,14 +10,23 @@ import prisma from "@src/lib/prisma"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { getTagPath } from "@src/utils/helper"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { signIn, useSession } from "next-auth/react"
+import { AiFillTag } from "react-icons/ai"
+
+interface tag {
+  id: string
+  name: string
+  icon?: string
+}
 
 type Props = {
   discussion: DiscussionProps[]
   knowledge: KnowledgeProps[]
+  tag: tag[]
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
@@ -84,7 +93,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               </div>
             </ContentWrapper>
           </section>
-          <section className="bg-white py-12 ">
+          <section className="bg-white py-12">
             <ContentWrapper>
               <h3 className="mb-7 text-2xl font-bold md:text-3xl">📚 よく見られているナレッジ</h3>
               {props.knowledge.length > 0 ? (
@@ -98,6 +107,42 @@ const Page: NextPageWithLayout<Props> = (props) => {
               )}
               <div className="mt-6 text-center text-lg">
                 <Link href="/knowledge">ナレッジをもっと見る →</Link>
+              </div>
+            </ContentWrapper>
+          </section>
+          <section className="bg-gray-100 py-12">
+            <ContentWrapper>
+              <h3 className="mb-7 text-2xl font-bold md:text-3xl">🔖 人気のタグ</h3>
+              {props.tag.length > 0 ? (
+                <div className="mt-10 grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-6">
+                  {props.tag.map((tag) => (
+                    <>
+                      <Link className="text-center" href={getTagPath(tag.id)}>
+                        {tag.icon ? (
+                          <img
+                            className="mx-auto rounded-full bg-white"
+                            src={tag.icon}
+                            height={100}
+                            width={100}
+                            alt={tag.icon}
+                          ></img>
+                        ) : (
+                          <div className="mx-auto flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white">
+                            <AiFillTag size={50} color="#ee7800" className="mx-auto" />
+                          </div>
+                        )}
+                        <div className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-gray-800">
+                          {tag.name}
+                        </div>
+                      </Link>
+                    </>
+                  ))}
+                </div>
+              ) : (
+                <NotContent />
+              )}
+              <div className="mt-6 text-center text-lg">
+                <Link href="/tags">タグをもっと見る →</Link>
               </div>
             </ContentWrapper>
           </section>
@@ -138,7 +183,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: { discussion: [], knowledge: [] } }
   }
 
-  const discussiondata = await prisma.discussion.findMany({
+  const discussion = await prisma.discussion.findMany({
     include: {
       _count: {
         select: {
@@ -154,21 +199,22 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         },
       },
     },
-    orderBy: [
-      {
-        views: "desc",
-      },
-    ],
+    orderBy: {
+      views: "desc",
+    },
     take: 10,
     where: {
       archive: false,
     },
   })
 
-  const discussion = JSON.parse(JSON.stringify(discussiondata))
-
-  const knowledgedata = await prisma.knowledge.findMany({
-    include: {
+  const knowledge = await prisma.knowledge.findMany({
+    orderBy: {
+      views: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
       contributors: {
         include: {
           user: {
@@ -186,12 +232,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           name: true,
         },
       },
+      emoji: true,
+      published: true,
+      updated_at: true,
     },
-    orderBy: [
-      {
-        views: "desc",
-      },
-    ],
     take: 10,
     where: {
       archive: false,
@@ -199,10 +243,33 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   })
 
-  const knowledge = JSON.parse(JSON.stringify(knowledgedata))
+  const tag = await prisma.tag.findMany({
+    orderBy: [
+      {
+        knowledge: {
+          _count: "desc",
+        },
+      },
+      {
+        users: {
+          _count: "desc",
+        },
+      },
+    ],
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+    },
+    take: 10,
+  })
 
   return {
-    props: { discussion, knowledge },
+    props: {
+      discussion: JSON.parse(JSON.stringify(discussion)),
+      knowledge: JSON.parse(JSON.stringify(knowledge)),
+      tag: JSON.parse(JSON.stringify(tag)),
+    },
   }
 }
 

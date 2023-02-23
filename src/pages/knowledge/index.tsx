@@ -90,7 +90,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   const views = await prisma.knowledge.findMany({
-    include: {
+    orderBy: {
+      views: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
       contributors: {
         include: {
           user: {
@@ -108,12 +113,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           name: true,
         },
       },
+      emoji: true,
+      published: true,
+      updated_at: true,
     },
-    orderBy: [
-      {
-        views: "desc",
-      },
-    ],
     take: 10,
     where: {
       archive: false,
@@ -122,7 +125,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   })
 
   const old = await prisma.knowledge.findMany({
-    include: {
+    orderBy: {
+      updated_at: "asc",
+    },
+    select: {
+      id: true,
+      title: true,
       contributors: {
         include: {
           user: {
@@ -140,12 +148,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           name: true,
         },
       },
+      emoji: true,
+      published: true,
+      updated_at: true,
     },
-    orderBy: [
-      {
-        updated_at: "asc",
-      },
-    ],
     take: 5,
     where: {
       archive: false,
