@@ -98,13 +98,15 @@ const Page: NextPageWithLayout<Tag> = (props) => {
           isSelected={router.query.tab == "users"}
         />
         {official && (
-          <Link
+          <a
+            target="_blank"
+            rel="noopener noreferrer nofollow"
             href={official}
             className="mr-5 flex items-center border-gray-700 py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
           >
             公式サイト
             <FiArrowUpRight className="ml-2" />
-          </Link>
+          </a>
         )}
       </div>
       <div className="min-h-screen bg-gray-100 pt-16 pb-20">
