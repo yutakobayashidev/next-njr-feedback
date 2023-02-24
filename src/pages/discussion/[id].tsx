@@ -11,6 +11,7 @@ import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, HttpMethod } from "@src/types"
+import { CommentProps } from "@src/types/comment"
 import { getDiscussionPath, getReportPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -47,23 +48,24 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   } = props
   const { data: session } = useSession()
 
-  const [allcomments, setComments] = useState(comments)
+  const [allcomments, setComments] = useState<CommentProps[]>([])
   const [commentcontent, setContent] = useState<string>("")
   const [discussiontitle, setTitle] = useState<string>("")
   const [showtitleEditForm, setTitleEditForm] = useState(false)
   const [isVoted, setIsVoted] = useState(false)
-  const [voteCount, setVoteCount] = useState(Number(_count.votes))
-
+  const [voteCount, setVoteCount] = useState<number>(0)
   const [archived, setArchived] = useState(false)
   const [archived_time, setArchived_at] = useState("")
 
   useEffect(() => {
     setArchived(archive)
     setArchived_at(archived_at)
+    setComments(comments)
+    setVoteCount(Number(_count.votes))
 
     const hasVotes = votes.some((vote) => vote.user.id === session?.user.id)
     setIsVoted(hasVotes)
-  }, [archive, archived_at, session?.user.id, votes])
+  }, [_count.votes, comments, archive, archived_at, session?.user.id, votes])
 
   async function status(archive: boolean) {
     try {
