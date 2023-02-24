@@ -223,7 +223,7 @@ model Bookmark {
 
 model Contributors {
   id            String   @id @default(cuid())
-  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id])
+  knowledge     Knowledge    @relation(fields: [knowledgeId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
   knowledgeId   String
   user          User     @relation(fields: [userId], references: [id])
