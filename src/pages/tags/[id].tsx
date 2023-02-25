@@ -102,10 +102,10 @@ const Page: NextPageWithLayout<Tag> = (props) => {
             target="_blank"
             rel="noopener noreferrer nofollow"
             href={official}
-            className="mr-5 flex items-center border-gray-700 py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
+            className="mr-5 flex items-center border-b-2 border-white py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
           >
             公式サイト
-            <FiArrowUpRight className="ml-2" />
+            <FiArrowUpRight className="ml-1" />
           </a>
         )}
       </div>
@@ -127,7 +127,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                     </>
                   ) : (
                     <>
-                      <NotContent message="アクティビティが存在しません" />
+                      <NotContent />
                     </>
                   )}
                 </>
@@ -151,7 +151,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                           >
                             <div className="flex text-gray-800">
                               <img
-                                className="mr-4 rounded-full"
+                                className="mr-4 aspect-square rounded-full border object-cover"
                                 height={60}
                                 width={60}
                                 src={user.image}
@@ -168,7 +168,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                     </>
                   ) : (
                     <>
-                      <NotContent message="アクティビティが存在しません" />
+                      <NotContent message="ユーザーが存在しません" />
                     </>
                   )}
                 </>

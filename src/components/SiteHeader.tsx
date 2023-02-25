@@ -109,9 +109,9 @@ const UserMenu: React.FC<{ session: Session }> = ({ session }) => {
       {session && session.user && session.user.name && session.user.image && (
         <Menu as="div" className="relative">
           <div>
-            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+            <Menu.Button className="flex text-sm focus:outline-none focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <img
-                className="h-10 w-10 rounded-full object-cover aspect-square"
+                className="aspect-square h-10 w-10 rounded-full border object-cover"
                 src={session.user.image}
                 alt="メニューを開く"
               />
