@@ -127,7 +127,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                     </>
                   ) : (
                     <>
-                      <NotContent message="アクティビティが存在しません" />
+                      <NotContent />
                     </>
                   )}
                 </>
@@ -168,7 +168,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                     </>
                   ) : (
                     <>
-                      <NotContent message="アクティビティが存在しません" />
+                      <NotContent message="ユーザーが存在しません" />
                     </>
                   )}
                 </>

@@ -33,8 +33,13 @@ export default function Post() {
   const [publishing, setPublishing] = useState(false)
   const [disabled, setDisabled] = useState(true)
   const cancelButtonRef = useRef(null)
-
   let [query, setQuery] = useState("")
+
+  const pickRandomHint = () => {
+    // prettier-ignore
+    const hintList =["この本文にはMarkdownを使用できます。","公開する前に重複したコンテンツがないか確認してみましょう。","不要になったナレッジは公開設定からアーカイブしましょう。","更新されていないナレッジは新しく作成するのではなく、編集することが大切です。"]
+    return hintList[Math.floor(Math.random() * hintList.length)]
+  }
 
   type Tag = {
     id: string
@@ -580,7 +585,7 @@ export default function Post() {
                 })
               }
               className="w-full resize-none border-none px-2 py-3 text-lg text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-              placeholder="💡 この本文にはMarkdownを使用できます。"
+              placeholder={"💡" + pickRandomHint()}
               value={data.content}
             />
             <div className="flex items-center text-sm text-gray-500 md:text-base">
