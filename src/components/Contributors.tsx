@@ -14,7 +14,7 @@ export const Contributors: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledg
           >
             <img
               alt={contributor.user.displayname}
-              className="aspect-square rounded-full border object-cover"
+              className="aspect-square rounded-full border bg-white object-cover"
               height="45"
               width="45"
               src={contributor.user.image}

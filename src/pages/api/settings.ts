@@ -11,7 +11,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
 
   const data = JSON.parse(req.body)
 
-  const { id, bio, displayname, handle } = data
+  const { id, bio, displayname, handle, image } = data
 
   if (!id || typeof id !== "string" || !displayname || !handle) {
     return res.status(400).json({
@@ -65,6 +65,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
         bio,
         displayname,
         handle,
+        image,
       },
       where: {
         id: id,
