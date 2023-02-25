@@ -1,11 +1,11 @@
 import "@src/styles/globals.css" // Tailwind CSS
 
-import { Inter } from "@next/font/google"
 import { config } from "@site.config"
 import GoogleAnalytics from "@src/components/GoogleAnalytics"
 import usePageView from "@src/hooks/usePageView"
 import { NextPage } from "next"
 import type { AppProps } from "next/app"
+import { Inter } from "next/font/google"
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import { ReactElement, ReactNode } from "react"
