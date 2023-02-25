@@ -151,7 +151,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                           >
                             <div className="flex text-gray-800">
                               <img
-                                className="mr-4 rounded-full"
+                                className="mr-4 aspect-square rounded-full border object-cover"
                                 height={60}
                                 width={60}
                                 src={user.image}
