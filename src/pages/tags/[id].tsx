@@ -102,7 +102,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
             target="_blank"
             rel="noopener noreferrer nofollow"
             href={official}
-            className="mr-5 flex items-center border-gray-700 py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
+            className="mr-5 flex items-center border-b-2 border-white py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
           >
             公式サイト
             <FiArrowUpRight className="ml-1" />
