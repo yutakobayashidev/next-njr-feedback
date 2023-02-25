@@ -37,7 +37,7 @@ export default function Post() {
 
   const pickRandomHint = () => {
     // prettier-ignore
-    const hintList =["この本文にはMarkdownを使用できます。","公開する前に重複したコンテンツがないか確認してみましょう。","不要になったナレッジは公開設定からアーカイブしましょう。","更新されていないナレッジは新しく作成するのではなく、更新することが大切です。"]
+    const hintList =["この本文にはMarkdownを使用できます。","公開する前に重複したコンテンツがないか確認してみましょう。","不要になったナレッジは公開設定からアーカイブしましょう。","更新されていないナレッジは新しく作成するのではなく、編集することが大切です。"]
     return hintList[Math.floor(Math.random() * hintList.length)]
   }
 
