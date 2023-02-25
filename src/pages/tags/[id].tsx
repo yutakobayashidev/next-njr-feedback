@@ -105,7 +105,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
             className="mr-5 flex items-center border-gray-700 py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
           >
             公式サイト
-            <FiArrowUpRight className="ml-2" />
+            <FiArrowUpRight className="ml-1" />
           </a>
         )}
       </div>
