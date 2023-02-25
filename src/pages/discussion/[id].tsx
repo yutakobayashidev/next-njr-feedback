@@ -320,34 +320,32 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       </span>
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="mr-8 flex-1">
                     <Link
                       href={getUserpagePath(user.handle)}
                       className="mr-2 font-inter text-lg font-bold text-gray-800  "
                     >
-                      {user.displayname} {user.role == "student" ? "(生徒)" : "(メンター / TA)"}
+                      {user.displayname}
                     </Link>
                     <time className="text-sm text-gray-500" dateTime={updatedAt}>
                       {dayjs(createdAt).fromNow()}
                     </time>
                     <div className="mt-2 font-inter text-lg leading-7 text-gray-800">{content}</div>
                   </div>
-                  <div>
-                    <div className="flex flex-col text-center">
-                      <button
-                        onClick={async () => {
-                          await addvotes(id as string)
-                        }}
-                      >
-                        <IoTriangle
-                          className={` ${
-                            isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"
-                          }`}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      <div className="my-3 text-gray-600">{voteCount}</div>
-                    </div>
+                  <div className="flex flex-col text-center">
+                    <button
+                      onClick={async () => {
+                        await addvotes(id as string)
+                      }}
+                    >
+                      <IoTriangle
+                        className={` ${
+                          isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <div className="my-3 text-gray-600">{voteCount}</div>
                   </div>
                 </div>
               </div>
