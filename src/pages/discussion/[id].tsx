@@ -384,7 +384,11 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       minRows={3}
                       onChange={(e) => setContent(e.target.value)}
                       value={commentcontent}
-                      placeholder="コメントして議論に参加しましょう。"
+                      placeholder={
+                        allcomments.length === 0
+                          ? "最初のコメントを投稿するチャンスです。"
+                          : "コメントして議論に参加しましょう。"
+                      }
                       className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                     />
                     <div className="text-right">
