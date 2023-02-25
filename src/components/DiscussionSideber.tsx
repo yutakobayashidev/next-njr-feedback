@@ -59,42 +59,55 @@ export const CommentSidebar: React.FC<{
         <h4 className="text-2xl font-bold">新しく作成された議論</h4>
         <p className="my-2 text-gray-500">最近作成されたアーカイブされていない議論の一覧</p>
         <div className="my-4">
-          {discussions && discussions.length > 0 ? (
-            <>
-              {discussions.map((discussion) => (
-                <div key={discussion.id}>
-                  <div className="my-2 flex items-center">
-                    <Link href={getUserpagePath(discussion.user.handle)}>
-                      <img
-                        src={discussion.user.image}
-                        alt={discussion.user.displayname}
-                        height={30}
-                        width={30}
-                        className="mr-1 aspect-square rounded-full object-cover"
-                      />
+          {discussions ? (
+            discussions.length > 0 ? (
+              <>
+                {discussions.map((discussion) => (
+                  <div key={discussion.id}>
+                    <div className="my-2 flex items-center text-xs">
+                      <Link href={getUserpagePath(discussion.user.handle)}>
+                        <img
+                          src={discussion.user.image}
+                          alt={discussion.user.displayname}
+                          height={28}
+                          width={28}
+                          className="mr-1 aspect-square rounded-full object-cover"
+                        />
+                      </Link>
+                      <Link href={getUserpagePath(discussion.user.handle)}>
+                        <span className="mr-2 font-bold text-gray-800">
+                          {discussion.user.displayname}
+                        </span>
+                      </Link>
+                      <span className="font-bold text-gray-400">投稿</span>
+                    </div>
+                    <Link
+                      href={getDiscussionPath(discussion.id)}
+                      className="text-base font-bold leading-7 text-gray-800 line-clamp-3"
+                    >
+                      {discussion.title}
                     </Link>
-                    <Link href={getUserpagePath(discussion.user.handle)}>
-                      <span className="mr-2 text-xs font-bold text-gray-800 ">
-                        {discussion.user.displayname}
-                      </span>
-                    </Link>
-                    <span className="text-xs font-bold text-gray-400">投稿</span>
+                    <span className="mt-2 flex items-center text-gray-600">
+                      <FaRegComment className="mr-1" size={17} />
+                      {discussion._count.comments} comments
+                    </span>
                   </div>
-                  <Link
-                    href={getDiscussionPath(discussion.id)}
-                    className="text-base font-bold leading-7 text-gray-800 line-clamp-3"
-                  >
-                    {discussion.title}
-                  </Link>
-                  <span className="mt-2 flex items-center text-gray-600">
-                    <FaRegComment className="mr-1" size={17} />
-                    {discussion._count.comments} comments
-                  </span>
-                </div>
-              ))}
-            </>
+                ))}
+              </>
+            ) : (
+              <NotContent />
+            )
           ) : (
-            <NotContent />
+            Array.from({ length: 10 }).map((_, i) => (
+              <div key={i}>
+                <div className="my-2 flex items-center">
+                  <div className="mr-1 h-7 w-7 animate-pulse rounded-full bg-gray-300" />
+                  <div className="mr-2 h-4 w-24 animate-pulse bg-gray-300" />
+                </div>
+                <div className="h-7 w-52 animate-pulse bg-gray-300" />
+                <div className="mt-2 h-6 w-28 animate-pulse bg-gray-300" />
+              </div>
+            ))
           )}
         </div>
       </div>
