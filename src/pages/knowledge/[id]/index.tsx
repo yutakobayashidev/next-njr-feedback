@@ -252,7 +252,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                   <span className="ml-2 text-gray-500">{bookmarkCount}</span>
                 </div>
                 <div className="flex items-center">
-                  <Menu as="div" className="relative ml-auto  inline-block">
+                  <Menu as="div" className="relative ml-auto inline-block">
                     <Menu.Button>
                       <BiChevronDown className="mr-2 text-gray-400" size={35} aria-hidden="true" />
                     </Menu.Button>
@@ -265,7 +265,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute left-1/2 z-10 mt-2 w-56 origin-top-right -translate-x-1/2 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div>
                           <Menu.Item>
                             {({ active }) => (
@@ -294,7 +294,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                                 違反を報告
                               </Link>
                             )}
-                          </Menu.Item>{" "}
+                          </Menu.Item>
                         </div>
                       </Menu.Items>
                     </Transition>

@@ -1,4 +1,4 @@
-import prisma from "@src/lib/prisma"
+import { getTag, updateTag } from "@src/lib/api/tag"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -12,21 +12,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 401, message: "ログインしてください" },
     })
 
-  if (req.method !== HttpMethod.GET) {
-    res.setHeader("Allow", [HttpMethod.GET])
-    return res.status(405).end(`${req.method}メソッドはサポートされていません。`)
+  switch (req.method) {
+    case HttpMethod.GET:
+      return getTag(req, res, session)
+    case HttpMethod.PUT:
+      return updateTag(req, res, session)
+    default:
+      res.setHeader("Allow", [HttpMethod.GET, HttpMethod.PUT])
+      return res.status(405).json({
+        error: {
+          code: 405,
+          message: `${req.method}メソッドはサポートされていません。`,
+        },
+      })
   }
-
-  const autocompletes = await prisma.tag.findMany({
-    orderBy: {
-      name: "asc",
-    },
-    select: {
-      id: true,
-      name: true,
-      icon: true,
-    },
-  })
-
-  res.status(200).json(autocompletes)
 }

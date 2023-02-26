@@ -68,7 +68,7 @@ const Page: NextPageWithLayout = () => {
         description="ガイドラインに違反するコンテンツを見つけた・安全が脅かされると感じる場面などに遭遇した場合はこちらのフォームでご報告ください。"
       />
       <div className="py-12">
-        <div className="mx-auto max-w-screen-sm px-4 md:px-8">
+        <div className="mx-auto max-w-prose px-4 md:px-8">
           {submitted ? (
             <>
               <h1 className="mb-4 text-center text-4xl font-bold">送信が完了しました</h1>

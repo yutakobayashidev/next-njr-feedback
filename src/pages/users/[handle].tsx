@@ -12,7 +12,7 @@ import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { DiscussionProps, KnowledgeProps, UserProps } from "@src/types"
 import { CommentProps } from "@src/types/comment"
 import { getDiscussionPath, getTagPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -35,23 +35,6 @@ export interface Badge {
   id: string
   name: string
   icon?: string
-}
-
-export type UserProps = {
-  _count: {
-    discussion: number
-    knowledge: number
-  }
-  badges: Badge[]
-  bio: string
-  contributor: boolean
-  createdAt: string
-  displayname: string
-  handle: string
-  image: string
-  knowledge: KnowledgeProps[]
-  n_course: string
-  role: string
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {
@@ -170,7 +153,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   )}
                   {contributor && (
                     <>
-                      <span className="mr-1 flex items-center font-medium">
+                      <span className="mr-1">
                         <Tooltip text="コントリビューター">
                           <FaCode size={20} color="#61bd8d" className="mr-1" />
                         </Tooltip>
@@ -178,11 +161,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     </>
                   )}
                   {badges.map((badge) => (
-                    <Link
-                      href={getTagPath(badge.id)}
-                      key={badge.id}
-                      className="mr-1 flex items-center font-medium"
-                    >
+                    <Link href={getTagPath(badge.id)} key={badge.id} className="mr-1">
                       <Tooltip text={badge.name}>
                         {badge.icon ? (
                           <img
@@ -354,7 +333,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 
   const profile = await prisma.user.findUnique({
-    include: {
+    select: {
       _count: {
         select: {
           discussion: true,
@@ -368,6 +347,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           icon: true,
         },
       },
+      bio: true,
+      contributor: true,
+      createdAt: true,
+      displayname: true,
+      handle: true,
+      image: true,
+      n_course: true,
+      role: true,
     },
     where: {
       handle: String(params?.handle),

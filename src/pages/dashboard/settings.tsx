@@ -57,10 +57,13 @@ const Page: NextPageWithLayout = () => {
     formData.append("file", file)
     formData.append("upload_preset", "uwj1ormw")
 
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
-      body: formData,
-      method: "POST",
-    })
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        body: formData,
+        method: "POST",
+      },
+    )
     return response.json()
   }
 
@@ -112,7 +115,7 @@ const Page: NextPageWithLayout = () => {
                     height={100}
                     width={100}
                     className="mr-8 aspect-square rounded-full object-cover shadow-lg"
-                    alt={session?.user.name || "アイコン"}
+                    alt={session?.user.displayname || "アイコン"}
                   />
                 )}
                 <label
@@ -127,7 +130,7 @@ const Page: NextPageWithLayout = () => {
                   className="hidden"
                   id="single"
                   accept=".jpg, .jpeg, .png, .gif"
-                ></input>
+                />
               </div>
               <h2 className="my-4 flex items-center text-lg font-medium">
                 表示名<span className="ml-1 text-red-800">*</span>

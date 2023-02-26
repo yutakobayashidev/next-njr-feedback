@@ -25,45 +25,24 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
 
     try {
-      await prisma.discussion.update({
-        data: { last_comment_created_at: new Date() },
-        where: { id: id },
-      })
-
       const result = await prisma.comment.create({
         data: {
           content,
-          discussion: {
-            connect: { id: id },
-          },
+          discussion: { connect: { id } },
           user: { connect: { id: session.user.id } },
         },
         include: {
-          _count: {
-            select: {
-              votes: true,
-            },
-          },
-          user: {
-            select: {
-              id: true,
-              displayname: true,
-              handle: true,
-              image: true,
-              role: true,
-            },
-          },
-          votes: {
-            select: {
-              user: {
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
+          _count: { select: { votes: true } },
+          user: { select: { id: true, displayname: true, handle: true, image: true, role: true } },
+          votes: { select: { user: { select: { id: true } } } },
         },
       })
+
+      if (result)
+        await prisma.discussion.update({
+          data: { last_comment_created_at: new Date() },
+          where: { id: id },
+        })
       res.status(201).json(result)
     } catch (error) {
       console.error(error)

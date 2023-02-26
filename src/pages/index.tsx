@@ -9,7 +9,7 @@ import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { DiscussionProps, KnowledgeProps, Tag } from "@src/types"
 import { getTagPath } from "@src/utils/helper"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
@@ -17,16 +17,10 @@ import { getServerSession } from "next-auth"
 import { signIn, useSession } from "next-auth/react"
 import { AiFillTag } from "react-icons/ai"
 
-interface tag {
-  id: string
-  name: string
-  icon?: string
-}
-
 type Props = {
   discussion: DiscussionProps[]
   knowledge: KnowledgeProps[]
-  tag: tag[]
+  tag: Tag[]
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
@@ -120,7 +114,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
                       <Link className="text-center" href={getTagPath(tag.id)}>
                         {tag.icon ? (
                           <img
-                            className="mx-auto rounded-full bg-white"
+                            className="mx-auto aspect-square rounded-full bg-white object-cover"
                             src={tag.icon}
                             height={100}
                             width={100}

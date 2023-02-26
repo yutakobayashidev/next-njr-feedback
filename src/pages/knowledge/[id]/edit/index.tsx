@@ -2,7 +2,7 @@ import { Combobox, Dialog, Switch, Transition } from "@headlessui/react"
 import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
-import { HttpMethod } from "@src/types"
+import { HttpMethod, Tag } from "@src/types"
 import { getKnowledgePath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -24,7 +24,6 @@ function classNames(...classes: string[]) {
 
 export default function Post() {
   const { data: session } = useSession()
-
   const router = useRouter()
 
   const [changed, setChanged] = useState(false)
@@ -35,17 +34,14 @@ export default function Post() {
   const cancelButtonRef = useRef(null)
   let [query, setQuery] = useState("")
 
-  const pickRandomHint = () => {
-    // prettier-ignore
-    const hintList =["この本文にはMarkdownを使用できます。","公開する前に重複したコンテンツがないか確認してみましょう。","不要になったナレッジは公開設定からアーカイブしましょう。","更新されていないナレッジは新しく作成するのではなく、編集することが大切です。"]
-    return hintList[Math.floor(Math.random() * hintList.length)]
-  }
+  const tipsList = [
+    "この本文にはMarkdownを使用できます。",
+    "公開する前に重複したコンテンツがないか確認してみましょう。",
+    "不要になったナレッジは公開設定からアーカイブしましょう。",
+    "更新されていないナレッジは新しく作成するのではなく、編集することが大切です。",
+  ]
 
-  type Tag = {
-    id: string
-    name: string
-    icon?: string
-  }
+  const [tip, setTip] = useState(() => tipsList[Math.floor(Math.random() * tipsList.length)])
 
   type Knowledge = {
     id: string
@@ -107,7 +103,7 @@ export default function Post() {
       })
   }, [knowledge])
 
-  const { data: autocompletes } = useSWR<Array<Tag>>(`/api/autocompletes`, fetcher, {
+  const { data: autocompletes } = useSWR<Array<Tag>>(session && `/api/autocompletes`, fetcher, {
     dedupingInterval: 1000,
     onError: () => router.push("/"),
     revalidateOnFocus: false,
@@ -137,9 +133,9 @@ export default function Post() {
       })
 
       if (response.status !== 200) {
-        const paas = await response.json()
+        const json = await response.json()
 
-        toast.error(paas.error.message)
+        toast.error(json.error.message)
       } else {
         setChanged(false)
         toast.success(`変更を保存しました`)
@@ -170,9 +166,9 @@ export default function Post() {
       })
 
       if (response.status !== 200) {
-        const paas = await response.json()
+        const json = await response.json()
 
-        toast.error(paas.error.message)
+        toast.error(json.error.message)
       } else {
         setChanged(false)
         router.push(getKnowledgePath(knowledgeId as string))
@@ -585,7 +581,7 @@ export default function Post() {
                 })
               }
               className="w-full resize-none border-none px-2 py-3 text-lg text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-              placeholder={"💡" + pickRandomHint()}
+              placeholder={"💡" + tip}
               value={data.content}
             />
             <div className="flex items-center text-sm text-gray-500 md:text-base">

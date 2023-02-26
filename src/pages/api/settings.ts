@@ -9,9 +9,7 @@ export default async function SaveSiteSettings(req: NextApiRequest, res: NextApi
     return res.status(405).end(`${req.method}メソッドはサポートされていません。`)
   }
 
-  const data = JSON.parse(req.body)
-
-  const { id, bio, displayname, handle, image } = data
+  const { id, bio, displayname, handle, image } = JSON.parse(req.body)
 
   if (!id || typeof id !== "string" || !displayname || !handle) {
     return res.status(400).json({

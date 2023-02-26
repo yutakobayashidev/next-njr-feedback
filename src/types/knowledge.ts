@@ -1,3 +1,5 @@
+import { Tag } from "@src/types"
+
 export type KnowledgeProps = {
   id: string
   title?: string
@@ -44,12 +46,6 @@ export type Diff = {
   course: Course[]
   createdAt: string
   emoji: string
-}
-
-interface Tag {
-  id: string
-  name: string
-  icon?: string
 }
 
 interface Bookmark {

@@ -8,7 +8,7 @@ import { fetcher } from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { KnowledgeProps } from "@src/types"
+import { KnowledgeProps, Tag, UserProps } from "@src/types"
 import { getTagPath, getUserpagePath } from "@src/utils/helper"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
@@ -18,26 +18,6 @@ import { useSession } from "next-auth/react"
 import { AiFillTag } from "react-icons/ai"
 import { FiArrowUpRight } from "react-icons/fi"
 import useSWR from "swr"
-
-type Tag = {
-  id: string
-  name: string
-  _count: {
-    knowledge: number
-    users: number
-  }
-  description?: string
-  icon?: string
-  official?: string
-  users: UserProps[]
-}
-
-interface UserProps {
-  id: string
-  displayname: string
-  handle: string
-  image: string
-}
 
 const Page: NextPageWithLayout<Tag> = (props) => {
   const { id, name, _count, description, icon, official } = props
@@ -79,9 +59,19 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                 <AiFillTag size={50} color="#ee7800" className="mr-1" />
               </div>
             )}
-            <div className="mt-7 ml-0 flex-1 md:mt-0 md:ml-7 ">
-              <h1 className="mb-2 font-inter text-2xl font-bold md:text-3xl">{name}</h1>
-              {description ? <p className="text-base">{description}</p> : null}
+            <div className="mt-7 ml-0 flex flex-1 items-start md:mt-0 md:ml-7">
+              <div className="flex-1">
+                <h1 className="mb-2 font-inter text-2xl font-bold md:text-3xl">{name}</h1>
+                {description ? <p className="text-base">{description}</p> : null}
+              </div>
+              <div className="flex items-center text-center">
+                <Link
+                  href={`/tags/${id}/edit`}
+                  className="rounded-md border bg-white px-2 py-1 text-gray-800 shadow-md"
+                >
+                  表示を更新
+                </Link>
+              </div>
             </div>
           </div>
         </div>
