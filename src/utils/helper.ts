@@ -13,7 +13,7 @@ export function getTagPath(id: string) {
 }
 
 export function getReportPath() {
-  return `/report?path=${router.asPath}`
+  return `/report?path=${encodeURIComponent(router.asPath)}`
 }
 
 export function getKnowledgeEditPath(id: string) {

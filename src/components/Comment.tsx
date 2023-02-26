@@ -9,6 +9,7 @@ import router from "next/router"
 import { Session } from "next-auth"
 import { Fragment, useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { AiOutlineFlag } from "react-icons/ai"
 import { BiChevronDown, BiLinkAlt } from "react-icons/bi"
 import { BsPencil } from "react-icons/bs"
 import { HiOutlineTrash } from "react-icons/hi"
@@ -153,7 +154,7 @@ export const CommentCard: React.FC<{
                   </span>
                 )}
               </div>
-              <div className="flex">
+              <div className="flex items-center">
                 <Link
                   href={getUserpagePath(comment.user.handle)}
                   className="mr-2 font-inter font-bold text-gray-800"
@@ -165,11 +166,11 @@ export const CommentCard: React.FC<{
                     ? dayjs(comment.updated_at).fromNow() + "に更新"
                     : dayjs(comment.createdAt).fromNow()}
                 </time>
-                <Menu as="div" className="relative ml-auto  inline-block">
+                <Menu as="div" className="relative ml-auto inline-block">
                   <Menu.Button>
                     <BiChevronDown
                       color="#acbcc7"
-                      className="-mr-1 ml-2 h-5 w-5"
+                      className="-mr-1 ml-2 h-6 w-6"
                       aria-hidden="true"
                     />
                   </Menu.Button>
@@ -237,6 +238,24 @@ export const CommentCard: React.FC<{
                               )}
                             </Menu.Item>
                           </>
+                        )}
+                        {session.user.id != comment.user.id && (
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href={`/report?path=${encodeURIComponent(
+                                  router.asPath + "#" + "comment-" + comment.id,
+                                )}`}
+                                className={classNames(
+                                  active ? "bg-gray-100 text-red-900" : "text-red-700",
+                                  "flex border-t-2 border-gray-100 items-center text-base px-4 py-2",
+                                )}
+                              >
+                                <AiOutlineFlag className="mr-1" />
+                                違反を報告
+                              </Link>
+                            )}
+                          </Menu.Item>
                         )}
                       </div>
                     </Menu.Items>

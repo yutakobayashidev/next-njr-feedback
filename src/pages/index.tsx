@@ -120,7 +120,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
                       <Link className="text-center" href={getTagPath(tag.id)}>
                         {tag.icon ? (
                           <img
-                            className="mx-auto rounded-full bg-white"
+                            className="mx-auto aspect-square rounded-full bg-white object-cover"
                             src={tag.icon}
                             height={100}
                             width={100}

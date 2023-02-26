@@ -170,7 +170,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   )}
                   {contributor && (
                     <>
-                      <span className="mr-1 flex items-center font-medium">
+                      <span className="mr-1">
                         <Tooltip text="コントリビューター">
                           <FaCode size={20} color="#61bd8d" className="mr-1" />
                         </Tooltip>
@@ -178,11 +178,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     </>
                   )}
                   {badges.map((badge) => (
-                    <Link
-                      href={getTagPath(badge.id)}
-                      key={badge.id}
-                      className="mr-1 flex items-center font-medium"
-                    >
+                    <Link href={getTagPath(badge.id)} key={badge.id} className="mr-1">
                       <Tooltip text={badge.name}>
                         {badge.icon ? (
                           <img

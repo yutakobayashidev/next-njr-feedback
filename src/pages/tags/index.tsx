@@ -36,7 +36,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
                 {tag.icon ? (
                   <div>
                     <img
-                      className="rounded-full text-center"
+                      className="aspect-square rounded-full object-cover text-center"
                       src={tag.icon}
                       height={40}
                       width={40}
