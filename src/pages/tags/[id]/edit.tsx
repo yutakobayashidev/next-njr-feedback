@@ -128,7 +128,7 @@ const Page: NextPageWithLayout = () => {
                       height={100}
                       width={100}
                       alt={data.name}
-                      className="mr-8 aspect-square rounded-full object-cover"
+                      className="mr-8 aspect-square rounded-full bg-white object-cover"
                     />
                   ) : (
                     <div className="mr-8 flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white">
