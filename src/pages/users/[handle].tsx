@@ -12,7 +12,7 @@ import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
-import { DiscussionProps, KnowledgeProps } from "@src/types"
+import { DiscussionProps, KnowledgeProps, UserProps } from "@src/types"
 import { CommentProps } from "@src/types/comment"
 import { getDiscussionPath, getTagPath, getUserpagePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -35,23 +35,6 @@ export interface Badge {
   id: string
   name: string
   icon?: string
-}
-
-export type UserProps = {
-  _count: {
-    discussion: number
-    knowledge: number
-  }
-  badges: Badge[]
-  bio: string
-  contributor: boolean
-  createdAt: string
-  displayname: string
-  handle: string
-  image: string
-  knowledge: KnowledgeProps[]
-  n_course: string
-  role: string
 }
 
 const Page: NextPageWithLayout<UserProps> = (props) => {

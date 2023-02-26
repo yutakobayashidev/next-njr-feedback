@@ -12,18 +12,21 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 401, message: "ログインしてください" },
     })
 
-  if (req.method === HttpMethod.GET) {
-    const autocompletes = await prisma.tag.findMany({
-      orderBy: {
-        name: "asc",
-      },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    })
-
-    res.status(200).json(autocompletes)
+  if (req.method !== HttpMethod.GET) {
+    res.setHeader("Allow", [HttpMethod.GET])
+    return res.status(405).end(`${req.method}メソッドはサポートされていません。`)
   }
+
+  const autocompletes = await prisma.tag.findMany({
+    orderBy: {
+      name: "asc",
+    },
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+    },
+  })
+
+  res.status(200).json(autocompletes)
 }

@@ -2,7 +2,7 @@ import { Combobox, Dialog, Switch, Transition } from "@headlessui/react"
 import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
-import { HttpMethod } from "@src/types"
+import { HttpMethod, Tag } from "@src/types"
 import { getKnowledgePath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -42,12 +42,6 @@ export default function Post() {
   ]
 
   const [tip, setTip] = useState(() => tipsList[Math.floor(Math.random() * tipsList.length)])
-
-  type Tag = {
-    id: string
-    name: string
-    icon?: string
-  }
 
   type Knowledge = {
     id: string
@@ -139,9 +133,9 @@ export default function Post() {
       })
 
       if (response.status !== 200) {
-        const paas = await response.json()
+        const json = await response.json()
 
-        toast.error(paas.error.message)
+        toast.error(json.error.message)
       } else {
         setChanged(false)
         toast.success(`変更を保存しました`)
@@ -172,9 +166,9 @@ export default function Post() {
       })
 
       if (response.status !== 200) {
-        const paas = await response.json()
+        const json = await response.json()
 
-        toast.error(paas.error.message)
+        toast.error(json.error.message)
       } else {
         setChanged(false)
         router.push(getKnowledgePath(knowledgeId as string))

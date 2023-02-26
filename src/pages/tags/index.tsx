@@ -1,3 +1,4 @@
+import { Tag } from "@prisma/client"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
@@ -9,14 +10,8 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { AiFillTag } from "react-icons/ai"
 
-interface tag {
-  id: string
-  name: string
-  icon?: string
-}
-
 type Props = {
-  tags: tag[]
+  tags: Tag[]
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
