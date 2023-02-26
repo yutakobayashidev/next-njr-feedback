@@ -59,19 +59,17 @@ const Page: NextPageWithLayout<Tag> = (props) => {
                 <AiFillTag size={50} color="#ee7800" className="mr-1" />
               </div>
             )}
-            <div className="mt-7 ml-0 flex flex-1 items-start md:mt-0 md:ml-7">
-              <div className="flex-1">
-                <h1 className="mb-2 font-inter text-2xl font-bold md:text-3xl">{name}</h1>
-                {description ? <p className="text-base">{description}</p> : null}
-              </div>
-              <div className="flex items-center text-center">
+            <div className="mt-7 ml-0 flex-1 md:mt-0 md:ml-7">
+              <div className="mb-2 flex items-center justify-center">
+                <h1 className="flex-1 font-inter text-2xl font-bold md:text-3xl">{name}</h1>
                 <Link
                   href={`/tags/${id}/edit`}
-                  className="rounded-md border bg-white px-2 py-1 text-gray-800 shadow-md"
+                  className="rounded-md border bg-white px-2 py-1 text-right text-gray-800 shadow-md"
                 >
                   表示を更新
                 </Link>
               </div>
+              {description ? <p className="text-base">{description}</p> : null}
             </div>
           </div>
         </div>
