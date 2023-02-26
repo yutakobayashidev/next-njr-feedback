@@ -109,7 +109,7 @@ export default function Post() {
       })
   }, [knowledge])
 
-  const { data: autocompletes } = useSWR<Array<Tag>>(`/api/autocompletes`, fetcher, {
+  const { data: autocompletes } = useSWR<Array<Tag>>(session && `/api/autocompletes`, fetcher, {
     dedupingInterval: 1000,
     onError: () => router.push("/"),
     revalidateOnFocus: false,
