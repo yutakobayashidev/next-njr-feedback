@@ -350,7 +350,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
   }
 
   const profile = await prisma.user.findUnique({
-    include: {
+    select: {
       _count: {
         select: {
           discussion: true,
@@ -364,6 +364,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
           icon: true,
         },
       },
+      bio: true,
+      contributor: true,
+      createdAt: true,
+      displayname: true,
+      handle: true,
+      image: true,
+      n_course: true,
+      role: true,
     },
     where: {
       handle: String(params?.handle),
