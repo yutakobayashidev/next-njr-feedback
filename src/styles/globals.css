@@ -8,14 +8,16 @@
   }
 }
 
-.twemoji {
-  display: none;
-}
+@layer components {
+  .twemoji {
+    display: none;
+  }
 
-body[data-use-twemoji="true"] .twemoji {
-  display: inline-block;
-}
+  body[data-use-twemoji="true"] .twemoji {
+    @apply inline-block;
+  }
 
-body[data-use-twemoji="true"] .native-emoji {
-  display: none;
+  body[data-use-twemoji="true"] .native-emoji {
+    @apply hidden;
+  }
 }
