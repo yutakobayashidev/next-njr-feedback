@@ -47,6 +47,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
     displayname,
     handle,
     image,
+    leave,
     n_course,
     role,
   } = props
@@ -142,7 +143,9 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                       ></img>
                       <span>
                         {role === "student"
-                          ? n_course === "commute"
+                          ? leave
+                            ? "卒業・退会済み"
+                            : n_course === "commute"
                             ? "通学コース" + "生徒"
                             : n_course === "net"
                             ? "ネットコース" + "生徒"
@@ -353,6 +356,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
       displayname: true,
       handle: true,
       image: true,
+      leave: true,
       n_course: true,
       role: true,
     },
