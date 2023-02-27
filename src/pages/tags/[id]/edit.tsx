@@ -28,6 +28,14 @@ const Page: NextPageWithLayout = () => {
     revalidateOnFocus: false,
   })
 
+  const [data, setData] = useState<TagProps>({
+    id: "",
+    name: "",
+    description: "",
+    icon: "",
+    official: "",
+  })
+
   useEffect(() => {
     if (tag)
       setData({
@@ -38,14 +46,6 @@ const Page: NextPageWithLayout = () => {
         official: tag.official ?? null,
       })
   }, [tag])
-
-  const [data, setData] = useState<TagProps>({
-    id: "",
-    name: "",
-    description: "",
-    icon: "",
-    official: "",
-  })
 
   const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
