@@ -311,7 +311,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
               </div>
               <div className="my-5 border-t pt-5">
                 <h2 className="mb-5 text-2xl font-bold">
-                  このナレッジの貢献者 ({contributors.length}人)
+                  ✨ このナレッジの貢献者 ({contributors.length}人)
                 </h2>
                 <p className="mb-4 text-base text-gray-600">
                   情報が古い場合や問題点を見つけた場合は
