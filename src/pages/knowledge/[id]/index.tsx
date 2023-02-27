@@ -3,6 +3,7 @@ import "dayjs/locale/ja"
 import { Menu, Transition } from "@headlessui/react"
 import { Alert } from "@src/components/Alert"
 import { ContentWrapper } from "@src/components/ContentWrapper"
+import { EmojiOrTwemoji } from "@src/components/Emoji"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
@@ -141,7 +142,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
             <header className="mb-16">
               <div>
                 <div className="flex justify-center text-8xl">
-                  <span>{emoji}</span>
+                  <EmojiOrTwemoji emoji={emoji} />
                 </div>
                 <h1 className="mt-10 text-center text-3xl font-bold lg:text-5xl lg:leading-normal">
                   <span>{title ? title : "無題のナレッジ"}</span>
