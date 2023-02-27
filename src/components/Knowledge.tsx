@@ -1,6 +1,7 @@
 import "dayjs/locale/ja"
 
 import { Contributors } from "@src/components/Contributors"
+import { EmojiOrTwemoji } from "@src/components/Emoji"
 import { KnowledgeProps } from "@src/types"
 import { getKnowledgePath } from "@src/utils/helper"
 import dayjs from "dayjs"
@@ -20,7 +21,7 @@ export const Knowledge: React.FC<{ knowledge: KnowledgeProps }> = ({ knowledge }
           href={getKnowledgePath(knowledge.id)}
           className="mr-4 flex h-16 w-16 items-center justify-center rounded-lg bg-gray-100 text-4xl"
         >
-          <span>{knowledge.emoji}</span>
+          <EmojiOrTwemoji emoji={knowledge.emoji} />
         </Link>
         <div className="w-[calc(100%-100px)]">
           <Link

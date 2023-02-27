@@ -7,3 +7,15 @@
     @apply text-blue-400;
   }
 }
+
+.twemoji {
+  display: none;
+}
+
+body[data-use-twemoji="true"] .twemoji {
+  display: inline-block;
+}
+
+body[data-use-twemoji="true"] .native-emoji {
+  display: none;
+}
