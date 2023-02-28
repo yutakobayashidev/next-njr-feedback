@@ -349,9 +349,9 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                               text={
                                 contributor.user.role === "student"
                                   ? contributor.user.n_course === "commute"
-                                    ? "通学コース" + "生徒"
+                                    ? "通学生徒"
                                     : contributor.user.n_course === "net"
-                                    ? "ネットコース" + "生徒"
+                                    ? "ネット生徒"
                                     : "生徒"
                                   : "メンター / TA"
                               }

@@ -127,13 +127,13 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     で追加してみましょう。
                   </p>
                 ) : null}
-                <div className="mt-2 flex items-center">
-                  <span className="mr-1 flex items-center font-medium">
+                <div className="mt-2 flex flex-wrap items-center">
+                  <span className="mr-1 mb-2 flex items-center font-medium">
                     <MdDateRange size={20} className="mr-1 text-gray-500" />
                     <span>{dayjs(createdAt).format("YYYY年M月")}に参加</span>
                   </span>
                   {role && (
-                    <span className="mr-2 flex items-center font-medium">
+                    <span className="mr-2 mb-2 flex items-center font-medium">
                       <img
                         src="/n-school.png"
                         alt="N中等部"
@@ -146,9 +146,9 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                           ? leave
                             ? "卒業・退会済み"
                             : n_course === "commute"
-                            ? "通学コース" + "生徒"
+                            ? "通学生徒"
                             : n_course === "net"
-                            ? "ネットコース" + "生徒"
+                            ? "ネット" + "生徒"
                             : "生徒"
                           : "メンター / TA"}
                       </span>
@@ -156,7 +156,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                   )}
                   {contributor && (
                     <>
-                      <span className="mr-1">
+                      <span className="mr-1 mb-2">
                         <Tooltip text="コントリビューター">
                           <FaCode size={20} color="#61bd8d" className="mr-1" />
                         </Tooltip>
@@ -164,7 +164,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                     </>
                   )}
                   {badges.map((badge) => (
-                    <Link href={getTagPath(badge.id)} key={badge.id} className="mr-1">
+                    <Link href={getTagPath(badge.id)} key={badge.id} className="mr-1 mb-1">
                       <Tooltip text={badge.name}>
                         {badge.icon ? (
                           <img

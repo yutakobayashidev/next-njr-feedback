@@ -190,7 +190,7 @@ export const CommentCard: React.FC<{
                             <button
                               className={classNames(
                                 active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                                "flex border-b-2 border-gray-100 items-center text-base px-4 py-2 w-full",
+                                "flex items-center text-base px-4 py-2 w-full",
                               )}
                               onClick={() =>
                                 copyTextToClipboard(
