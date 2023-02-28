@@ -22,7 +22,6 @@ const Page: NextPageWithLayout = () => {
   return (
     <Layout>
       <>
-        {" "}
         <MyPageSeo path="/dashboard" title="ブックマーク" />
         <ContentWrapper>
           <div className="my-10 block items-start md:flex">
