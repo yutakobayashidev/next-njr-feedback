@@ -108,112 +108,114 @@ const Page: NextPageWithLayout = () => {
   if (!session) return <Loader />
 
   return (
-    <>
-      {tag && tag.name && <MyPageSeo path={"/"} title={tag.name} />}
-      <div className="min-h-screen py-12">
-        {data && tag && (
-          <div className="mx-auto max-w-prose px-4 md:px-8">
-            {tag.name && (
-              <>
-                <h1 className="mb-4 text-center font-inter text-5xl font-bold">{tag.name}</h1>
-                <p className="mb-6 text-center text-lg text-gray-500">
-                  {tag.name}の古い情報などがあれば更新してください
-                </p>
-              </>
-            )}
-            <div>
-              <label className="my-2 flex items-center text-base font-medium">アイコン</label>
-              <div className="bg-gray-50 py-6 px-4">
-                <div className="flex items-center justify-center">
-                  {data.icon ? (
-                    <img
-                      src={data.icon}
-                      height={100}
-                      width={100}
-                      alt={data.name}
-                      className="mr-8 aspect-square rounded-full bg-white object-cover"
-                    />
-                  ) : (
-                    <div className="mr-8 flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white">
-                      <AiFillTag size={50} color="#ee7800" className="mr-1" />
-                    </div>
-                  )}
+    <Layout>
+      <>
+        {tag && tag.name && <MyPageSeo path={"/"} title={tag.name} />}
+        <div className="min-h-screen py-12">
+          {data && tag && (
+            <div className="mx-auto max-w-prose px-4 md:px-8">
+              {tag.name && (
+                <>
+                  <h1 className="mb-4 text-center font-inter text-5xl font-bold">{tag.name}</h1>
+                  <p className="mb-6 text-center text-lg text-gray-500">
+                    {tag.name}の古い情報などがあれば更新してください
+                  </p>
+                </>
+              )}
+              <div>
+                <label className="my-2 flex items-center text-base font-medium">アイコン</label>
+                <div className="bg-gray-50 py-6 px-4">
+                  <div className="flex items-center justify-center">
+                    {data.icon ? (
+                      <img
+                        src={data.icon}
+                        height={100}
+                        width={100}
+                        alt={data.name}
+                        className="mr-8 aspect-square rounded-full bg-white object-cover"
+                      />
+                    ) : (
+                      <div className="mr-8 flex h-[100px] w-[100px] items-center justify-center rounded-full bg-white">
+                        <AiFillTag size={50} color="#ee7800" className="mr-1" />
+                      </div>
+                    )}
 
-                  <label
-                    className="cursor-pointer rounded-md border bg-white px-2 py-1 text-lg font-bold text-gray-800 shadow-lg  "
-                    htmlFor="single"
-                  >
-                    画像を選択
-                  </label>
-                  <input
-                    onChange={(e) => handleImageChange(e)}
-                    type="file"
-                    className="hidden"
-                    id="single"
-                    accept=".jpg, .jpeg, .png, .gif"
-                  />
+                    <label
+                      className="cursor-pointer rounded-md border bg-white px-2 py-1 text-lg font-bold text-gray-800 shadow-lg  "
+                      htmlFor="single"
+                    >
+                      画像を選択
+                    </label>
+                    <input
+                      onChange={(e) => handleImageChange(e)}
+                      type="file"
+                      className="hidden"
+                      id="single"
+                      accept=".jpg, .jpeg, .png, .gif"
+                    />
+                  </div>
                 </div>
+                <label className="my-2 flex items-center text-base font-medium">
+                  表示名<span className="ml-1 text-red-800">*</span>
+                </label>
+                <input
+                  name="name"
+                  className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                  placeholder="表示名を入力してください"
+                  type="text"
+                  value={data.name}
+                  onInput={(e) =>
+                    setData({
+                      ...data,
+                      name: (e.target as HTMLTextAreaElement).value,
+                    })
+                  }
+                />
+                <label className="my-2 flex items-center text-base font-medium">詳細</label>
+                <TextareaAutosize
+                  name="description"
+                  minRows={6}
+                  className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                  placeholder="説明を入力してください"
+                  value={data.description || ""}
+                  onInput={(e) =>
+                    setData({
+                      ...data,
+                      description: (e.target as HTMLTextAreaElement).value,
+                    })
+                  }
+                />
+                <label className="my-2 flex items-center text-base font-medium">公式サイト</label>
+                <input
+                  name="official"
+                  type="text"
+                  className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                  placeholder={"URLを入力してください"}
+                  value={data.official || ""}
+                  onInput={(e) =>
+                    setData({
+                      ...data,
+                      official: (e.target as HTMLTextAreaElement).value,
+                    })
+                  }
+                />
               </div>
-              <label className="my-2 flex items-center text-base font-medium">
-                表示名<span className="ml-1 text-red-800">*</span>
-              </label>
-              <input
-                name="name"
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-                placeholder="表示名を入力してください"
-                type="text"
-                value={data.name}
-                onInput={(e) =>
-                  setData({
-                    ...data,
-                    name: (e.target as HTMLTextAreaElement).value,
-                  })
-                }
-              />
-              <label className="my-2 flex items-center text-base font-medium">詳細</label>
-              <TextareaAutosize
-                name="description"
-                minRows={6}
-                className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-                placeholder="説明を入力してください"
-                value={data.description || ""}
-                onInput={(e) =>
-                  setData({
-                    ...data,
-                    description: (e.target as HTMLTextAreaElement).value,
-                  })
-                }
-              />
-              <label className="my-2 flex items-center text-base font-medium">公式サイト</label>
-              <input
-                name="official"
-                type="text"
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-                placeholder={"URLを入力してください"}
-                value={data.official || ""}
-                onInput={(e) =>
-                  setData({
-                    ...data,
-                    official: (e.target as HTMLTextAreaElement).value,
-                  })
-                }
-              />
+              <div className="my-6 text-center">
+                <button
+                  onClick={() => {
+                    updateTag(data)
+                  }}
+                  disabled={!data.name}
+                  className="inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
+                >
+                  {publishing ? "更新中..." : "更新する"}
+                </button>
+              </div>
             </div>
-            <div className="my-6 text-center">
-              <button
-                onClick={() => {
-                  updateTag(data)
-                }}
-                disabled={!data.name}
-                className="inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
-              >
-                {publishing ? "更新中..." : "更新する"}
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+          )}
+        </div>
+      </>
+    </Layout>
   )
 }
 

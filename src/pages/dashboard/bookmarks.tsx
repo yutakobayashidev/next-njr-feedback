@@ -20,42 +20,43 @@ const Page: NextPageWithLayout = () => {
   )
 
   return (
-    <>
-      <MyPageSeo path="/dashboard" title="ブックマーク" />
-      <ContentWrapper>
-        <div className="my-10 block items-start md:flex">
-          <DashboardSidebar />
-          <div className="ml-auto max-w-4xl flex-1">
-            <h1 className="text-4xl font-bold">ブックマーク</h1>
-            <div className="min-h-screen">
-              <p className="my-6 text-gray-600">あなたがブックマークしたナレッジの一覧です。</p>
-              {isValidating ? (
-                <UserLoader />
-              ) : (
-                <>
-                  {bookmarks && bookmarks.length > 0 ? (
-                    <>
-                      <div className="overflow-hidden rounded-lg border">
-                        {bookmarks.map((post) => (
-                          <Knowledge knowledge={post.knowledge} key={post.id} />
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <NotContent />
-                    </>
-                  )}
-                </>
-              )}
+    <Layout>
+      <>
+        {" "}
+        <MyPageSeo path="/dashboard" title="ブックマーク" />
+        <ContentWrapper>
+          <div className="my-10 block items-start md:flex">
+            <DashboardSidebar />
+            <div className="ml-auto max-w-4xl flex-1">
+              <h1 className="text-4xl font-bold">ブックマーク</h1>
+              <div className="min-h-screen">
+                <p className="my-6 text-gray-600">あなたがブックマークしたナレッジの一覧です。</p>
+                {isValidating ? (
+                  <UserLoader />
+                ) : (
+                  <>
+                    {bookmarks && bookmarks.length > 0 ? (
+                      <>
+                        <div className="overflow-hidden rounded-lg border">
+                          {bookmarks.map((post) => (
+                            <Knowledge knowledge={post.knowledge} key={post.id} />
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <NotContent />
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </ContentWrapper>
-    </>
+        </ContentWrapper>
+      </>
+    </Layout>
   )
 }
-
-Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export default Page

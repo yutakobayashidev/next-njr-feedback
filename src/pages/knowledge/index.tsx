@@ -19,48 +19,50 @@ type Props = {
 
 const Page: NextPageWithLayout<Props> = (props) => {
   return (
-    <>
-      <MyPageSeo
-        path="/knowledge"
-        title="ナレッジ"
-        description="ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。"
-      />
-      <section className="bg-gray-50 py-10">
-        <ContentWrapper>
-          <h1 className="mb-7 text-2xl font-bold md:text-3xl">📈 アクセスの多い情報</h1>
-          <p className="mb-5 text-lg text-gray-500">
-            ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
-            <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
-          </p>
-          {props.views.length > 0 ? (
-            <div className="overflow-hidden rounded-lg border">
-              {props.views.map((knowledge) => (
-                <Knowledge knowledge={knowledge} key={knowledge.id} />
-              ))}
-            </div>
-          ) : (
-            <NotContent />
-          )}
-        </ContentWrapper>
-      </section>
-      <section className="bg-white py-10">
-        <ContentWrapper>
-          <h3 className="mb-7 text-2xl font-bold md:text-3xl">📉 更新が必要な情報</h3>
-          <p className="mb-5 text-lg text-gray-500">
-            更新が行われていない順のナレッジです。古い情報などがあれば編集してみましょう。
-          </p>
-          {props.old.length > 0 ? (
-            <div className="overflow-hidden rounded-lg border">
-              {props.old.map((knowledge) => (
-                <Knowledge knowledge={knowledge} key={knowledge.id} />
-              ))}
-            </div>
-          ) : (
-            <NotContent />
-          )}
-        </ContentWrapper>
-      </section>
-    </>
+    <Layout>
+      <>
+        <MyPageSeo
+          path="/knowledge"
+          title="ナレッジ"
+          description="ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。"
+        />
+        <section className="bg-gray-50 py-10">
+          <ContentWrapper>
+            <h1 className="mb-7 text-2xl font-bold md:text-3xl">📈 アクセスの多い情報</h1>
+            <p className="mb-5 text-lg text-gray-500">
+              ナレッジはN中等部内の様々な情報を整理するためのコンテンツです。
+              <Link href="/about-knowledge">ナレッジについて詳しく →</Link>
+            </p>
+            {props.views.length > 0 ? (
+              <div className="overflow-hidden rounded-lg border">
+                {props.views.map((knowledge) => (
+                  <Knowledge knowledge={knowledge} key={knowledge.id} />
+                ))}
+              </div>
+            ) : (
+              <NotContent />
+            )}
+          </ContentWrapper>
+        </section>
+        <section className="bg-white py-10">
+          <ContentWrapper>
+            <h3 className="mb-7 text-2xl font-bold md:text-3xl">📉 更新が必要な情報</h3>
+            <p className="mb-5 text-lg text-gray-500">
+              更新が行われていない順のナレッジです。古い情報などがあれば編集してみましょう。
+            </p>
+            {props.old.length > 0 ? (
+              <div className="overflow-hidden rounded-lg border">
+                {props.old.map((knowledge) => (
+                  <Knowledge knowledge={knowledge} key={knowledge.id} />
+                ))}
+              </div>
+            ) : (
+              <NotContent />
+            )}
+          </ContentWrapper>
+        </section>
+      </>
+    </Layout>
   )
 }
 

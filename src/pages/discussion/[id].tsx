@@ -221,202 +221,204 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
   if (!session) return <Loader />
 
   return (
-    <>
-      <MyPageSeo path={getDiscussionPath(id)} title={title} />
-      {last_comment_created_at && dayjs(last_comment_created_at).diff(dayjs(), "month") < -6 && (
-        <Alert>💡最後のコメントが追加されてから半年以上が経過しています</Alert>
-      )}
-      <div className="py-16">
-        <ContentWrapper>
-          <div className="block md:flex md:items-start">
-            <div className="md:w-[calc(100%_-_27%)] md:pr-10">
-              <div className="flex items-center">
-                <div
-                  className={`${
-                    archived ? "bg-gray-400" : "bg-primary"
-                  }  mr-2  inline-block rounded-full py-2 px-4 font-inter text-sm font-bold text-white`}
-                >
-                  <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
-                </div>
-                <span className="mr-2 text-gray-600">
-                  {last_comment_created_at
-                    ? dayjs(last_comment_created_at).fromNow() + "にコメント追加"
-                    : dayjs(createdAt).fromNow() + "に作成"}
-                </span>
-                <span className="flex items-center text-gray-500">
-                  <AiOutlineEye className="mr-1" />
-                  {views}
-                </span>
-              </div>
-              {showtitleEditForm ? (
-                <div className="my-4 flex">
-                  <input
-                    name="title"
-                    value={discussiontitle}
-                    placeholder="タイトルを入力"
-                    className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  <button
-                    className={`ml-8 shrink-0 rounded-md px-2 font-bold text-white ${
-                      !discussiontitle ? "bg-gray-300 opacity-95" : "bg-primary hover:opacity-90"
-                    }`}
-                    disabled={!discussiontitle}
-                    onClick={async () => {
-                      await handletitle()
-                    }}
-                  >
-                    保存する
-                  </button>
-                </div>
-              ) : (
-                <h1 className="my-4 font-inter text-3xl font-bold leading-10">
-                  {discussiontitle}
-                  {session.user.id == user.id && (
-                    <button onClick={() => setTitleEditForm(true)}>
-                      <BsPencil className="ml-2 text-xl text-gray-400" />
-                    </button>
-                  )}
-                </h1>
-              )}
-              <div className="block text-sm md:flex md:items-center">
+    <Layout>
+      <>
+        <MyPageSeo path={getDiscussionPath(id)} title={title} />
+        {last_comment_created_at && dayjs(last_comment_created_at).diff(dayjs(), "month") < -6 && (
+          <Alert>💡最後のコメントが追加されてから半年以上が経過しています</Alert>
+        )}
+        <div className="py-16">
+          <ContentWrapper>
+            <div className="block md:flex md:items-start">
+              <div className="md:w-[calc(100%_-_27%)] md:pr-10">
                 <div className="flex items-center">
-                  {course.map((post) => (
-                    <>
-                      <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 font-bold text-course">
-                        {post.name}コース
-                      </span>
-                    </>
-                  ))}
-                  <Link
-                    href={getReportPath()}
-                    className="flex items-center text-base text-gray-500"
+                  <div
+                    className={`${
+                      archived ? "bg-gray-400" : "bg-primary"
+                    }  mr-2  inline-block rounded-full py-2 px-4 font-inter text-sm font-bold text-white`}
                   >
-                    <AiOutlineFlag className="mr-1" />
-                    報告
-                  </Link>
+                    <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
+                  </div>
+                  <span className="mr-2 text-gray-600">
+                    {last_comment_created_at
+                      ? dayjs(last_comment_created_at).fromNow() + "にコメント追加"
+                      : dayjs(createdAt).fromNow() + "に作成"}
+                  </span>
+                  <span className="flex items-center text-gray-500">
+                    <AiOutlineEye className="mr-1" />
+                    {views}
+                  </span>
                 </div>
-              </div>
-              <div className="py-10">
-                <div className="flex">
-                  <div className="relative">
-                    <Link href={getUserpagePath(user.handle)} className="block">
-                      <img
-                        height={65}
-                        width={65}
-                        src={user.image}
-                        className="mr-6 aspect-square h-auto rounded-full object-cover"
-                        alt={user.displayname}
-                      />
-                    </Link>
-                    {user.role == "teacher" && (
-                      <span className="absolute right-7 top-[50px]">
-                        <img
-                          className="h-5 w-5 rounded-md border"
-                          src="https://nnn.ed.jp/assets/img/touch_icon.png"
-                          alt="角川ドワンゴ学園職員"
-                        ></img>
-                      </span>
-                    )}
-                  </div>
-                  <div className="mr-8 flex-1">
-                    <Link
-                      href={getUserpagePath(user.handle)}
-                      className="mr-2 font-inter text-lg font-bold text-gray-800  "
-                    >
-                      {user.displayname}
-                    </Link>
-                    <time className="text-sm text-gray-500" dateTime={updatedAt}>
-                      {dayjs(createdAt).fromNow()}
-                    </time>
-                    <div className="mt-2 font-inter text-lg leading-7 text-gray-800">{content}</div>
-                  </div>
-                  <div className="flex flex-col text-center">
+                {showtitleEditForm ? (
+                  <div className="my-4 flex">
+                    <input
+                      name="title"
+                      value={discussiontitle}
+                      placeholder="タイトルを入力"
+                      className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
                     <button
+                      className={`ml-8 shrink-0 rounded-md px-2 font-bold text-white ${
+                        !discussiontitle ? "bg-gray-300 opacity-95" : "bg-primary hover:opacity-90"
+                      }`}
+                      disabled={!discussiontitle}
                       onClick={async () => {
-                        await addvotes(id as string)
+                        await handletitle()
                       }}
                     >
-                      <IoTriangle
-                        className={` ${
-                          isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"
-                        }`}
-                        aria-hidden="true"
-                      />
+                      保存する
                     </button>
-                    <div className="my-3 text-gray-600">{voteCount}</div>
+                  </div>
+                ) : (
+                  <h1 className="my-4 font-inter text-3xl font-bold leading-10">
+                    {discussiontitle}
+                    {session.user.id == user.id && (
+                      <button onClick={() => setTitleEditForm(true)}>
+                        <BsPencil className="ml-2 text-xl text-gray-400" />
+                      </button>
+                    )}
+                  </h1>
+                )}
+                <div className="block text-sm md:flex md:items-center">
+                  <div className="flex items-center">
+                    {course.map((post) => (
+                      <>
+                        <span className="mr-2 rounded-2xl bg-coursebg px-3 py-1 font-bold text-course">
+                          {post.name}コース
+                        </span>
+                      </>
+                    ))}
+                    <Link
+                      href={getReportPath()}
+                      className="flex items-center text-base text-gray-500"
+                    >
+                      <AiOutlineFlag className="mr-1" />
+                      報告
+                    </Link>
                   </div>
                 </div>
-              </div>
-              <h3 className="my-5 text-2xl font-bold">{allcomments.length}件のコメント</h3>
-              {allcomments.length > 0 ? (
-                <>
-                  {allcomments.map((comment) => (
-                    <CommentCard
-                      onDeleteComment={deleteComment}
-                      onUpdateComment={updateComment}
-                      key={comment.id}
-                      comment={comment}
-                      session={session}
-                    />
-                  ))}
-                </>
-              ) : (
-                <NotContent message="最初のコメントを投稿しましょう" />
-              )}
-              <div className="my-10">
-                <div className="flex items-start">
-                  {session && session.user && session.user.image && session.user.displayname && (
-                    <img
-                      className="mr-4 aspect-square rounded-full object-cover"
-                      src={session.user.image}
-                      height={60}
-                      width={60}
-                      alt={session.user.displayname}
-                    ></img>
-                  )}
-                  <div className="flex-1">
-                    <TextareaAutosize
-                      name="name"
-                      minRows={3}
-                      onChange={(e) => setContent(e.target.value)}
-                      value={commentcontent}
-                      placeholder={
-                        allcomments.length === 0
-                          ? "最初のコメントを投稿するチャンスです。"
-                          : "コメントして議論に参加しましょう。"
-                      }
-                      className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
-                    />
-                    <div className="text-right">
-                      <button
-                        disabled={!commentcontent}
-                        type="submit"
-                        onClick={sendComment}
-                        className="my-4 inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
+                <div className="py-10">
+                  <div className="flex">
+                    <div className="relative">
+                      <Link href={getUserpagePath(user.handle)} className="block">
+                        <img
+                          height={65}
+                          width={65}
+                          src={user.image}
+                          className="mr-6 aspect-square h-auto rounded-full object-cover"
+                          alt={user.displayname}
+                        />
+                      </Link>
+                      {user.role == "teacher" && (
+                        <span className="absolute right-7 top-[50px]">
+                          <img
+                            className="h-5 w-5 rounded-md border"
+                            src="https://nnn.ed.jp/assets/img/touch_icon.png"
+                            alt="角川ドワンゴ学園職員"
+                          ></img>
+                        </span>
+                      )}
+                    </div>
+                    <div className="mr-8 flex-1">
+                      <Link
+                        href={getUserpagePath(user.handle)}
+                        className="mr-2 font-inter text-lg font-bold text-gray-800  "
                       >
-                        コメントを投稿
+                        {user.displayname}
+                      </Link>
+                      <time className="text-sm text-gray-500" dateTime={updatedAt}>
+                        {dayjs(createdAt).fromNow()}
+                      </time>
+                      <div className="mt-2 font-inter text-lg leading-7 text-gray-800">
+                        {content}
+                      </div>
+                    </div>
+                    <div className="flex flex-col text-center">
+                      <button
+                        onClick={async () => {
+                          await addvotes(id as string)
+                        }}
+                      >
+                        <IoTriangle
+                          className={` ${
+                            isVoted ? "text-primary" : "text-gray-600 hover:text-gray-500"
+                          }`}
+                          aria-hidden="true"
+                        />
                       </button>
+                      <div className="my-3 text-gray-600">{voteCount}</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="my-5 text-2xl font-bold">{allcomments.length}件のコメント</h3>
+                {allcomments.length > 0 ? (
+                  <>
+                    {allcomments.map((comment) => (
+                      <CommentCard
+                        onDeleteComment={deleteComment}
+                        onUpdateComment={updateComment}
+                        key={comment.id}
+                        comment={comment}
+                        session={session}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <NotContent message="最初のコメントを投稿しましょう" />
+                )}
+                <div className="my-10">
+                  <div className="flex items-start">
+                    {session && session.user && session.user.image && session.user.displayname && (
+                      <img
+                        className="mr-4 aspect-square rounded-full object-cover"
+                        src={session.user.image}
+                        height={60}
+                        width={60}
+                        alt={session.user.displayname}
+                      ></img>
+                    )}
+                    <div className="flex-1">
+                      <TextareaAutosize
+                        name="name"
+                        minRows={3}
+                        onChange={(e) => setContent(e.target.value)}
+                        value={commentcontent}
+                        placeholder={
+                          allcomments.length === 0
+                            ? "最初のコメントを投稿するチャンスです。"
+                            : "コメントして議論に参加しましょう。"
+                        }
+                        className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                      />
+                      <div className="text-right">
+                        <button
+                          disabled={!commentcontent}
+                          type="submit"
+                          onClick={sendComment}
+                          className="my-4 inline-flex h-12 w-36 items-center justify-center rounded-md bg-primary text-center font-bold text-white hover:enabled:hover:bg-blue-500 disabled:bg-gray-300 disabled:opacity-90"
+                        >
+                          コメントを投稿
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <CommentSidebar
+                archived={archived}
+                archived_time={archived_time}
+                status={status}
+                props={props}
+                session={session}
+              />
             </div>
-            <CommentSidebar
-              archived={archived}
-              archived_time={archived_time}
-              status={status}
-              props={props}
-              session={session}
-            />
-          </div>
-        </ContentWrapper>
-      </div>
-    </>
+          </ContentWrapper>
+        </div>
+      </>
+    </Layout>
   )
 }
-
-Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
