@@ -1,12 +1,13 @@
 import { RadioGroup } from "@headlessui/react"
 import { config } from "@site.config"
+import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { HttpMethod, UserSettings } from "@src/types"
 import JSConfetti from "js-confetti"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import { AiFillCheckCircle } from "react-icons/ai"
@@ -14,18 +15,13 @@ import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
 
 const Page: NextPage = () => {
-  const { data: session } = useSession()
+  const session = useRequireAuth()
+
   const { data: user } = useSWR<UserSettings>(session && `/api/me`, fetcher)
   const [disabled, setDisabled] = useState(true)
   const [thanks, setThanks] = useState(false)
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
 
   const [data, setData] = useState<UserSettings>({
     id: "",
@@ -139,6 +135,8 @@ const Page: NextPage = () => {
       document.dispatchEvent(event)
     }
   }
+
+  if (!session) return <Loader />
 
   return (
     <>
