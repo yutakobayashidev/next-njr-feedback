@@ -13,10 +13,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
-import { useSession } from "next-auth/react"
-import { useEffect } from "react"
 import { remark } from "remark"
 import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
@@ -34,47 +31,46 @@ const Page: NextPageWithLayout<Props> = (props) => {
   const { id: diffid, title, createdAt } = props.diff
   const { id } = props.knowledge
 
-  const { data: session } = useSession()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
   return (
-    <>
-      <MyPageSeo
-        path={`/knowledge/${id}/diff/${diffid}`}
-        title={title ? title : "無題のナレッジ"}
-      />
-      <Alert>
-        💡 {dayjs(createdAt).fromNow()}に作成された履歴を表示しています
-        {id && (
-          <span className="ml-2">
-            <Link className="my-3 rounded-md border-2 px-3 text-white" href={getKnowledgePath(id)}>
-              最新のページへ移動
-            </Link>
-          </span>
-        )}
-      </Alert>
-      <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-        <article className="py-16">
-          <KnowledgePage knowledge={props.knowledge} diff={props.diff} />
-        </article>
-      </div>
-    </>
+    <Layout>
+      <>
+        <MyPageSeo
+          path={`/knowledge/${id}/diff/${diffid}`}
+          title={title ? title : "無題のナレッジ"}
+        />
+        <Alert>
+          💡 {dayjs(createdAt).fromNow()}に作成された履歴を表示しています
+          {id && (
+            <span className="ml-2">
+              <Link
+                className="my-3 rounded-md border-2 px-3 text-white"
+                href={getKnowledgePath(id)}
+              >
+                最新のページへ移動
+              </Link>
+            </span>
+          )}
+        </Alert>
+        <div className="mx-auto max-w-screen-lg px-4 md:px-8">
+          <article className="py-16">
+            <KnowledgePage knowledge={props.knowledge} diff={props.diff} />
+          </article>
+        </div>
+      </>
+    </Layout>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const knowledgedata = await prisma.knowledge.findFirst({
     include: {
