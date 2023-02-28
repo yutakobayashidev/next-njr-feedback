@@ -1,7 +1,7 @@
 import { Layout } from "@src/components/Layout"
 import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
-import useRequireAuth from "@src/lib/useRequireAuth"
+import useRequireAuth from "@src/hooks/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { useRouter } from "next/router"
 import { useState } from "react"
