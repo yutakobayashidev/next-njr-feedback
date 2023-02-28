@@ -275,33 +275,29 @@ const Page: NextPageWithLayout = () => {
                     })
                   }}
                 />
-                {user.role === "student" && (
-                  <>
-                    <h2 className="my-4 flex items-center text-lg font-medium">
-                      卒業・退会済みとしてマーク
-                    </h2>
-                    <p className="mb-2 text-sm text-gray-500">
-                      情報整理のため、卒業や退会時期が近づいているときに有効にしてください。
-                    </p>
-                    <input
-                      type="checkbox"
-                      name="agree"
-                      id="agreeCheck"
-                      checked={data.leave}
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          leave: !data.leave,
-                        })
-                      }
-                      className="h-4 w-4 rounded border-0 bg-gray-100 text-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-200 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label htmlFor="agreeCheck" className="ml-2 text-sm font-medium text-gray-600">
-                      卒業・退会済みとしてマーク
-                    </label>
-                  </>
-                )}
-
+                <h2 className="my-4 flex items-center text-lg font-medium">
+                  {user.role === "student" ? "卒業・退会済みとしてマーク" : "退職済みとしてマーク"}
+                </h2>
+                <p className="mb-2 text-sm text-gray-500">
+                  情報整理のため、{user.role === "student" ? "卒業や退会" : "退職"}
+                  時期が近づいているときに有効にしてください。
+                </p>
+                <input
+                  type="checkbox"
+                  name="agree"
+                  id="agreeCheck"
+                  checked={data.leave}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      leave: !data.leave,
+                    })
+                  }
+                  className="h-4 w-4 rounded border-0 bg-gray-100 text-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-200 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
+                <label htmlFor="agreeCheck" className="ml-2 text-sm font-medium text-gray-600">
+                  {user.role === "student" ? "卒業・退会" : "退職"}済みとしてマーク 
+                </label>
                 <div className="m-4 text-center">
                   <button
                     onClick={() => {

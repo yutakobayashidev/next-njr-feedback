@@ -103,9 +103,10 @@ const Page: NextPageWithLayout = () => {
                   あなたのSlack名
                 </label>
                 <input
+                  type="text"
                   name="name"
-                  className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                   placeholder={session?.user.displayname || "N中太郎"}
+                  className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                   onChange={(e) => setSlackName(e.target.value)}
                 />
                 <label className="my-2 flex items-center text-base font-medium">詳細</label>
@@ -120,8 +121,9 @@ const Page: NextPageWithLayout = () => {
                   違反が確認されるURL
                 </label>
                 <input
+                  type="text"
                   name="title"
-                  className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                  className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                   placeholder={config.siteRoot + "/..."}
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}

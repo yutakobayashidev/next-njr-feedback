@@ -348,11 +348,15 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
                             <Badge
                               text={
                                 contributor.user.role === "student"
-                                  ? contributor.user.n_course === "commute"
-                                    ? "通学コース" + "生徒"
+                                  ? contributor.user.leave
+                                    ? "卒業・退会済み"
+                                    : contributor.user.n_course === "commute"
+                                    ? "通学生徒"
                                     : contributor.user.n_course === "net"
-                                    ? "ネットコース" + "生徒"
+                                    ? "ネット生徒"
                                     : "生徒"
+                                  : contributor.user.leave
+                                  ? "退職済み"
                                   : "メンター / TA"
                               }
                             />
@@ -417,6 +421,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
               displayname: true,
               handle: true,
               image: true,
+              leave: true,
               n_course: true,
               role: true,
             },

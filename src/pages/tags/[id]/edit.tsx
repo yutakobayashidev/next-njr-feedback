@@ -158,6 +158,7 @@ const Page: NextPageWithLayout = () => {
                 name="name"
                 className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                 placeholder="表示名を入力してください"
+                type="text"
                 value={data.name}
                 onInput={(e) =>
                   setData({
@@ -170,7 +171,7 @@ const Page: NextPageWithLayout = () => {
               <TextareaAutosize
                 name="description"
                 minRows={6}
-                className=" w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                 placeholder="説明を入力してください"
                 value={data.description || ""}
                 onInput={(e) =>
@@ -183,7 +184,8 @@ const Page: NextPageWithLayout = () => {
               <label className="my-2 flex items-center text-base font-medium">公式サイト</label>
               <input
                 name="official"
-                className="w-full resize-none rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
+                type="text"
+                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 p-2"
                 placeholder={"URLを入力してください"}
                 value={data.official || ""}
                 onInput={(e) =>
