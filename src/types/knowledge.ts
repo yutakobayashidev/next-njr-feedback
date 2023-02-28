@@ -1,4 +1,4 @@
-import { Tag } from "@src/types"
+import { Tag, UserProps } from "@src/types"
 
 export type KnowledgeProps = {
   id: string
@@ -68,15 +68,5 @@ interface Badge {
 interface Contributor {
   id: string
   createdAt: string
-  user: {
-    id: string
-    name: string
-    badges: Badge[]
-    contributor: boolean
-    displayname: string
-    handle: string
-    image: string
-    n_course: string
-    role: string
-  }
+  user: UserProps
 }

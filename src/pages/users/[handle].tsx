@@ -150,6 +150,8 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                             : n_course === "net"
                             ? "ネット" + "生徒"
                             : "生徒"
+                          : leave
+                          ? "退職済み"
                           : "メンター / TA"}
                       </span>
                     </span>
