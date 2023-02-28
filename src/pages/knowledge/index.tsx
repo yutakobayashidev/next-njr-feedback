@@ -9,10 +9,8 @@ import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { KnowledgeProps } from "@src/types"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
-import { useSession } from "next-auth/react"
-import React, { useEffect } from "react"
+import React from "react"
 
 type Props = {
   old: KnowledgeProps[]
@@ -20,20 +18,6 @@ type Props = {
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
-  const { data: session } = useSession()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
-  if (!session) {
-    return null
-  }
-
   return (
     <>
       <MyPageSeo
@@ -84,10 +68,14 @@ Page.getLayout = (page) => <Layout>{page}</Layout>
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
+
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const views = await prisma.knowledge.findMany({
     orderBy: {

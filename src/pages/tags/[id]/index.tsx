@@ -6,6 +6,7 @@ import { NotContent } from "@src/components/NotContent"
 import Tab from "@src/components/Tab"
 import { fetcher } from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { KnowledgeProps, Tag, UserProps } from "@src/types"
@@ -14,7 +15,6 @@ import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { getServerSession } from "next-auth"
-import { useSession } from "next-auth/react"
 import { AiFillTag } from "react-icons/ai"
 import { FiArrowUpRight } from "react-icons/fi"
 import useSWR from "swr"
@@ -23,8 +23,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
   const { id, name, _count, description, icon, official } = props
 
   const router = useRouter()
-
-  const { data: session } = useSession()
+  const session = useRequireAuth()
 
   const { data: knowledge, isValidating: isKnowledgeValidating } = useSWR<Array<KnowledgeProps>>(
     session && (!router.query.tab || router.query.tab !== "users") && `/api/knowledge?tag=${id}`,
@@ -171,9 +170,14 @@ const Page: NextPageWithLayout<Tag> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  if (!session) {
-    return { props: { tags: [] } }
-  }
+
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const tags = await prisma.tag.findUnique({
     select: {

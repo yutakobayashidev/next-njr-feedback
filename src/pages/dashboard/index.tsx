@@ -6,16 +6,16 @@ import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { KnowledgeProps } from "@src/types"
 import { getKnowledgeEditPath } from "@src/utils/helper"
 import router from "next/router"
-import { useSession } from "next-auth/react"
 import { useState } from "react"
 import useSWR from "swr"
 
 const Page: NextPageWithLayout = () => {
-  const session = useSession()
+  const session = useRequireAuth()
 
   const [onknowledge, setcreateKnowledge] = useState(false)
 

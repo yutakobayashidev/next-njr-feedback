@@ -11,10 +11,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
-import { useSession } from "next-auth/react"
-import { useEffect } from "react"
 
 dayjs.extend(relativeTime)
 dayjs.locale("ja")
@@ -25,20 +22,6 @@ type Props = {
 }
 
 const Page: NextPageWithLayout<Props> = (props) => {
-  const { data: session } = useSession()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
-  if (!session) {
-    return <></>
-  }
-
   return (
     <>
       <MyPageSeo path="/discussion" title="ディスカッション" />
@@ -97,10 +80,14 @@ const Page: NextPageWithLayout<Props> = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
-  if (!session) {
-    res.statusCode = 403
-    return { props: { archive: [], open: [] } }
-  }
+
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const open = await prisma.discussion.findMany({
     include: {
@@ -135,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         select: {
           comments: true,
           votes: true,
-          },
+        },
       },
       user: {
         select: {

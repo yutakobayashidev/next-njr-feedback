@@ -174,7 +174,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
   if (!session) {
-    return { props: { discussion: [], knowledge: [] } }
+    return { props: {} }
   }
 
   const discussion = await prisma.discussion.findMany({

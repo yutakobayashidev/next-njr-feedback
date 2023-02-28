@@ -2,11 +2,11 @@ import { Combobox, Dialog, Switch, Transition } from "@headlessui/react"
 import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { HttpMethod, Tag } from "@src/types"
 import { getKnowledgePath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import { AiFillTag, AiOutlineCheck } from "react-icons/ai"
@@ -23,7 +23,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Post() {
-  const { data: session } = useSession()
+  const session = useRequireAuth()
   const router = useRouter()
 
   const [changed, setChanged] = useState(false)
@@ -55,12 +55,6 @@ export default function Post() {
     published: boolean
     tags: Tag[]
   }
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  })
 
   const { id: knowledgeId } = router.query
 

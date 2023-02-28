@@ -7,6 +7,7 @@ import { EmojiOrTwemoji } from "@src/components/Emoji"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import prisma from "@src/lib/prisma"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod, KnowledgeProps } from "@src/types"
@@ -21,9 +22,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
-import { useSession } from "next-auth/react"
 import { Fragment, useEffect, useState } from "react"
 import { AiFillTag, AiOutlineFlag } from "react-icons/ai"
 import { BiChevronDown } from "react-icons/bi"
@@ -68,8 +67,7 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
     updated_at,
   } = props
 
-  const { data: session } = useSession()
-  const router = useRouter()
+  const session = useRequireAuth()
 
   const [bookmarkCount, setBookmarkCount] = useState(Number(_count.bookmarks))
   const [bookmark, setBookmark] = useState(false)
@@ -95,12 +93,6 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
   }
 
   useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
-  useEffect(() => {
     const registerView = () =>
       fetch(`/api/knowledge/${id}/views`, {
         method: "POST",
@@ -110,10 +102,6 @@ const Page: NextPageWithLayout<KnowledgeProps> = (props) => {
       registerView()
     }
   }, [id, session])
-
-  if (!session) {
-    return null
-  }
 
   return (
     <>
@@ -384,10 +372,13 @@ Page.getLayout = (page) => <Layout>{page}</Layout>
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session) {
-    res.statusCode = 403
-    return { props: { knowledge: [] } }
-  }
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const data = await prisma.knowledge.findFirst({
     include: {

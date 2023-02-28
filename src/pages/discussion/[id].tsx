@@ -5,9 +5,11 @@ import { CommentCard } from "@src/components/Comment"
 import { ContentWrapper } from "@src/components/ContentWrapper"
 import { CommentSidebar } from "@src/components/DiscussionSideber"
 import { Layout } from "@src/components/Layout"
+import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import prisma from "@src/lib/prisma"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, HttpMethod } from "@src/types"
@@ -18,7 +20,6 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiOutlineEye, AiOutlineFlag } from "react-icons/ai"
@@ -46,7 +47,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     views,
     votes,
   } = props
-  const { data: session } = useSession()
+  const session = useRequireAuth()
 
   const [allcomments, setComments] = useState<CommentProps[]>([])
   const [commentcontent, setContent] = useState<string>("")
@@ -217,9 +218,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
     }
   }, [id, session])
 
-  if (!session) {
-    return null
-  }
+  if (!session) return <Loader />
 
   return (
     <>

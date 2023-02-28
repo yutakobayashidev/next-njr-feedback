@@ -10,6 +10,7 @@ import Tab from "@src/components/Tab"
 import { Tooltip } from "@src/components/Tooltip"
 import fetcher from "@src/lib/fetcher"
 import prisma from "@src/lib/prisma"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { DiscussionProps, KnowledgeProps, UserProps } from "@src/types"
@@ -21,8 +22,6 @@ import { GetServerSideProps } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { getServerSession } from "next-auth/next"
-import { useSession } from "next-auth/react"
-import { useEffect } from "react"
 import { AiFillTag } from "react-icons/ai"
 import { FaCode } from "react-icons/fa"
 import { MdDateRange } from "react-icons/md"
@@ -53,13 +52,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
   } = props
 
   const router = useRouter()
-  const { data: session } = useSession()
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
+  const session = useRequireAuth()
 
   const { data: discussions, isValidating: isDiscussionValidating } = useSWR<
     Array<DiscussionProps>
@@ -332,10 +325,13 @@ Page.getLayout = (page) => <Layout>{page}</Layout>
 export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session) {
-    res.statusCode = 403
-    return { props: { profile: [] } }
-  }
+  if (!session)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
 
   const profile = await prisma.user.findUnique({
     select: {

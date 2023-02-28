@@ -6,13 +6,13 @@ import { UserLoader } from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import { NotContent } from "@src/components/NotContent"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { BookmarksProps } from "@src/types"
-import { useSession } from "next-auth/react"
 import useSWR from "swr"
 
 const Page: NextPageWithLayout = () => {
-  const session = useSession()
+  const session = useRequireAuth()
 
   const { data: bookmarks, isValidating } = useSWR<Array<BookmarksProps>>(
     session && `/api/me/bookmarks`,

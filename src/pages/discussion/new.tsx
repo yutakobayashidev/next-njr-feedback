@@ -1,9 +1,10 @@
 import { Layout } from "@src/components/Layout"
+import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -14,8 +15,6 @@ const Page: NextPageWithLayout = () => {
   const [selectedCourses, setSelectedCourses] = useState<string[]>([])
 
   const router = useRouter()
-
-  const { data: session } = useSession()
 
   const handleCourseSelection = (id: string) => {
     if (selectedCourses.includes(id)) {
@@ -48,15 +47,8 @@ const Page: NextPageWithLayout = () => {
     }
   }
 
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
-
-  if (!session) {
-    return <></>
-  }
+  const session = useRequireAuth()
+  if (!session) return <Loader />
 
   return (
     <>

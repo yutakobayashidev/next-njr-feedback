@@ -5,10 +5,9 @@ import { DashboardSidebar } from "@src/components/DashboardSidebar"
 import { Layout } from "@src/components/Layout"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import type { NextPageWithLayout } from "@src/pages/_app"
 import { HttpMethod, UserSettings } from "@src/types"
-import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiFillCheckCircle } from "react-icons/ai"
@@ -16,18 +15,10 @@ import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
 
 const Page: NextPageWithLayout = () => {
-  const router = useRouter()
-
-  const { data: session } = useSession()
+  const session = useRequireAuth()
   const { data: user } = useSWR<UserSettings>(session && `/api/me`, fetcher)
   const [disabled, setDisabled] = useState(true)
   const [publishing, setPublishing] = useState(false)
-
-  useEffect(() => {
-    if (!session && typeof session != "undefined") {
-      router.push(`/`)
-    }
-  }, [session, router])
 
   const course = [
     {
@@ -296,7 +287,7 @@ const Page: NextPageWithLayout = () => {
                   className="h-4 w-4 rounded border-0 bg-gray-100 text-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-200 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                 />
                 <label htmlFor="agreeCheck" className="ml-2 text-sm font-medium text-gray-600">
-                  {user.role === "student" ? "卒業・退会" : "退職"}済みとしてマーク 
+                  {user.role === "student" ? "卒業・退会" : "退職"}済みとしてマーク
                 </label>
                 <div className="m-4 text-center">
                   <button

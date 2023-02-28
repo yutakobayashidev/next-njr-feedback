@@ -1,11 +1,12 @@
 import { Tag } from "@prisma/client"
 import { Layout } from "@src/components/Layout"
+import Loader from "@src/components/Loader"
 import { MyPageSeo } from "@src/components/MyPageSeo"
 import fetcher from "@src/lib/fetcher"
+import useRequireAuth from "@src/lib/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { HttpMethod } from "@src/types"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiFillTag } from "react-icons/ai"
@@ -13,7 +14,7 @@ import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
 
 const Page: NextPageWithLayout = () => {
-  const { data: session } = useSession()
+  const session = useRequireAuth()
 
   const router = useRouter()
   const [publishing, setPublishing] = useState(false)
@@ -103,6 +104,8 @@ const Page: NextPageWithLayout = () => {
       setPublishing(false)
     }
   }
+
+  if (!session) return <Loader />
 
   return (
     <>
