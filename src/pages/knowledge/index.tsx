@@ -66,8 +66,6 @@ const Page: NextPageWithLayout<Props> = (props) => {
   )
 }
 
-Page.getLayout = (page) => <Layout>{page}</Layout>
-
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 

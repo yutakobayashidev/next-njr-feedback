@@ -150,6 +150,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-Page.getLayout = (page) => <Layout>{page}</Layout>
-
 export default Page
