@@ -1,9 +1,8 @@
 import prisma from "@src/lib/prisma"
+import { withZod } from "@src/lib/withZod"
 import { NextApiRequest, NextApiResponse } from "next"
 import { Session } from "next-auth"
 import { z } from "zod"
-
-import { withZod } from "../withZod"
 
 /**
  * タグの取得
@@ -59,6 +58,11 @@ export async function updateTag(
   res: NextApiResponse,
   session: Session,
 ): Promise<unknown | NextApiResponse> {
+  if (!session.user.id)
+    return res.status(500).json({
+      error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
+    })
+
   const handlePut = withZod(
     z.object({
       body: z.object({
