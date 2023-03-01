@@ -62,13 +62,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       }),
       async (req, res) => {
         try {
-          const { bio, displayname, handle, image } = req.body
+          const { bio, displayname, handle, image, leave, n_course } = req.body
           const response = await prisma.user.update({
             data: {
               bio,
               displayname,
               handle,
               image,
+              leave,
+              n_course,
             },
             where: {
               id: String(session.user.id),
