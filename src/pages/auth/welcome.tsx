@@ -24,7 +24,6 @@ const Page: NextPage = () => {
   const router = useRouter()
 
   const [data, setData] = useState<UserSettings>({
-    id: "",
     name: "",
     bio: "",
     displayname: "",
@@ -39,7 +38,6 @@ const Page: NextPage = () => {
   useEffect(() => {
     if (user)
       setData({
-        id: user.id ?? "",
         name: user.name ?? "",
         bio: user.bio ?? "",
         displayname: user.displayname ?? "",
@@ -122,12 +120,15 @@ const Page: NextPage = () => {
       body: JSON.stringify({
         ...data,
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
       method: HttpMethod.PUT,
     })
     if (response.status !== 200) {
       setDisabled(false)
-      const paas = await response.json()
-      alert(paas.error.message)
+      const json = await response.json()
+      alert(json.issues[0].message)
     } else {
       setDisabled(false)
       setThanks(true)
