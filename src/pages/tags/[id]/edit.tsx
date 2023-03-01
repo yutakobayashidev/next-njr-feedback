@@ -90,11 +90,14 @@ const Page: NextPageWithLayout = () => {
         body: JSON.stringify({
           ...data,
         }),
+        headers: {
+          "Content-Type": "application/json",
+        },
         method: HttpMethod.PUT,
       })
       if (response.status !== 200) {
         const json = await response.json()
-        toast.error(json.error.message)
+        toast.error(json.issues[0].message)
       } else {
         toast.success(`変更を保存しました`)
       }

@@ -1,9 +1,11 @@
 import { Prisma } from "@prisma/client"
 import prisma from "@src/lib/prisma"
+import { withZod } from "@src/lib/withZod"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
 import { HttpMethod } from "@src/types"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
+import { z } from "zod"
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions)
@@ -34,97 +36,62 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     res.status(200).json(users)
   } else if (req.method === HttpMethod.PUT) {
-    const { id, bio, displayname, handle, image, leave, n_course } = JSON.parse(req.body)
-
-    if (!id || typeof id !== "string" || !displayname || !handle || !n_course || !image) {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: `必須項目が入力されていません`,
-        },
-      })
-    }
-
-    if (handle.length < 4 || handle.length > 30) {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: "ハンドルは4文字以上30文字以下で入力してください",
-        },
-      })
-    }
-
-    if (displayname.length > 30) {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: "表示名は30文字以内で入力してください",
-        },
-      })
-    }
-
-    if (bio?.length > 160) {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: "自己紹介は160文字以内で入力してください",
-        },
-      })
-    }
-
-    if (n_course !== "commute" && n_course !== "net" && n_course !== "nodata") {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: "クエリが不正です",
-        },
-      })
-    }
-
-    const handleRegExp = /^[a-zA-Z0-9]+$/
-    if (!handleRegExp.test(handle)) {
-      return res.status(400).json({
-        error: {
-          code: 400,
-          message: `ハンドルにはアルファベットと数字のみが使用できます`,
-        },
-      })
-    }
-
-    try {
-      const response = await prisma.user.update({
-        data: {
-          bio,
-          displayname,
-          handle,
-          image,
-          leave,
-          n_course,
-        },
-        where: {
-          id: id,
-        },
-      })
-
-      return res.status(200).json(response)
-    } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError)
-        if (error.code === "P2002") {
-          return res.status(400).json({
-            error: {
-              code: 400,
-              message: `このハンドルは既に使用されています。`,
+    const handlePut = withZod(
+      z.object({
+        body: z.object({
+          bio: z
+            .string({ invalid_type_error: "入力値に誤りがります" })
+            .max(160, { message: "自己紹介は160文字以内で入力してください。" })
+            .optional(),
+          displayname: z.string().max(30, { message: "表示名は30文字以内で入力してください" }),
+          handle: z
+            .string({ invalid_type_error: "入力値に誤りがります", required_error: "必須項目です" })
+            .regex(/^[a-zA-Z0-9]+$/, { message: "ハンドルは半角英数字で入力してください" })
+            .min(4, { message: "ハンドルは４文字以上で入力してください。" })
+            .max(30, { message: "ハンドルは30文字以内で入力してください。" }),
+          image: z.string({
+            invalid_type_error: "入力値に誤りがります",
+            required_error: "必須項目です",
+          }),
+          leave: z.boolean({
+            invalid_type_error: "入力値に誤りがります",
+            required_error: "必須項目です",
+          }),
+          n_course: z.enum(["commute", "net", "nodata"]),
+        }),
+      }),
+      async (req, res) => {
+        try {
+          const { bio, displayname, handle, image } = req.body
+          const response = await prisma.user.update({
+            data: {
+              bio,
+              displayname,
+              handle,
+              image,
+            },
+            where: {
+              id: String(session.user.id),
             },
           })
-        }
 
-      console.error(error)
-      return res.status(500).json({
-        error: {
-          code: 500,
-          message: `不明なエラーが発生しました`,
-        },
-      })
-    }
+          res.status(200).json(response)
+        } catch (error) {
+          console.error(error)
+          if (error instanceof Prisma.PrismaClientKnownRequestError)
+            if (error.code === "P2002") {
+              return res.status(400).json({
+                error: {
+                  code: 400,
+                  message: `このハンドルは既に使用されています。`,
+                },
+              })
+            }
+          return res.status(500).end(error)
+        }
+      },
+    )
+
+    return handlePut(req, res)
   }
 }

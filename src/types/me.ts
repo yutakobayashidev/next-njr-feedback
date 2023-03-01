@@ -3,16 +3,7 @@ import { KnowledgeProps } from "@src/types"
 
 export type UserSettings = Pick<
   UserProps,
-  | "id"
-  | "name"
-  | "bio"
-  | "displayname"
-  | "handle"
-  | "image"
-  | "leave"
-  | "n_course"
-  | "email"
-  | "role"
+  "name" | "bio" | "displayname" | "handle" | "image" | "leave" | "n_course" | "email" | "role"
 >
 
 export type UserProps = {

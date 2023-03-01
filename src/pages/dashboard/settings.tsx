@@ -32,7 +32,6 @@ const Page: NextPageWithLayout = () => {
   ]
 
   const [data, setData] = useState<UserSettings>({
-    id: "",
     name: "",
     bio: "",
     displayname: "",
@@ -47,7 +46,6 @@ const Page: NextPageWithLayout = () => {
   useEffect(() => {
     if (user)
       setData({
-        id: user.id ?? "",
         name: user.name ?? "",
         bio: user.bio ?? "",
         displayname: user.displayname ?? "",
@@ -107,6 +105,9 @@ const Page: NextPageWithLayout = () => {
       body: JSON.stringify({
         ...data,
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
       method: HttpMethod.PUT,
     })
 
@@ -114,7 +115,7 @@ const Page: NextPageWithLayout = () => {
       setDisabled(false)
       setPublishing(false)
       const json = await response.json()
-      toast.error(json.error.message)
+      toast.error(json.issues[0].message)
     } else {
       setDisabled(false)
       setPublishing(false)
