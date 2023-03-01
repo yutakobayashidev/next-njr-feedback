@@ -80,7 +80,13 @@ export async function updateTag(
             invalid_type_error: "入力値に誤りがります",
           })
           .optional(),
-        official: z.string().url().optional().or(z.literal("")),
+        official: z
+          .string({
+            invalid_type_error: "入力値に誤りがります",
+          })
+          .url({ message: "正しいURLを入力してください" })
+          .optional()
+          .or(z.literal("")),
       }),
       query: z.object({
         id: z.string({
