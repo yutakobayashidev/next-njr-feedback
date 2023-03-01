@@ -17,8 +17,10 @@ export function withZod<T extends ZodSchema>(
     if (!parsed.success) {
       // 共通のバリデーションエラーレスポンスとして処理
       res.status(400).json({
-        issues: JSON.parse(parsed.error.message),
-        message: "Bad Request",
+        error: {
+          code: 400,
+          message: parsed.error.issues[0].message,
+        },
       })
       return
     }
