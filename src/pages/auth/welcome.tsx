@@ -128,7 +128,7 @@ const Page: NextPage = () => {
     if (response.status !== 200) {
       setDisabled(false)
       const json = await response.json()
-      alert(json.issues[0].message)
+      alert(json.error.message)
     } else {
       setDisabled(false)
       setThanks(true)
