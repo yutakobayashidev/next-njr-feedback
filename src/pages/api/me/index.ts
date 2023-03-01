@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import prisma from "@src/lib/prisma"
 import { withZod } from "@src/lib/withZod"
 import { authOptions } from "@src/pages/api/auth/[...nextauth]"
@@ -60,20 +61,32 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         }),
       }),
       async (req, res) => {
-        const { bio, displayname, handle, image } = req.body
-        const response = await prisma.user.update({
-          data: {
-            bio,
-            displayname,
-            handle,
-            image,
-          },
-          where: {
-            id: String(session.user.id),
-          },
-        })
+        try {
+          const { bio, displayname, handle, image } = req.body
+          const response = await prisma.user.update({
+            data: {
+              bio,
+              displayname,
+              handle,
+              image,
+            },
+            where: {
+              id: String(session.user.id),
+            },
+          })
 
-        res.status(200).json(response)
+          res.status(200).json(response)
+        } catch (error) {
+          if (error instanceof Prisma.PrismaClientKnownRequestError)
+            if (error.code === "P2002") {
+              return res.status(400).json({
+                error: {
+                  code: 400,
+                  message: `このハンドルは既に使用されています。`,
+                },
+              })
+            }
+        }
       },
     )
 
