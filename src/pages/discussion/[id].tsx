@@ -235,7 +235,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   <div
                     className={`${
                       archived ? "bg-gray-400" : "bg-primary"
-                    }  mr-2  inline-block rounded-full py-2 px-4 text-sm font-bold text-white`}
+                    } mr-2 inline-block rounded-full py-2 px-4 text-sm font-bold text-white`}
                   >
                     <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
                   </div>
