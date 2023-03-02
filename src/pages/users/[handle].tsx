@@ -298,7 +298,7 @@ const Page: NextPageWithLayout<UserProps> = (props) => {
                               </div>
                               <Link
                                 href={"/discussion/" + post.discussion.id + "#comment-" + post.id}
-                                className="mt-4 block text-gray-800 hover:underline"
+                                className="mt-4 block whitespace-pre-wrap break-words text-gray-800 hover:underline "
                               >
                                 {post.content}
                               </Link>

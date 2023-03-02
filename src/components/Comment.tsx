@@ -263,7 +263,7 @@ export const CommentCard: React.FC<{
                 </Menu>
               </div>
             </div>
-            <div className="mt-6 leading-7 text-gray-800">
+            <div className="mt-6 whitespace-pre-wrap break-all leading-7 text-gray-800">
               {showEditForm ? (
                 <>
                   <TextareaAutosize
