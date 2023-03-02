@@ -330,7 +330,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                       <time className="text-sm text-gray-500" dateTime={updatedAt}>
                         {dayjs(createdAt).fromNow()}
                       </time>
-                      <div className="mt-2 font-inter text-lg leading-7 text-gray-800">
+                      <div className="mt-2 whitespace-pre-wrap break-all text-lg text-gray-800">
                         {content}
                       </div>
                     </div>
