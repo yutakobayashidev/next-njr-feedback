@@ -76,7 +76,7 @@ const Page: NextPageWithLayout = () => {
               </>
             ) : (
               <>
-                <h1 className="mb-4 text-center font-inter text-4xl font-bold">Report</h1>
+                <h1 className="mb-4 text-center text-4xl font-bold">Report</h1>
                 <p className="mb-6 text-gray-500">
                   <Link href="/guideline" className="leading-7 text-gray-600 underline">
                     ガイドライン

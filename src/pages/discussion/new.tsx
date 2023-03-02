@@ -5,6 +5,7 @@ import useRequireAuth from "@src/hooks/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import toast from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -40,6 +41,10 @@ const Page: NextPageWithLayout = () => {
         setPublishing(false)
         const json = await response.json()
         await router.push(`/discussion/${json.id}`)
+      } else {
+        setPublishing(false)
+        const json = await response.json()
+        toast.error(json.error.message)
       }
     } catch (error) {
       setPublishing(false)
@@ -60,7 +65,7 @@ const Page: NextPageWithLayout = () => {
         />
         <div className="py-12">
           <div className="mx-auto max-w-screen-sm px-4 md:px-8">
-            <h1 className="mb-4 text-center font-inter text-4xl font-bold">Discussion</h1>
+            <h1 className="mb-4 text-center text-4xl font-bold">Discussion</h1>
             <p className="mb-6 text-center text-lg text-gray-500">
               ディスカッションは、N中等部内の様々なシステムや制度などに関して
               <br className="hidden md:block" />

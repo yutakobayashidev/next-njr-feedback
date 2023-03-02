@@ -5,12 +5,17 @@ import GoogleAnalytics from "@src/components/GoogleAnalytics"
 import usePageView from "@src/hooks/usePageView"
 import { NextPage } from "next"
 import type { AppProps } from "next/app"
-import { Inter } from "next/font/google"
+import { Inter, Noto_Sans_JP } from "next/font/google"
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import { ReactElement, ReactNode } from "react"
+import { Toaster } from "react-hot-toast"
 
 const inter = Inter({ subsets: ["latin"] })
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+})
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -34,6 +39,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout<{ sessi
 
   return (
     <>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 10000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
       <GoogleAnalytics />
       <SessionProvider session={pageProps.session}>
         {getLayout(
@@ -43,6 +58,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout<{ sessi
               {`
                 :root {
                   --font-inter: ${inter.style.fontFamily};
+                  --font-noto-sans-jp: ${notoSansJP.style.fontFamily};
                 }
               `}
             </style>

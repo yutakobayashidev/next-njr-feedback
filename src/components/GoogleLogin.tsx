@@ -6,7 +6,7 @@ export const GoogleLogin: React.FC<{ callbackUrl?: string }> = ({ callbackUrl })
     <>
       <button
         onClick={() => signIn("google", { callbackUrl: callbackUrl })}
-        className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-base font-bold text-gray-700 shadow-md shadow-gray-300"
+        className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center text-base font-bold text-gray-700 shadow-md shadow-gray-300"
       >
         <span className="mr-2 inline-flex items-center">
           <Google width={18} height={18} />

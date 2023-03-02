@@ -119,7 +119,7 @@ const Page: NextPageWithLayout = () => {
             <div className="mx-auto max-w-prose px-4 md:px-8">
               {tag.name && (
                 <>
-                  <h1 className="mb-4 text-center font-inter text-5xl font-bold">{tag.name}</h1>
+                  <h1 className="mb-4 text-center text-5xl font-bold">{tag.name}</h1>
                   <p className="mb-6 text-center text-lg text-gray-500">
                     {tag.name}の古い情報などがあれば更新してください
                   </p>

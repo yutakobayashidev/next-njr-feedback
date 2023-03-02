@@ -9,7 +9,7 @@ import JSConfetti from "js-confetti"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { AiFillCheckCircle } from "react-icons/ai"
 import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
@@ -142,26 +142,16 @@ const Page: NextPage = () => {
   return (
     <>
       <MyPageSeo path="/auth/welcome" title="Welcome!" />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       {thanks ? (
         <div className="flex h-screen items-center justify-center">
           <div className="text-center">
-            <div className="mb-4 font-inter text-7xl font-bold md:text-8xl">Thanks!</div>
+            <div className="mb-4 text-7xl font-bold md:text-8xl">Thanks!</div>
           </div>
         </div>
       ) : (
         <>
           <div className="my-24 mx-auto max-w-screen-sm px-4 md:px-8">
-            <h1 className="mb-8 text-center font-inter text-5xl font-bold">Welcome!</h1>
+            <h1 className="mb-8 text-center text-5xl font-bold">Welcome!</h1>
             <p className="text-center text-gray-600">
               まずはプロフィールを作成しましょう。
               Slackと同じユーザー情報を使用することをおすすめします。

@@ -22,7 +22,7 @@ const Page: NextPageWithLayout = () => {
         <div className="my-14">
           <div className="mx-auto max-w-screen-md px-4 md:px-8">
             <div className="text-center">
-              <div className="font-inter text-4xl font-bold md:text-5xl">問題が発生しました</div>
+              <div className="text-4xl font-bold md:text-5xl">問題が発生しました</div>
               <h1 className="my-8 text-lg font-bold text-gray-500 md:text-center md:text-xl">
                 認証に失敗しました。もう一度お試しください
               </h1>
