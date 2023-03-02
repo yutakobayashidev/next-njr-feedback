@@ -47,8 +47,8 @@ const Page: NextPageWithLayout<Props> = (props) => {
                 width="450"
               ></img>
               <p className="mb-6 text-xl text-maintext">
-                <span className="font-medium">Next NJR Feedback</span>
-                はN中等部の<span className="font-medium">生徒、メンター・TA</span>
+                <span className="font-semibold">Next NJR Feedback</span>
+                はN中等部の<span className="font-semibold">生徒、メンター・TA</span>
                 が使用できる議論&ナレッジ共有プラットフォームです。
               </p>
               <button
@@ -63,8 +63,8 @@ const Page: NextPageWithLayout<Props> = (props) => {
               <p className="mt-4 text-sm text-gray-500">
                 ( <Link href="/guideline">ガイドライン</Link>と
                 <Link href="/privacy">プライバシーポリシー</Link>に同意の上、
-                <span className="font-medium">@n-jr.jp</span>
-                または<span className="font-medium">@nnn.ac.jp</span>
+                <span className="font-semibold">@n-jr.jp</span>
+                または<span className="font-semibold">@nnn.ac.jp</span>
                 を含むアカウントでログインしてください )
               </p>
             </div>
