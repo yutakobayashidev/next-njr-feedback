@@ -9,7 +9,7 @@ import JSConfetti from "js-confetti"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { AiFillCheckCircle } from "react-icons/ai"
 import TextareaAutosize from "react-textarea-autosize"
 import useSWR from "swr"
@@ -142,16 +142,6 @@ const Page: NextPage = () => {
   return (
     <>
       <MyPageSeo path="/auth/welcome" title="Welcome!" />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       {thanks ? (
         <div className="flex h-screen items-center justify-center">
           <div className="text-center">

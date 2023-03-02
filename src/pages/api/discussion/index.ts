@@ -14,15 +14,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       error: { code: 401, message: "ログインしてください" },
     })
 
-  if (title?.length > 160) {
-    return res.status(400).json({
-      error: {
-        code: 400,
-        message: "タイトルは160文字以内で入力してください",
-      },
-    })
-  }
-
   if (!session.user.id)
     return res.status(500).json({
       error: { code: 500, message: "サーバーがセッションユーザーIDの取得に失敗しました" },
@@ -33,6 +24,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(401).json({
         error: { code: 401, message: "クエリが不足しています" },
       })
+
+    if (title?.length > 160) {
+      return res.status(400).json({
+        error: {
+          code: 400,
+          message: "タイトルは160文字以内で入力してください",
+        },
+      })
+    }
 
     const courses = selectedCourses.map((id: string) => parseInt(id))
 

@@ -9,6 +9,7 @@ import { Inter } from "next/font/google"
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import { ReactElement, ReactNode } from "react"
+import { Toaster } from "react-hot-toast"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -34,6 +35,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout<{ sessi
 
   return (
     <>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 10000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
       <GoogleAnalytics />
       <SessionProvider session={pageProps.session}>
         {getLayout(

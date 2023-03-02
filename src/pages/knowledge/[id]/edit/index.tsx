@@ -8,7 +8,7 @@ import { getKnowledgePath } from "@src/utils/helper"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { AiFillTag, AiOutlineCheck } from "react-icons/ai"
 import { BiChevronDown } from "react-icons/bi"
 import { HiTrash } from "react-icons/hi"
@@ -195,16 +195,6 @@ export default function Post() {
 
   return (
     <>
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 10000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-        }}
-      />
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
           <Transition.Child

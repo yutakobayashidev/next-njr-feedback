@@ -5,6 +5,7 @@ import useRequireAuth from "@src/hooks/useRequireAuth"
 import { NextPageWithLayout } from "@src/pages/_app"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import toast from "react-hot-toast"
 import TextareaAutosize from "react-textarea-autosize"
 
 const Page: NextPageWithLayout = () => {
@@ -40,6 +41,10 @@ const Page: NextPageWithLayout = () => {
         setPublishing(false)
         const json = await response.json()
         await router.push(`/discussion/${json.id}`)
+      } else {
+        setPublishing(false)
+        const json = await response.json()
+        toast.error(json.error.message)
       }
     } catch (error) {
       setPublishing(false)
