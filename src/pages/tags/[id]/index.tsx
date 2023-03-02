@@ -61,7 +61,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
               )}
               <div className="mt-7 ml-0 flex-1 md:mt-0 md:ml-7">
                 <div className="mb-2 flex items-center justify-center">
-                  <h1 className="flex-1 font-inter text-2xl font-bold md:text-3xl">{name}</h1>
+                  <h1 className="flex-1 text-2xl font-bold md:text-3xl">{name}</h1>
                   <Link
                     href={`/tags/${id}/edit`}
                     className="rounded-md border bg-white px-2 py-1 text-right text-gray-800 shadow-md"
@@ -90,7 +90,7 @@ const Page: NextPageWithLayout<Tag> = (props) => {
               target="_blank"
               rel="noopener noreferrer nofollow"
               href={official}
-              className="mr-5 flex items-center border-b-2 border-white py-2 font-inter text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
+              className="mr-5 flex items-center border-b-2 border-white py-2 text-sm font-bold text-gray-400 transition duration-100 hover:text-gray-600 md:text-base"
             >
               公式サイト
               <FiArrowUpRight className="ml-1" />

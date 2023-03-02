@@ -235,7 +235,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                   <div
                     className={`${
                       archived ? "bg-gray-400" : "bg-primary"
-                    }  mr-2  inline-block rounded-full py-2 px-4 font-inter text-sm font-bold text-white`}
+                    }  mr-2  inline-block rounded-full py-2 px-4 text-sm font-bold text-white`}
                   >
                     <span className="flex items-center">{archived ? "Archive" : "Open"}</span>
                   </div>
@@ -271,7 +271,7 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                     </button>
                   </div>
                 ) : (
-                  <h1 className="my-4 font-inter text-3xl font-bold leading-10">
+                  <h1 className="my-4 text-3xl font-bold leading-10">
                     {discussiontitle}
                     {session.user.id == user.id && (
                       <button onClick={() => setTitleEditForm(true)}>
@@ -323,14 +323,14 @@ const Page: NextPageWithLayout<DiscussionProps> = (props) => {
                     <div className="mr-8 flex-1">
                       <Link
                         href={getUserpagePath(user.handle)}
-                        className="mr-2 font-inter text-lg font-bold text-gray-800  "
+                        className="mr-2 text-lg font-bold text-gray-800  "
                       >
                         {user.displayname}
                       </Link>
                       <time className="text-sm text-gray-500" dateTime={updatedAt}>
                         {dayjs(createdAt).fromNow()}
                       </time>
-                      <div className="mt-2 whitespace-pre-wrap break-all text-lg text-gray-800">
+                      <div className="mt-2 whitespace-pre-wrap break-all text-lg leading-7 text-gray-800">
                         {content}
                       </div>
                     </div>

@@ -46,7 +46,7 @@ const New: React.FC<{ session: Session }> = ({ session }) => {
       {session && session.user && session.user.name && session.user.image && (
         <Menu as="div" className="relative">
           <div>
-            <Menu.Button className="ml-4 rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90">
+            <Menu.Button className="ml-4 rounded-md bg-primary px-4 py-2 font-bold text-white shadow-sm hover:opacity-90">
               + New
             </Menu.Button>
           </div>
@@ -268,7 +268,7 @@ export const SiteHeader: React.FC = () => {
       <header className="border-b border-gray-200 bg-white">
         <ContentWrapper>
           <div className="flex h-14 items-center justify-between">
-            <Link href="/" className="font-inter font-bold text-primary">
+            <Link href="/" className="font-bold text-primary">
               {config.siteMeta.title}
             </Link>
             {status != "loading" && (
@@ -283,7 +283,7 @@ export const SiteHeader: React.FC = () => {
                     <>
                       <button
                         onClick={() => setIsOpen(true)}
-                        className="rounded-md bg-primary px-4 py-2 font-inter font-bold text-white shadow-sm hover:opacity-90"
+                        className="rounded-md bg-primary px-4 py-2 font-bold text-white shadow-sm hover:opacity-90"
                       >
                         Log in
                       </button>

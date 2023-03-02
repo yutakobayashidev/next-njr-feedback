@@ -65,7 +65,7 @@ const Page: NextPageWithLayout = () => {
         />
         <div className="py-12">
           <div className="mx-auto max-w-screen-sm px-4 md:px-8">
-            <h1 className="mb-4 text-center font-inter text-4xl font-bold">Discussion</h1>
+            <h1 className="mb-4 text-center text-4xl font-bold">Discussion</h1>
             <p className="mb-6 text-center text-lg text-gray-500">
               ディスカッションは、N中等部内の様々なシステムや制度などに関して
               <br className="hidden md:block" />

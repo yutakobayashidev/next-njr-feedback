@@ -157,7 +157,7 @@ export const CommentCard: React.FC<{
               <div className="flex items-center">
                 <Link
                   href={getUserpagePath(comment.user.handle)}
-                  className="mr-2 font-inter font-bold text-gray-800"
+                  className="mr-2 font-bold text-gray-800"
                 >
                   {comment.user.displayname}
                 </Link>
@@ -263,7 +263,7 @@ export const CommentCard: React.FC<{
                 </Menu>
               </div>
             </div>
-            <div className="mt-6 font-inter leading-7 text-gray-800">
+            <div className="mt-6 leading-7 text-gray-800">
               {showEditForm ? (
                 <>
                   <TextareaAutosize

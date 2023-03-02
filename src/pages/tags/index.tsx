@@ -21,7 +21,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
         <MyPageSeo path="/" title="タグ" />
         <section className="min-h-screen py-12">
           <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-            <h1 className="text-center font-inter text-4xl font-bold">Popular tags</h1>
+            <h1 className="text-center text-4xl font-bold">Popular tags</h1>
             <div className="mt-10 grid grid-cols-3 gap-3 md:grid-cols-6	md:gap-6">
               {props.tags.map((tag) => (
                 <Link

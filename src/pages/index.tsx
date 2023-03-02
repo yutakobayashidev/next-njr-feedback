@@ -53,7 +53,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
               </p>
               <button
                 onClick={() => signIn("google")}
-                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center font-inter text-xl font-bold text-gray-700 shadow-md shadow-gray-300"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-12 py-3 text-center text-xl font-bold text-gray-700 shadow-md shadow-gray-300"
               >
                 <span className="mr-2 inline-flex items-center">
                   <Google width={22} height={22} />
@@ -147,7 +147,7 @@ const Page: NextPageWithLayout<Props> = (props) => {
         )}
         <section className="bg-gray-50 py-12">
           <ContentWrapper>
-            <h2 className="mb-5 text-center font-inter text-4xl font-bold">See more.</h2>
+            <h2 className="mb-5 text-center text-4xl font-bold">See more.</h2>
             <p className="mx-auto mb-5 table text-lg text-gray-600">
               2023年のN中等部の
               <a

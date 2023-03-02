@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require("tailwindcss/defaultTheme")
+
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   plugins: [
@@ -19,6 +21,8 @@ module.exports = {
       },
       fontFamily: {
         inter: ["var(--font-inter)"],
+        notojp: ["var(--font-noto-sans-jp)"],
+        sans: ["var(--font-inter)", "var(--font-noto-sans-jp)", ...fontFamily.sans],
       },
       padding: {
         slide: "56.25%",
