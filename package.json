@@ -14,7 +14,7 @@
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
-    "@headlessui/react": "^1.7.10",
+    "@headlessui/react": "^1.7.14",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.10.1",
     "@slack/webhook": "^6.1.0",
